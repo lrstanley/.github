@@ -1,3 +1,13 @@
+# USAGE:
+#   jobs:
+#     go-version:
+#       uses: lrstanley/.github/.github/workflows/lang-go-latest-version.yml@master
+#     some-other-job:
+#       needs: [go-version]
+#       uses: ...
+#       with:
+#         go-version: ${{ needs.go-version.outputs.version }}
+
 name: go-get-latest-version
 
 on:
