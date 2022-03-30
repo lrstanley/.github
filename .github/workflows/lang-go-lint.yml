@@ -46,7 +46,7 @@ jobs:
         run: |
           VERSION=$(
               curl -sSL https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json \
-                  | jq -r '[.[] | select(.stable == true)][0].version
+                  | jq -r '[.[] | select(.stable == true)][0].version'
           )
           echo ::set-output name=version::${VERSION}
       - uses: actions/setup-go@v3
