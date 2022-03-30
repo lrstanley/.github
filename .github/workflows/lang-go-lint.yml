@@ -55,11 +55,11 @@ jobs:
       - uses: actions/checkout@v3
       - if: inputs.codecov
         run: |
-          go test -v -coverprofile=coverage.txt -timeout 3m
+          go test -v -coverprofile=coverage.txt -timeout 3m ./...
           bash <(curl -s https://codecov.io/bash)
       - if: inputs.govet
-        run: go vet .
+        run: go vet -composites=false ./...
       - if: inputs.staticcheck
         run: |
           go install honnef.co/go/tools/cmd/staticcheck@latest
-          staticcheck -f stylish
+          staticcheck -f stylish ./...
