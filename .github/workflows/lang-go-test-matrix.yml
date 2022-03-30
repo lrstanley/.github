@@ -1,29 +1,56 @@
 name: go-test-matrix
 
+# logic:
+#   given: 1.2.3, 1.2.4, 1.2.5, 1.3.0, 1.3.1, 1.3.2, 1.3.3
+#
+#   minor: 1, patch: 1, returns: 1.3.3
+#   minor: 2, patch: 1, returns: 1.3.3, 1.2.5
+#   minor: 1, patch: 2, returns: 1.3.2, 1.3.3
+#   minor: 2, patch: 2, returns: 1.3.3, 1.3.2, 1.2.5, 1.2.4
+
 on:
   workflow_call:
     inputs:
-      num-versions:
-        required: true
+      num-minor:
+        description: "Number of minor semver versions of Go to use"
+        required: false
         type: number
+        default: 2
+      num-patch:
+        description: "Number of patch semver versions of Go to use"
+        required: false
+        type: number
+        default: 1
+      go-version:
+        description: "Go version if only a specific version is desired (overrides minor/patch)"
+        required: false
+        type: string
 
-# TODO: permissions
 jobs:
   go-get-versions:
     runs-on: ubuntu-latest
+    permissions: {}
     outputs:
       versions: ${{ steps.fetch-versions.outputs.versions }}
     steps:
       - id: fetch-versions
         run: |
+          if [ -n "${{ inputs.go-version }}" ];then
+            echo ::set-output name=versions::[\"${{ inputs.go-version }}\"]
+            exit 0
+          fi
+
           VERSIONS=$(
             curl -sSL https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json \
-              | jq -rc '"\"\(.[].version)\""' | awk -F. '!seen[$1, $2]++' \
-              | head -n ${{ inputs.num-versions }} | jq -sc
+              | jq -rc '"\"\(.[].version)\""' \
+              | awk -F. '!seen[$1, $2]++ || seen[$1, $2] <= ${{ inputs.num-patch }}' \
+              | head -n ${{ inputs.num-minor }} | jq -sc
           )
           echo ::set-output name=versions::${VERSIONS}
   go-test-matrix:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     needs: [go-get-versions]
     strategy:
       fail-fast: false
