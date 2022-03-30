@@ -43,8 +43,8 @@ jobs:
           VERSIONS=$(
             curl -sSL https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json \
               | jq -rc '"\"\(.[].version)\""' \
-              | awk -F. '!seen[$1, $2]++ || seen[$1, $2] <= ${{ inputs.num-patch }}' \
-              | head -n ${{ inputs.num-minor }} | jq -sc
+              | awk -F. 'seen[$1, $2]++ < ${{ inputs.num-patch }} && length(seen) <= ${{ inputs.num-minor }}' \
+              | jq -sc
           )
           echo ::set-output name=versions::${VERSIONS}
   go-test-matrix:
