@@ -20,9 +20,14 @@ on:
 jobs:
   go-get-latest-version:
     runs-on: ubuntu-latest
+    permissions: {}
     outputs:
       go-version: ${{ steps.goversion.outputs.version }}
     steps:
       - id: goversion
         run: |
-          echo ::set-output name=version::$(curl -s https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json | sed -rn 's/.*"version": "([0-9]\.[0-9]+(\.[0-9]+)?)".*/\1/p' | head -1)
+          VERSION=$(
+              curl -sSL https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json \
+                  | jq -r '[.[] | select(.stable == true)][0].version
+          )
+          echo ::set-output name=version::${VERSION}
