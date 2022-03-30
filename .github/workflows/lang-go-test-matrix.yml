@@ -7,6 +7,7 @@ on:
         required: true
         type: number
 
+# TODO: permissions
 jobs:
   go-get-versions:
     runs-on: ubuntu-latest
@@ -16,13 +17,11 @@ jobs:
       - id: fetch-versions
         run: |
           VERSIONS=$(
-            curl -s https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json \
-              | sed -rn 's/.*"version": "([0-9]\.[0-9]+(\.[0-9]+)?)".*/\1/p' \
-              | awk -F. '!seen[$1, $2]++' \
-              | head -n ${{ inputs.num-versions }}
+            curl -sSL https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json \
+              | jq -rc '"\"\(.[].version)\""' | awk -F. '!seen[$1, $2]++' \
+              | head -n ${{ inputs.num-versions }} | jq -sc
           )
-          JSON=$(echo -n "[";for version in $VERSIONS;do echo -n '"'"$version"'",';done | sed -r 's:,$::g';echo "]")
-          echo ::set-output name=versions::${JSON}
+          echo ::set-output name=versions::${VERSIONS}
   go-test-matrix:
     runs-on: ubuntu-latest
     needs: [go-get-versions]
