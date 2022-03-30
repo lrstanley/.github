@@ -18,17 +18,17 @@ on:
       staticcheck:
         description: "Enables linting with staticcheck."
         default: True
-        required: True
+        required: False
         type: boolean
       govet:
         description: "Enables linting with go vet."
         default: True
-        required: True
+        required: False
         type: boolean
       codecovv:
         description: "Enables Codecov integration (requires running tests at least once)."
         default: True
-        required: True
+        required: False
         type: boolean
 
 # TODO: permissions
