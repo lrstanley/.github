@@ -38,7 +38,6 @@ jobs:
     permissions:
       checks: write
       contents: read
-      id-token: read
       pull-requests: write
       statuses: write
     steps:
