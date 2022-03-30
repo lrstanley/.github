@@ -1,12 +1,10 @@
 # USAGE:
 #   jobs:
-#     go-version:
-#       uses: lrstanley/.github/.github/workflows/lang-go-latest-version.yml@master
 #     go-lint:
 #       needs: [go-version]
 #       uses: lrstanley/.github/.github/workflows/lang-go-lint.yml@master
 #       with:
-#         go-version: ${{ needs.go-version.outputs.version }}
+#         go-version: 1.2.3 # or don't provide to use latest Go version.
 
 name: go-lint
 
@@ -14,25 +12,55 @@ on:
   workflow_call:
     inputs:
       go-version:
-        required: true
-        type: string
-      cache-key: # use when testing against multiple go versions, for example.
+        description: "Go version to use for linting -- defaults to the latest stable Go version."
         required: false
         type: string
+      staticcheck:
+        description: "Enables linting with staticcheck."
+        default: True
+        required: True
+        type: boolean
+      govet:
+        description: "Enables linting with go vet."
+        default: True
+        required: True
+        type: boolean
+      codecovv:
+        description: "Enables Codecov integration (requires running tests at least once)."
+        default: True
+        required: True
+        type: boolean
 
+# TODO: permissions
 jobs:
   go-test:
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
+      id-token: read
+      pull-requests: write
+      statuses: write
     steps:
+      - if: ${{ !inputs.go-version }}
+        id: goversion
+        run: |
+          VERSION=$(
+              curl -sSL https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json \
+                  | jq -r '[.[] | select(.stable == true)][0].version
+          )
+          echo ::set-output name=version::${VERSION}
       - uses: actions/setup-go@v3
-        with: { go-version: "${{ inputs.go-version }}" }
+        with:
+          go-version: "${{ inputs.go-version || steps.goversion.outputs.version }}"
       - uses: actions/checkout@v3
-      - run: |
+      - if: inputs.codecov
+        run: |
           go test -v -coverprofile=coverage.txt -timeout 3m
           bash <(curl -s https://codecov.io/bash)
-      - run: go vet .
-      - uses: dominikh/staticcheck-action@v1.1.0
-        with:
-          version: latest
-          install-go: false
-          cache-key: "${{ inputs.cache-key }}"
+      - if: inputs.govet
+        run: go vet .
+      - if: inputs.staticcheck
+        run: |
+          go install honnef.co/go/tools/cmd/staticcheck@latest
+          staticcheck -f stylish
