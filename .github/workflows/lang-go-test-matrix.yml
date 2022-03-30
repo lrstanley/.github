@@ -46,7 +46,7 @@ jobs:
 
           VERSIONS=$(
             curl -sSL https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json \
-              | jq -rc '"\"\(.[].version)\""' \
+              | jq -c '.[].version' \
               | awk -F. 'seen[$1, $2]++ < ${{ inputs.num-patch }} && length(seen) <= ${{ inputs.num-minor }}' \
               | jq -sc
           )
