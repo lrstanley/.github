@@ -6,9 +6,6 @@ on:
       go-version:
         required: true
         type: string
-      cache-key: # use when testing against multiple go versions, for example.
-        required: false
-        type: string
 
 jobs:
   go-test:
@@ -18,11 +15,4 @@ jobs:
         with: { go-version: "${{ inputs.go-version }}" }
       - uses: actions/checkout@v3
       - run: |
-          GORACE="exitcode=1 halt_on_error=1" go test -v -coverprofile=coverage.txt -race -timeout 3m -count 3 -cpu 1,4
-          bash <(curl -s https://codecov.io/bash)
-      - run: go vet -v .
-      - uses: dominikh/staticcheck-action@v1.1.0
-        with:
-          version: latest
-          install-go: false
-          cache-key: "${{ inputs.cache-key }}"
+          GORACE="exitcode=1 halt_on_error=1" go test -v -race -timeout 3m -count 3 -cpu 1,4

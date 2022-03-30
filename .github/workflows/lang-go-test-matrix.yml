@@ -1,0 +1,37 @@
+name: go-test-matrix
+
+on:
+  workflow_call:
+    inputs:
+      num-versions:
+        required: true
+        type: number
+
+jobs:
+  go-get-versions:
+    runs-on: ubuntu-latest
+    outputs:
+      versions: ${{ steps.fetch-versions.outputs.versions }}
+    steps:
+      - id: fetch-versions
+        run: |
+          VERSIONS=$(
+            curl -s https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json \
+              | sed -rn 's/.*"version": "([0-9]\.[0-9]+(\.[0-9]+)?)".*/\1/p' \
+              | awk -F. '!seen[$1, $2]++' \
+              | head -n ${{ inputs.num-versions }}
+          )
+          JSON=$(echo -n "[";for version in $VERSIONS;do echo -n '"'"$version"'",';done | sed -r 's:,$::g';echo "]")
+          echo ::set-output name=versions::${JSON}
+  go-test-matrix:
+    runs-on: ubuntu-latest
+    needs: [go-get-versions]
+    strategy:
+      matrix:
+        go-version: ${{ fromJSON(needs.go-get-versions.outputs.versions) }}
+    steps:
+      - uses: actions/setup-go@v3
+        with: { go-version: "${{ matrix.go-version }}" }
+      - uses: actions/checkout@v3
+      - run: |
+          GORACE="exitcode=1 halt_on_error=1" go test -v -race -timeout 3m -count 3 -cpu 1,4
