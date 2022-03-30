@@ -25,6 +25,10 @@ on:
         description: "Go version if only a specific version is desired (overrides minor/patch)"
         required: false
         type: string
+      run:
+        description: "Alternative command to run, instead of the builtin testing command"
+        required: False
+        type: string
 
 jobs:
   go-get-versions:
@@ -60,5 +64,10 @@ jobs:
       - uses: actions/setup-go@v3
         with: { go-version: "${{ matrix.go-version }}" }
       - uses: actions/checkout@v3
-      - run: |
+      - id: custom-test
+        if: inputs.run
+        run: ${{ inputs.run }}
+      - id: default-test
+        if: \!inputs.run
+        run: |
           GORACE="exitcode=1 halt_on_error=1" go test -v -race -timeout 3m -count 3 -cpu 1,4 ./...
