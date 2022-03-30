@@ -1,0 +1,31 @@
+name: label-pull-requests
+
+on: [workflow_call]
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: lrstanley/.github
+      - uses: actions/labeler@v3
+        with:
+          configuration-path: configs/label-pull-requests.yml
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          sync-labels: true
+      - uses: codelytv/pr-size-labeler@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          xs_label: "size/xs"
+          xs_max_size: "30"
+          s_label: "size/s"
+          s_max_size: "60"
+          m_label: "size/m"
+          m_max_size: "150"
+          l_label: "size/l"
+          l_max_size: "300"
+          xl_label: "size/xl"
+          message_if_xl: ""

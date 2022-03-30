@@ -1,0 +1,17 @@
+name: label-issues
+
+on: [workflow_call]
+
+jobs:
+  issue_triage:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: lrstanley/.github
+      - uses: github/issue-labeler@v2
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          configuration-path: configs/label-issues.yml

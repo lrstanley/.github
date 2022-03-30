@@ -1,0 +1,15 @@
+dependencies:
+  - ".github/dependabot.yml"
+  - "**/go.mod"
+  - "**/go.sum"
+  - "**/go.work"
+  - "**/package.json"
+  - "**/requirements.txt"
+workflows:
+  - ".github/workflows/*"
+  - ".github/*.yml"
+  - "!.github/dependabot.yml"
+documentation:
+  - "docs/**/*"
+  - "**/*.md"
+  - ".github/ISSUE_TEMPLATE/*"
