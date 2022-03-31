@@ -20,8 +20,8 @@ on:
         description: "Use when you want to change the docker context."
         required: false
         type: string
-      buildopts:
-        description: "Use buildopts when you want to pass build arguments (e.g. --build-arg, --force-rm, etc)."
+      buildoptions:
+        description: "Use buildoptions when you want to pass build arguments (e.g. --build-arg, --force-rm, etc)."
         required: false
         type: string
 
@@ -117,4 +117,4 @@ jobs:
           dockerfile: ${{ inputs.dockerfile }}
           workdir: ${{ inputs.workdir }}
           context: ${{ inputs.context }}
-          buildopts: ${{ inputs.buildopts }}
+          buildoptions: ${{ inputs.buildoptions }}
