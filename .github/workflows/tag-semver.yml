@@ -1,0 +1,73 @@
+# USAGE:
+#   jobs:
+#     tag-semver:
+#       uses: lrstanley/.github/.github/workflows/tag-semver.yml@master
+#       with: { method: "", ref: "", custom: "" }
+
+name: tag-semver
+
+on:
+  workflow_call:
+    inputs:
+      method:
+        description: "Tagging method to use"
+        required: true
+        type: string
+        # major, minor, patch, alpha, rc, custom
+      custom:
+        description: "Custom tag, if the default doesn't suffice. Must also use method 'custom'."
+        required: false
+        type: string
+      ref:
+        description: "Git ref to apply tag to"
+        required: false
+        type: string
+
+jobs:
+  tag-semver:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - run: |
+          SVU_VERSION=1.9.0
+          curl -sSL "https://github.com/caarlos0/svu/releases/download/v${SVU_VERSION}/svu_${SVU_VERSION}_linux_amd64.tar.gz" \
+            | tar -C /usr/local/bin/ -xzvf- svu
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.ref }}
+      - run: git fetch --force --tags
+      - env:
+          METHOD: ${{ inputs.method }}
+          CUSTOM: ${{ inputs.custom }}
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          case "$METHOD" in
+            major, minor, patch)
+              git tag "$(svu "$METHOD")" ;;
+            alpha, rc)
+              CURRENT=$(svu current)
+              if [ "$?" != 0 ];then
+                echo "error: svu unable to get current tag"; exit 1
+              fi
+
+              BUILD="next.$(git rev-parse --short HEAD)"
+              read -r PR_TYPE REV <<<"$(sed -rn 's:^v?[0-9]+\.[0-9]+\.[0-9]+-(alpha|rc)\.([0-9]+)(\+.*)?$:\1 \2:p' <<<"$CURRENT")"
+
+              if [ -z "$PR_TYPE" ] || [ -z "$REV" ] || [ "$PR_TYPE" != "$METHOD" ];then
+                REV=0
+                # git tag "$(svu patch --no-metadata)-${METHOD}.0+next.$(git rev-parse --short HEAD)"
+              else
+                ((REV++))
+              fi
+
+              git tag "$(svu patch --no-metadata)-${METHOD}.${REV}+${BUILD}"
+              ;;
+            custom)
+              git tag "$CUSTOM" ;;
+            *) echo "error: unknown method"; exit 1 ;;
+          esac
+
+          git push --tags
