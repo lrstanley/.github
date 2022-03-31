@@ -9,11 +9,10 @@ name: tag-semver
 on:
   workflow_call:
     inputs:
-      method:
+      method: # major, minor, patch, alpha, rc, custom
         description: "Tagging method to use"
         required: true
         type: string
-        # major, minor, patch, alpha, rc, custom
       custom:
         description: "Custom tag, if the default doesn't suffice. Must also use method 'custom'."
         required: false
@@ -29,7 +28,8 @@ jobs:
     permissions:
       contents: write
     steps:
-      - run: |
+      - id: install-svu
+        run: |
           SVU_VERSION=1.9.0
           curl -sSL "https://github.com/caarlos0/svu/releases/download/v${SVU_VERSION}/svu_${SVU_VERSION}_linux_amd64.tar.gz" \
             | tar -C /usr/local/bin/ -xzvf- svu
