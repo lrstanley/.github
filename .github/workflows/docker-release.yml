@@ -70,7 +70,7 @@ jobs:
             if [ "$GIT_REF_TYPE" == "branch" ]; then
               # sanitize and validate the branch name.
               if grep -qE '^v?[0-9]+' <<<"$GIT_REF_NAME"; then
-                echo "error: invalid branch name, might overwrite semver <"$TAGS"
+                echo "error: invalid branch name, might overwrite semver"
                 exit 1
               fi
 
