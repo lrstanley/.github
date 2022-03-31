@@ -5,7 +5,7 @@ on:
     inputs:
       name:
         description: "Name used for the built image (e.g. foo would result in ghcr.io/user/foo)."
-        required: true
+        required: false
         type: string
       dockerfile:
         description: "Alternative dockerfile location."
@@ -109,7 +109,7 @@ jobs:
       - id: build-and-push
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          name: ${{ repository_owner }}/${{ inputs.name }}
+          name: ${{ repository_owner }}/${{ inputs.name || github.event.repository.name }}
           tags: ${{ steps.generate-tags.outputs.tags }}
           registry: ghcr.io
           username: ${{ github.repository_owner }}
