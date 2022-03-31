@@ -1,4 +1,4 @@
-name: docker-build-deploy
+name: docker-release
 
 on:
   workflow_call:
@@ -26,7 +26,7 @@ on:
         type: string
 
 jobs:
-  docker-build-deploy:
+  docker-release:
     runs-on: ubuntu-latest
     permissions:
       contents: read
