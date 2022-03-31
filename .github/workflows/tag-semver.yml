@@ -45,9 +45,9 @@ jobs:
           git config user.email "github-actions@github.com"
 
           case "$METHOD" in
-            major, minor, patch)
+            major|minor|patch)
               git tag "$(svu "$METHOD")" ;;
-            alpha, rc)
+            alpha|rc)
               CURRENT=$(svu current)
               if [ "$?" != 0 ];then
                 echo "error: svu unable to get current tag"; exit 1
