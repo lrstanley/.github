@@ -61,7 +61,7 @@ jobs:
                 REV=0
                 # git tag "$(svu patch --no-metadata)-${METHOD}.0+next.$(git rev-parse --short HEAD)"
               else
-                ((REV++))
+                REV=$((REV + 1))
               fi
 
               git tag "$(svu patch --no-metadata)-${METHOD}.${REV}+${BUILD}"
