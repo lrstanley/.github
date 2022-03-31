@@ -66,7 +66,7 @@ jobs:
             fi
 
             TAGS+="pr-${PR_ID},"
-          elif [ "$EVENT_NAME" == "push" ]
+          elif [ "$EVENT_NAME" == "push" ]; then
             if [ "$GIT_REF_TYPE" == "branch" ]; then
               # sanitize and validate the branch name.
               if grep -qE '^v?[0-9]+' <<<"$GIT_REF_NAME"; then
@@ -87,7 +87,7 @@ jobs:
                 # assume semver with alpha/rc/etc (and maybe build metadata)
                 # OR tag isn't semver.
                 TAGS+="tag-$(sanitize <<<"$GIT_REF_NAME"),"
-              elif [ -n "$MAJOR" ] && [ -n "$MINOR" ] && [ -n "$PATCH" ];then
+              elif [ -n "$MAJOR" ] && [ -n "$MINOR" ] && [ -n "$PATCH" ]; then
                 TAGS+="${MAJOR}.${MINOR}.${PATCH},${MAJOR}.${MINOR},"
                 TAGS+="${MAJOR}.${MINOR}.${PATCH}-$(date +"%Y%m%d-${SHA:0:7}"),"
 
