@@ -28,6 +28,10 @@ on:
 jobs:
   docker-build-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      pull-requests: read
     steps:
       - id: install-svu
         run: |
