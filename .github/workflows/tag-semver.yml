@@ -37,7 +37,8 @@ jobs:
         with:
           ref: ${{ inputs.ref }}
       - run: git fetch --force --tags
-      - env:
+      - id: generate-new-tag
+        env:
           METHOD: ${{ inputs.method }}
           CUSTOM: ${{ inputs.custom }}
         run: |
@@ -59,12 +60,14 @@ jobs:
 
               if [ -z "$PR_TYPE" ] || [ -z "$REV" ] || [ "$PR_TYPE" != "$METHOD" ];then
                 REV=0
-                # git tag "$(svu patch --no-metadata)-${METHOD}.0+next.$(git rev-parse --short HEAD)"
+                PR_TYPE="$METHOD"
+                METHOD="patch"
               else
                 REV=$((REV + 1))
+                METHOD="current"
               fi
 
-              git tag "$(svu patch --no-metadata)-${METHOD}.${REV}+${BUILD}"
+              git tag "$(svu "$METHOD" --no-metadata)-${PR_TYPE}.${REV}+${BUILD}"
               ;;
             custom)
               git tag "$CUSTOM" ;;
