@@ -65,4 +65,14 @@ jobs:
           dockerfile: ${{ inputs.dockerfile }}
           workdir: ${{ inputs.workdir }}
           context: ${{ inputs.context }}
-          buildoptions: ${{ inputs.buildoptions }}
+          buildoptions: |
+            --label="org.opencontainers.image.title=${{ github.repository_owner }}/${{ inputs.name || github.event.repository.name }}"
+            --label="org.opencontainers.image.name=${{ inputs.name || github.event.repository.name }}"
+            --label="org.opencontainers.image.description=${{ github.event.repository.description }}"
+            --label="org.opencontainers.image.created=${{ github.event.head_object.timestamp }}"
+            --label="org.opencontainers.image.authors=${{ github.event.repository.owner.name }} <${{ github.event.repository.owner.email }}>"
+            --label="org.opencontainers.image.license=${{ github.event.repository.license }}"
+            --label="org.opencontainers.image.revision=${{ github.event.head_object.id }}"
+            --label="org.opencontainers.image.version=${{ steps.generate-tags.outputs.version }}"
+            --label="org.opencontainers.image.source=${{ github.event.repository.url }}"
+            ${{ inputs.buildoptions }}

@@ -24,5 +24,6 @@ jobs:
     outputs:
       version: ${{ steps.goversion.outputs.version }}
     steps:
+      - uses: actions/checkout@v3
       - id: goversion
-        run: ./ghmeta/scripts/versions-go.sh latest
+        run: ./scripts/versions-go.sh latest
