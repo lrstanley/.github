@@ -74,4 +74,4 @@ jobs:
             --label="org.opencontainers.image.license=${{ github.event.repository.license }}"
             --label="org.opencontainers.image.revision=${{ github.event.head_object.id }}"
             --label="org.opencontainers.image.version=${{ steps.generate-tags.outputs.version }}"
-            --label="org.opencontainers.image.source=${{ github.event.repository.url }}" ${{ inputs.buildoptions }}
+            --label="org.opencontainers.image.source=${{ github.event.repository.url }}" ${{ inputs.buildoptions || '' }}
