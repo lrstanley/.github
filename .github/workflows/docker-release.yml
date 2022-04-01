@@ -57,7 +57,7 @@ jobs:
         run: |
           function sanitize {
             sed -r \
-              -e 's:[^a-zA-Z0-9._+-]+:-:g' \
+              -e 's:[^a-zA-Z0-9.-]+:-:g' \
               -e 's:-+:-:g' \
               -e 's:^-|-$::g' \
               -e 's:^v([0-9]):\1:g'
