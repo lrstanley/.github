@@ -55,7 +55,7 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
           PR_ID: ${{ github.event.pull_request.number }}
       - name: build-and-push
-        uses: elgohr/Publish-Docker-Github-Action@master
+        uses: elgohr/Publish-Docker-Github-Action@3.04
         with:
           name: ${{ github.repository_owner }}/${{ inputs.name || github.event.repository.name }}
           tags: ${{ steps.generate-tags.outputs.tags }}
