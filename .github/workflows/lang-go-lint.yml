@@ -60,8 +60,11 @@ jobs:
       - name: codecov
         if: inputs.codecov
         run: |
+          curl -sS -o /usr/local/bin/codecov https://uploader.codecov.io/latest/linux/codecov \
+            && chmod +x /usr/local/bin/codecov
+
           go test -v -coverprofile=coverage.txt -timeout 3m ./...
-          bash <(curl -s https://codecov.io/bash)
+          codecov -f coverage.txt
       - name: govet
         if: inputs.govet
         run: go vet -composites=false ./...
