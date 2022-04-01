@@ -11,6 +11,12 @@ on:
         description: Date after which images should be removed.
         required: false
         type: string
+    secrets:
+      token:
+        description: >
+          A Github Personal Access Token. Must be one generated outside of
+          Actions, as current Actions PAT's don't allow deleting packages.
+        required: true
 
 jobs:
   docker-prune-untagged:
