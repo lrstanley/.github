@@ -1,0 +1,57 @@
+name: docker-prune
+
+on:
+  workflow_call:
+    inputs:
+      names:
+        description: Comma-separated list of images that should be pruned.
+        required: false
+        type: string
+      remove-after:
+        description: Date after which images should be removed.
+        required: false
+        type: string
+
+jobs:
+  docker-prune-untagged:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    permissions:
+      packages: write
+    steps:
+      - uses: snok/container-retention-policy@v1
+        with:
+          account-type: personal
+          token: ${{ secrets.GITHUB_TOKEN }}
+          image-names: ${{ inputs.names || github.event.repository.name }}
+          cut-off: ${{ inputs.remove-after || '1 week ago UTC' }}
+          timestamp-to-use: updated_at
+          untagged-only: true
+  docker-prune-prs:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    permissions:
+      packages: write
+    steps:
+      - uses: snok/container-retention-policy@v1
+        with:
+          account-type: personal
+          token: ${{ secrets.GITHUB_TOKEN }}
+          image-names: ${{ inputs.names || github.event.repository.name }}
+          cut-off: ${{ inputs.remove-after || '1 month ago UTC' }}
+          timestamp-to-use: updated_at
+          filter-tags: "pr-*"
+  docker-prune-alpha:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    permissions:
+      packages: write
+    steps:
+      - uses: snok/container-retention-policy@v1
+        with:
+          account-type: personal
+          token: ${{ secrets.GITHUB_TOKEN }}
+          image-names: ${{ inputs.names || github.event.repository.name }}
+          cut-off: ${{ inputs.remove-after || '1 month ago UTC' }}
+          timestamp-to-use: updated_at
+          filter-tags: "*-alpha.*,*-rc.*"
