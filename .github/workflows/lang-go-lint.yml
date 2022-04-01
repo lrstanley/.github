@@ -45,6 +45,7 @@ jobs:
       statuses: write
     steps:
       - id: goversion
+        name: get-latest-go-version
         if: ${{ !inputs.go-version }}
         run: |
           VERSION=$(
@@ -56,15 +57,15 @@ jobs:
         with:
           go-version: "${{ inputs.go-version || steps.goversion.outputs.version }}"
       - uses: actions/checkout@v3
-      - id: codecov
+      - name: codecov
         if: inputs.codecov
         run: |
           go test -v -coverprofile=coverage.txt -timeout 3m ./...
           bash <(curl -s https://codecov.io/bash)
-      - id: govet
+      - name: govet
         if: inputs.govet
         run: go vet -composites=false ./...
-      - id: staticcheck
+      - name: staticcheck
         if: inputs.staticcheck
         run: |
           go install honnef.co/go/tools/cmd/staticcheck@latest

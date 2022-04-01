@@ -25,6 +25,7 @@ jobs:
       go-version: ${{ steps.goversion.outputs.version }}
     steps:
       - id: goversion
+        name: get-latest-go-version
         run: |
           VERSION=$(
               curl -sSL https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json \

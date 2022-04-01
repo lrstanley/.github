@@ -42,7 +42,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - id: install-svu
+      - name: install-svu
         run: |
           SVU_VERSION=1.9.0
           curl -sSL "https://github.com/caarlos0/svu/releases/download/v${SVU_VERSION}/svu_${SVU_VERSION}_linux_amd64.tar.gz" \
@@ -52,7 +52,7 @@ jobs:
           ref: ${{ inputs.ref }}
           token: ${{ secrets.token }}
       - run: git fetch --force --tags
-      - id: generate-new-tag
+      - name: generate-new-tag
         env:
           METHOD: ${{ inputs.method }}
           CUSTOM: ${{ inputs.custom }}
