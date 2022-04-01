@@ -30,7 +30,7 @@ jobs:
           account-type: personal
           token: ${{ secrets.token }}
           image-names: ${{ inputs.names || github.event.repository.name }}
-          cut-off: ${{ inputs.remove-after || '3 hours ago UTC' }}
+          cut-off: ${{ inputs.remove-after || '1 week ago UTC' }}
           timestamp-to-use: updated_at
           untagged-only: true
   docker-prune-prs:
