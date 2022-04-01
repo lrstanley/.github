@@ -40,6 +40,7 @@ jobs:
           image-names: ${{ inputs.names || github.event.repository.name }}
           cut-off: ${{ inputs.remove-after || '1 month ago UTC' }}
           timestamp-to-use: updated_at
+          filter-include-untagged: false
           filter-tags: "pr-*"
   docker-prune-alpha:
     runs-on: ubuntu-latest
@@ -54,4 +55,5 @@ jobs:
           image-names: ${{ inputs.names || github.event.repository.name }}
           cut-off: ${{ inputs.remove-after || '1 month ago UTC' }}
           timestamp-to-use: updated_at
+          filter-include-untagged: false
           filter-tags: "*-alpha.*,*-rc.*"
