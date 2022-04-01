@@ -42,14 +42,11 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/setup-go@v3
-        with:
-          go-version: 1.18
-      # - name: install-svu
-      #   run: |
-      #     SVU_VERSION=1.9.0
-      #     curl -sSL "https://github.com/caarlos0/svu/releases/download/v${SVU_VERSION}/svu_${SVU_VERSION}_linux_amd64.tar.gz" \
-      #       | tar -C /usr/local/bin/ -xzvf- svu
+      - name: install-svu
+        run: |
+          SVU_VERSION=1.9.0
+          curl -sSL "https://github.com/caarlos0/svu/releases/download/v${SVU_VERSION}/svu_${SVU_VERSION}_linux_amd64.tar.gz" \
+            | tar -C /usr/local/bin/ -xzvf- svu
       - uses: actions/checkout@v3
         with:
           ref: ${{ inputs.ref }}
@@ -64,14 +61,11 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
-          go install github.com/caarlos0/svu@latest
-
           case "$METHOD" in
             major|minor|patch)
               git tag "$(svu "$METHOD")" ;;
             alpha|rc)
-              svu --version
-              CURRENT=$(svu current)
+              CURRENT=$(svu current --tag-mode=all-branches)
               if [ "$?" != 0 ];then
                 echo "error: svu unable to get current tag"; exit 1
               fi
@@ -88,7 +82,7 @@ jobs:
                 METHOD="current"
               fi
 
-              git tag "$(svu "$METHOD" --no-metadata)-${PR_TYPE}.${REV}+${BUILD}"
+              git tag "$(svu "$METHOD" --tag-mode=all-branches --no-metadata)-${PR_TYPE}.${REV}+${BUILD}"
               ;;
             custom)
               git tag "$CUSTOM" ;;
