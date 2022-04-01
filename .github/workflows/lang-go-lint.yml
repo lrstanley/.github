@@ -51,7 +51,7 @@ jobs:
           repository: lrstanley/.github
           path: ghmeta
       - id: fetch-versions
-        run: ./ghmeta/scripts/versions-go.sh ${{ inputs.go-version || "latest" }}
+        run: ./ghmeta/scripts/versions-go.sh ${{ inputs.go-version || 'latest' }}
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ steps.fetch-versions.outputs.version }}

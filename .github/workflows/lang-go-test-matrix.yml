@@ -47,7 +47,7 @@ jobs:
           repository: lrstanley/.github
           path: ghmeta
       - id: fetch-versions
-        run: ./ghmeta/scripts/versions-go.sh ${{ inputs.go-version || "many" }}
+        run: ./ghmeta/scripts/versions-go.sh ${{ inputs.go-version || 'many' }}
         env:
           NUM_MINOR: ${{ inputs.num-minor }}
           NUM_PATCH: ${{ inputs.num-patch }}
