@@ -42,12 +42,12 @@ jobs:
       - name: git-clone-tools-repo
         uses: actions/checkout@v3
         with:
-          repo: lrstanley/.github
-          path: /usr/local/share/tools
+          repository: lrstanley/.github
+          path: ghscripts
       - run: git fetch --force --tags
-      - run: /usr/local/share/tools/scripts/install-svu.sh
+      - run: ./ghscripts/scripts/install-svu.sh
       - id: generate-tags
-        run: /usr/local/share/tools/scripts/generate-docker-tags.sh
+        run: ./ghscripts/scripts/generate-docker-tags.sh
         env:
           GIT_SHA: ${{ github.sha }}
           GIT_REF: ${{ github.ref }}
