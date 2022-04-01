@@ -41,21 +41,16 @@ jobs:
     outputs:
       versions: ${{ steps.fetch-versions.outputs.versions }}
     steps:
+      - name: git-clone-tools-repo
+        uses: actions/checkout@v3
+        with:
+          repository: lrstanley/.github
+          path: ghmeta
       - id: fetch-versions
-        name: fetch-go-versions
-        run: |
-          if [ -n "${{ inputs.go-version }}" ];then
-            echo ::set-output name=versions::[\"${{ inputs.go-version }}\"]
-            exit 0
-          fi
-
-          VERSIONS=$(
-            curl -sSL https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json \
-              | jq -c '.[].version' \
-              | awk -F. 'seen[$1, $2]++ < ${{ inputs.num-patch }} && length(seen) <= ${{ inputs.num-minor }}' \
-              | jq -sc
-          )
-          echo ::set-output name=versions::${VERSIONS}
+        run: ./ghmeta/scripts/versions-go.sh ${{ inputs.go-version || "many" }}
+        env:
+          NUM_MINOR: ${{ inputs.num-minor }}
+          NUM_PATCH: ${{ inputs.num-patch }}
   go-test-matrix:
     runs-on: ubuntu-latest
     permissions:

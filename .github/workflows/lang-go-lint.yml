@@ -44,24 +44,21 @@ jobs:
       pull-requests: write
       statuses: write
     steps:
-      - id: goversion
-        name: get-latest-go-version
-        if: ${{ !inputs.go-version }}
-        run: |
-          VERSION=$(
-              curl -sSL https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json \
-                  | jq -r '[.[] | select(.stable == true)][0].version'
-          )
-          echo ::set-output name=version::${VERSION}
+      - uses: actions/checkout@v3
+      - name: git-clone-tools-repo
+        uses: actions/checkout@v3
+        with:
+          repository: lrstanley/.github
+          path: ghmeta
+      - id: fetch-versions
+        run: ./ghmeta/scripts/versions-go.sh ${{ inputs.go-version || "latest" }}
       - uses: actions/setup-go@v3
         with:
-          go-version: "${{ inputs.go-version || steps.goversion.outputs.version }}"
-      - uses: actions/checkout@v3
+          go-version: ${{ steps.fetch-versions.outputs.version }}
       - name: codecov
         if: inputs.codecov
         run: |
-          curl -sS -o /usr/local/bin/codecov https://uploader.codecov.io/latest/linux/codecov \
-            && chmod +x /usr/local/bin/codecov
+          ./ghmeta/scripts/install-codecov.sh
 
           go test -v -coverprofile=coverage.txt -timeout 3m ./...
           codecov -f coverage.txt

@@ -13,22 +13,16 @@ name: go-get-latest-version
 on:
   workflow_call:
     outputs:
-      go-version:
+      version:
         description: "Latest Go version number"
-        value: ${{ jobs.go-get-latest-version.outputs.go-version }}
+        value: ${{ jobs.go-get-latest-version.outputs.version }}
 
 jobs:
   go-get-latest-version:
     runs-on: ubuntu-latest
     permissions: {}
     outputs:
-      go-version: ${{ steps.goversion.outputs.version }}
+      version: ${{ steps.goversion.outputs.version }}
     steps:
       - id: goversion
-        name: get-latest-go-version
-        run: |
-          VERSION=$(
-              curl -sSL https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json \
-                  | jq -r '[.[] | select(.stable == true)][0].version'
-          )
-          echo ::set-output name=version::${VERSION}
+        run: ./ghmeta/scripts/versions-go.sh latest
