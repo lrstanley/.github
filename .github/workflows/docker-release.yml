@@ -38,15 +38,16 @@ jobs:
       packages: write
       pull-requests: read
     steps:
-      - name: install-svu
-        run: |
-          SVU_VERSION=1.9.0
-          curl -sSL "https://github.com/caarlos0/svu/releases/download/v${SVU_VERSION}/svu_${SVU_VERSION}_linux_amd64.tar.gz" \
-            | tar -C /usr/local/bin/ -xzvf- svu
       - uses: actions/checkout@v3
+      - name: git-clone-tools-repo
+        uses: actions/checkout@v3
+        with:
+          repo: lrstanley/.github
+          path: /usr/local/share/tools
       - run: git fetch --force --tags
+      - run: /usr/local/share/tools/scripts/install-svu.sh
       - id: generate-tags
-        name: generate-tags
+        run: /usr/local/share/tools/scripts/generate-docker-tags.sh
         env:
           GIT_SHA: ${{ github.sha }}
           GIT_REF: ${{ github.ref }}
@@ -54,64 +55,6 @@ jobs:
           GIT_REF_TYPE: ${{ github.ref_type }}
           EVENT_NAME: ${{ github.event_name }}
           PR_ID: ${{ github.event.pull_request.number }}
-        run: |
-          function sanitize {
-            sed -r \
-              -e 's:[^a-zA-Z0-9.-]+:-:g' \
-              -e 's:-+:-:g' \
-              -e 's:^-|-$::g' \
-              -e 's:^v([0-9]):\1:g'
-          }
-
-          TAGS=""
-
-          if [ "$EVENT_NAME" == "pull_request" ]; then
-            if [ -z "$PR_ID" ]; then
-              echo "error: pr id not included in event, can't continue"
-              exit 1
-            fi
-
-            TAGS+="pr-${PR_ID},"
-          elif [ "$EVENT_NAME" == "push" ]; then
-            if [ "$GIT_REF_TYPE" == "branch" ]; then
-              # sanitize and validate the branch name.
-              if grep -qE '^v?[0-9]+' <<<"$GIT_REF_NAME"; then
-                echo "error: invalid branch name, might overwrite semver"
-                exit 1
-              fi
-
-              TAGS+="$(sanitize <<<"$GIT_REF_NAME"),"
-            else
-              # assume tag
-
-              LATEST=$(svu current --strip-prefix --no-metadata --tag-mode=all-branches)
-
-              # check if requested tag is semver compliant (at least somewhat).
-              read -r MAJOR MINOR PATCH SUFFIX <<<"$(sed -r 's:^v?([0-9]+)\.([0-9]+)\.([0-9]+)(.*)$:\1 \2 \3 \4:g' <<<"$GIT_REF_NAME")"
-
-              if [ -n "$SUFFIX" ] || [ -z "$MINOR" ]; then
-                # assume semver with alpha/rc/etc (and maybe build metadata)
-                # OR tag isn't semver.
-                TAGS+="tag-$(sanitize <<<"$GIT_REF_NAME"),"
-              elif [ -n "$MAJOR" ] && [ -n "$MINOR" ] && [ -n "$PATCH" ]; then
-                TAGS+="${MAJOR}.${MINOR}.${PATCH},${MAJOR}.${MINOR},"
-                TAGS+="${MAJOR}.${MINOR}.${PATCH}-$(date +"%Y%m%d-${GIT_SHA:0:7}"),"
-
-                # check to see if the new tag is the latest version, to apply v1 and v1.2.
-                if [ "$LATEST" == "${MAJOR}.${MINOR}.${PATCH}" ]; then
-                  TAGS+="${MAJOR},latest,"
-                fi
-              else
-                echo "error: issue parsing semver"
-                exit 1
-              fi
-            fi
-          else
-            echo "error: unknown event type '${EVENT_NAME}'"
-            exit 1
-          fi
-
-          echo ::set-output name=tags::$(sed -r 's:,+$::g' <<<"$TAGS")
       - name: build-and-push
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
