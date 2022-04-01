@@ -71,7 +71,7 @@ jobs:
             --label="org.opencontainers.image.description=${{ github.event.repository.description || 'n/a' }}"
             --label="org.opencontainers.image.created=${{ github.event.head_commit.timestamp || 'unknown' }}"
             --label="org.opencontainers.image.authors=${{ github.event.repository.owner.name }} <${{ github.event.repository.owner.email || 'unknown' }}>"
-            --label="org.opencontainers.image.license=${{ github.event.repository.license || 'MIT' }}"
+            --label="org.opencontainers.image.license=MIT"
             --label="org.opencontainers.image.revision=${{ github.event.head_commit.id || 'unknown' }}"
             --label="org.opencontainers.image.version=${{ steps.generate-tags.outputs.version || 'unknown' }}"
             --label="org.opencontainers.image.source=${{ github.event.repository.url || 'unknown' }}"
