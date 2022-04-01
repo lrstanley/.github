@@ -22,11 +22,15 @@ on:
         type: number
         default: 1
       go-version:
-        description: "Go version if only a specific version is desired (overrides minor/patch)"
+        description: >
+          Go version if only a specific version is desired (overrides
+          minor/patch).
         required: false
         type: string
       run:
-        description: "Alternative command to run, instead of the builtin testing command"
+        description: >
+          Alternative command to run, instead of the builtin testing
+          command.
         required: False
         type: string
 

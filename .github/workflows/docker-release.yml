@@ -4,7 +4,9 @@ on:
   workflow_call:
     inputs:
       name:
-        description: "Name used for the built image (e.g. foo would result in ghcr.io/user/foo)."
+        description: >
+          Name used for the built image (e.g. foo would result in
+          ghcr.io/user/foo).
         required: false
         type: string
       dockerfile:
@@ -13,7 +15,8 @@ on:
         type: string
         default: Dockerfile
       workdir:
-        description: "Use when you want to change directories before invoking commands."
+        description: >
+          Use when you want to change directories before invoking commands.
         required: false
         type: string
       context:
@@ -21,7 +24,9 @@ on:
         required: false
         type: string
       buildoptions:
-        description: "Use buildoptions when you want to pass build arguments (e.g. --build-arg, --force-rm, etc)."
+        description: >
+          Use buildoptions when you want to pass build arguments (e.g.
+          --build-arg, --force-rm, etc).
         required: false
         type: string
 

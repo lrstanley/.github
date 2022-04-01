@@ -18,13 +18,23 @@ on:
         required: true
         type: string
       custom:
-        description: "Custom tag, if the default doesn't suffice. Must also use method 'custom'."
+        description: >
+          Custom tag, if the default doesn't suffice. Must also use method
+          'custom'.
         required: false
         type: string
       ref:
         description: "Git ref to apply tag to"
         required: false
         type: string
+    secrets:
+      token:
+        description: >
+          A Github Personal Access Token. Must be one generated outside of
+          Actions if you want this workflow to trigger other workflows
+          (standard action tokens are unable to make events that trigger
+          other workflows).
+        required: true
 
 jobs:
   tag-semver:
@@ -40,7 +50,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: ${{ inputs.ref }}
-          token: ${{ secrets.USER_PAT }}
+          token: ${{ secrets.token }}
       - run: git fetch --force --tags
       - id: generate-new-tag
         env:

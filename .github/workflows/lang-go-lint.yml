@@ -12,7 +12,9 @@ on:
   workflow_call:
     inputs:
       go-version:
-        description: "Go version to use for linting -- defaults to the latest stable Go version."
+        description: >
+          Go version to use for linting -- defaults to the latest stable Go
+          version.
         required: false
         type: string
       staticcheck:
@@ -26,7 +28,8 @@ on:
         required: False
         type: boolean
       codecov:
-        description: "Enables Codecov integration (requires running tests at least once)."
+        description: >
+          Enables Codecov integration (requires running tests at least once).
         default: True
         required: False
         type: boolean
