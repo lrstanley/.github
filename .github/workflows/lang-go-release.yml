@@ -1,0 +1,40 @@
+# USAGE:
+#   jobs:
+#     go-release:
+#       needs: [go-version]
+#       uses: lrstanley/.github/.github/workflows/lang-go-release.yml@master
+#       with:
+#         go-version: 1.2.3 # or don't provide to use latest Go version.
+
+name: go-release
+
+on:
+  workflow_call:
+    inputs:
+      go-version:
+        description: "Go version to use for linting -- defaults to the latest stable Go version."
+        required: false
+        type: string
+
+jobs:
+  go-release:
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+      statuses: write
+    steps:
+      - id: goversion
+        if: ${{ !inputs.go-version }}
+        run: |
+          VERSION=$(
+              curl -sSL https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json \
+                  | jq -r '[.[] | select(.stable == true)][0].version'
+          )
+          echo ::set-output name=version::${VERSION}
+      - uses: actions/setup-go@v3
+        with:
+          go-version: "${{ inputs.go-version || steps.goversion.outputs.version }}"
+      - uses: actions/checkout@v3
+      - run: go install github.com/goreleaser/goreleaser@latest
