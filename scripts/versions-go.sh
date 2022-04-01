@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/bin/bash -eux
 # shellcheck disable=SC2155
 
 set -o pipefail
@@ -21,7 +21,7 @@ case "$ACTION" in
 			curl -sSL "$URI" \
 				| jq -c '.[].version' \
 				| awk -F. -v minor="$NUM_MINOR" -v patch="$NUM_PATCH" 'seen[$1, $2]++ < patch && length(seen) <= minor' \
-				| jq -sc '.[]'
+				| jq -sc '.'
 		)
 		echo "::set-output name=versions::${VERSIONS}"
 		;;
