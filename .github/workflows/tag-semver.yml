@@ -65,6 +65,7 @@ jobs:
             major|minor|patch)
               git tag "$(svu "$METHOD")" ;;
             alpha|rc)
+              svu --version
               CURRENT=$(svu current)
               if [ "$?" != 0 ];then
                 echo "error: svu unable to get current tag"; exit 1
