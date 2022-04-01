@@ -14,4 +14,4 @@ jobs:
       - uses: github/issue-labeler@v2
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          configuration-path: configs/label-issues.yml
+          configuration-path: configs/triage/label-issues.yml

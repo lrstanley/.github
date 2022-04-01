@@ -13,7 +13,7 @@ jobs:
           repository: lrstanley/.github
       - uses: actions/labeler@v3
         with:
-          configuration-path: configs/label-pull-requests.yml
+          configuration-path: configs/triage/label-pull-requests.yml
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           sync-labels: true
       - uses: codelytv/pr-size-labeler@v1
