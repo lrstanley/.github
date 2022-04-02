@@ -84,7 +84,7 @@ jobs:
             type=semver,priority=600,pattern={{major}},enable=${{ github.ref_name == steps.get-latest-tag.outputs.version || !steps.get-latest-tag.outputs.version }}
             type=semver,priority=500,pattern={{major}}.{{minor}}
             type=semver,priority=800,pattern={{major}}.{{minor}}.{{patch}}
-            type=semver,priority=700,pattern={{major}}.{{minor}}.{{patch}},suffix=-{{date 'YYYYMMDD'}}-{{sha}}
+            type=semver,priority=700,pattern={{major}}.{{minor}}.{{patch}},suffix=-{{date 'YYYYMMDD'}}-{{sha}},enable=${{ github.ref_name == steps.get-latest-tag.outputs.version || !steps.get-latest-tag.outputs.version }}
             type=ref,priority=900,event=branch
             type=ref,event=pr
           labels: |
