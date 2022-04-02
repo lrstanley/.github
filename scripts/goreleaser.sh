@@ -37,7 +37,7 @@ if [ -f ".goreleaser.pre.yml" ]; then
 	yaml '. *= load(".goreleaser.pre.yml")'
 fi
 
-yaml '.builds = (.builds[] *+ load(env(BASE) + "/configs/goreleaser/build-fields.yml"))'
+yaml '.builds = [(.builds[] *+ load(env(BASE) + "/configs/goreleaser/build-fields.yml"))]'
 
 if [ "$GITHUB_EVENT_NAME" == "tag" ]; then
 	yaml '.release.prerelease = "auto"'
