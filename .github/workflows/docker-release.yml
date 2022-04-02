@@ -71,24 +71,30 @@ jobs:
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ghcr.io/${{ github.repository_owner }}/${{ inputs.name || github.event.repository.name }}
-      - name: docker-build
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-        with:
-          context: ${{ inputs.context }}
-          load: true
-          tags: tmp
-      - run: |
-          echo -e "tags: ${{ steps.meta.outputs.tags }}""
-          echo -e "labels: ${{ steps.meta.outputs.labels }}"
-          docker image list
-
-# labels: |
-#   "--label=org.opencontainers.image.title=${{ github.repository_owner }}/${{ inputs.name || github.event.repository.name }}"
-#   "--label=org.opencontainers.image.name=${{ inputs.name || github.event.repository.name }}"
-#   "--label=org.opencontainers.image.description=${{ github.event.repository.description || 'n/a' }}"
-#   "--label=org.opencontainers.image.created=${{ github.event.head_commit.timestamp || 'unknown' }}"
-#   "--label=org.opencontainers.image.authors=${{ github.event.repository.owner.name }} <${{ github.event.repository.owner.email || 'unknown' }}>"
-#   "--label=org.opencontainers.image.license=MIT"
-#   "--label=org.opencontainers.image.revision=${{ github.event.head_commit.id || 'unknown' }}"
-#   "--label=org.opencontainers.image.version=${{ steps.generate-tags.outputs.version || 'unknown' }}"
-#   "--label=org.opencontainers.image.source=${{ github.event.repository.url || 'unknown' }}" ${{ inputs.buildoptions }}
+          flavor: |
+            latest=off
+          tags: |
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}.{{minor}}.{{patch}}
+            type=semver,pattern={{major}}.{{minor}}.{{patch}}-{{date 'YYYYMMDD'}}-{{sha}}
+            type=ref,event=branch
+            type=ref,event=pr
+          labels: |
+            org.opencontainers.image.license=MIT
+            org.opencontainers.image.licenses=MIT
+            org.opencontainers.image.authors=${{ github.event.repository.owner.name }} <${{ github.event.repository.owner.email || 'unknown' }}>
+            org.opencontainers.image.name=${{ inputs.name || github.event.repository.name }}
+      # - name: docker-build
+      #   uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+      #   with:
+      #     context: ${{ inputs.context }}
+      #     load: true
+      #     tags: tmp
+      #     labels: ${{ steps.meta.outputs.labels }}
+      # - run: |
+      #     echo -e "tags: ${{ steps.meta.outputs.tags }}"
+      #     echo -e "labels: ${{ steps.meta.outputs.labels }}"
+      #     docker image list
