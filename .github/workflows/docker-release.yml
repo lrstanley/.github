@@ -92,14 +92,18 @@ jobs:
             org.opencontainers.image.licenses=MIT
             org.opencontainers.image.authors=${{ github.event.repository.owner.name }} <${{ github.event.repository.owner.email || 'unknown' }}>
             org.opencontainers.image.name=${{ inputs.name || github.event.repository.name }}
-      # - name: docker-build
-      #   uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-      #   with:
-      #     context: ${{ inputs.context }}
-      #     load: true
-      #     tags: tmp
-      #     labels: ${{ steps.meta.outputs.labels }}
-      # - run: |
-      #     echo -e "tags: ${{ steps.meta.outputs.tags }}"
-      #     echo -e "labels: ${{ steps.meta.outputs.labels }}"
-      #     docker image list
+      - name: docker-build
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: ${{ inputs.context }}
+          load: true
+          tags: tmp
+          labels: ${{ steps.meta.outputs.labels }}
+      - run: |
+          for tag in "${{ steps.meta.outputs.tags }}";do
+            (
+              set -x
+              docker tag tmp "$tag"
+              docker push "$tag"
+            )
+          done
