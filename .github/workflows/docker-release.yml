@@ -77,8 +77,6 @@ jobs:
           context: ${{ inputs.context }}
           load: true
           tags: tmp
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
       - run: |
           echo -e "tags: ${{ steps.meta.outputs.tags }}""
           echo -e "labels: ${{ steps.meta.outputs.labels }}"
