@@ -79,13 +79,13 @@ jobs:
           flavor: |
             latest=false
           tags: |
-            type=raw,value=latest,enable=${{ github.ref_name == steps.get-latest-tag.outputs.version || !steps.get-latest-tag.outputs.version }}
+            type=raw,priority=1000,value=latest,enable=${{ github.ref_name == steps.get-latest-tag.outputs.version || !steps.get-latest-tag.outputs.version }}
             type=semver,pattern={{version}}
-            type=semver,pattern={{major}},enable=${{ github.ref_name == steps.get-latest-tag.outputs.version || !steps.get-latest-tag.outputs.version }}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}.{{minor}}.{{patch}}
-            type=semver,pattern={{major}}.{{minor}}.{{patch}},suffix=-{{date 'YYYYMMDD'}}-{{sha}}
-            type=ref,event=branch
+            type=semver,priority=600,pattern={{major}},enable=${{ github.ref_name == steps.get-latest-tag.outputs.version || !steps.get-latest-tag.outputs.version }}
+            type=semver,priority=500,pattern={{major}}.{{minor}}
+            type=semver,priority=800,pattern={{major}}.{{minor}}.{{patch}}
+            type=semver,priority=700,pattern={{major}}.{{minor}}.{{patch}},suffix=-{{date 'YYYYMMDD'}}-{{sha}}
+            type=ref,priority=900,event=branch
             type=ref,event=pr
           labels: |
             org.opencontainers.image.license=MIT
