@@ -66,12 +66,12 @@ jobs:
           workdir: ${{ inputs.workdir }}
           context: ${{ inputs.context }}
           buildoptions: >-
-            --label="org.opencontainers.image.title=${{ github.repository_owner }}/${{ inputs.name || github.event.repository.name }}"
-            --label="org.opencontainers.image.name=${{ inputs.name || github.event.repository.name }}"
-            --label="org.opencontainers.image.description=${{ github.event.repository.description || 'n/a' }}"
-            --label="org.opencontainers.image.created=${{ github.event.head_commit.timestamp || 'unknown' }}"
-            --label="org.opencontainers.image.authors=${{ github.event.repository.owner.name }} <${{ github.event.repository.owner.email || 'unknown' }}>"
-            --label="org.opencontainers.image.license=MIT"
-            --label="org.opencontainers.image.revision=${{ github.event.head_commit.id || 'unknown' }}"
-            --label="org.opencontainers.image.version=${{ steps.generate-tags.outputs.version || 'unknown' }}"
-            --label="org.opencontainers.image.source=${{ github.event.repository.url || 'unknown' }}" ${{ inputs.buildoptions }}
+            "--label=org.opencontainers.image.title=${{ github.repository_owner }}/${{ inputs.name || github.event.repository.name }}"
+            "--label=org.opencontainers.image.name=${{ inputs.name || github.event.repository.name }}"
+            "--label=org.opencontainers.image.description=${{ github.event.repository.description || 'n/a' }}"
+            "--label=org.opencontainers.image.created=${{ github.event.head_commit.timestamp || 'unknown' }}"
+            "--label=org.opencontainers.image.authors=${{ github.event.repository.owner.name }} <${{ github.event.repository.owner.email || 'unknown' }}>"
+            "--label=org.opencontainers.image.license=MIT"
+            "--label=org.opencontainers.image.revision=${{ github.event.head_commit.id || 'unknown' }}"
+            "--label=org.opencontainers.image.version=${{ steps.generate-tags.outputs.version || 'unknown' }}"
+            "--label=org.opencontainers.image.source=${{ github.event.repository.url || 'unknown' }}" ${{ inputs.buildoptions }}
