@@ -100,7 +100,7 @@ jobs:
           tags: tmp
           labels: ${{ steps.meta.outputs.labels }}
       - run: |
-          for tag in "${{ steps.meta.outputs.tags }}";do
+          for tag in ${{ steps.meta.outputs.tags }};do
             (
               set -x
               docker tag tmp "$tag"
