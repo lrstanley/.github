@@ -12,10 +12,7 @@ curl -sSL \
 
 chmod +x /usr/local/bin/goreleaser
 
-# TODO: if not a tag, just run build command, and not release command.
-# TODO: make sure dist folder is uploaded to artifacts.
-
-env | sort # TODO: remove
+FLAGS=()
 
 CONFIG="${BASE}/configs/goreleaser/goreleaser.yml"
 if [ -f ".goreleaser.yml" ]; then
@@ -47,8 +44,10 @@ if [ "$GITHUB_EVENT_NAME" == "tag" ]; then
 	fi
 elif [ "$GITHUB_EVENT_NAME" == "push" ]; then
 	yaml '.release.disable = true'
+	FLAGS+=(--snapshot)
 elif [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
 	yaml '.release.disable = true'
+	FLAGS+=(--snapshot)
 else
 	echo "unknown event type: $GITHUB_EVENT_NAME"
 	exit 1
@@ -120,6 +119,6 @@ goreleaser release \
 	--skip-validate \
 	--timeout "10m" \
 	--release-header-tmpl "${BASE}/configs/goreleaser/header-tmpl.md" \
-	--release-footer-tmpl "${BASE}/configs/goreleaser/footer-tmpl.md"
+	--release-footer-tmpl "${BASE}/configs/goreleaser/footer-tmpl.md" "${FLAGS[@]}"
 
 tree dist/
