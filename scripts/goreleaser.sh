@@ -17,7 +17,7 @@ chmod +x /usr/local/bin/goreleaser
 
 env | sort
 
-CONFIG="ghmeta/configs/goreleaser.yml"
+CONFIG="ghmeta/configs/goreleaser/goreleaser.yml"
 if [ -f ".goreleaser.yml" ]; then
 	CONFIG=".goreleaser.yml"
 fi
@@ -107,8 +107,8 @@ if [ -f "SUPPORT.md" ]; then
 fi
 
 envrepl "$CONFIG"
-envrepl "ghmeta/configs/header-tmpl.md"
-envrepl "ghmeta/configs/footer-tmpl.md"
+envrepl "ghmeta/configs/goreleaser/header-tmpl.md"
+envrepl "ghmeta/configs/goreleaser/footer-tmpl.md"
 
 if [ -f ".goreleaser.post.yml" ]; then
 	yaml '. *= load(".goreleaser.post.yml")'
@@ -118,17 +118,17 @@ echo -e "\n[resulting config]"
 cat "$CONFIG"
 
 echo -e "\n[resulting header]"
-cat "ghmeta/configs/header-tmpl.md"
+cat "ghmeta/configs/goreleaser/header-tmpl.md"
 
 echo -e "\n[resulting footer]"
-cat "ghmeta/configs/footer-tmpl.md"
+cat "ghmeta/configs/goreleaser/footer-tmpl.md"
 
 goreleaser release \
 	--config "$CONFIG" \
 	--rm-dist \
 	--skip-validate \
 	--timeout "10m" \
-	--release-header-tmpl "ghmeta/configs/header-tmpl.md" \
-	--release-footer-tmpl "ghmeta/configs/footer-tmpl.md"
+	--release-header-tmpl "ghmeta/configs/goreleaser/header-tmpl.md" \
+	--release-footer-tmpl "ghmeta/configs/goreleaser/footer-tmpl.md"
 
 tree dist/
