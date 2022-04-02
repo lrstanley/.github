@@ -72,7 +72,7 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository_owner }}/${{ inputs.name || github.event.repository.name }}
           flavor: |
-            latest=off
+            latest=false
           tags: |
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
             type=semver,pattern={{version}}
