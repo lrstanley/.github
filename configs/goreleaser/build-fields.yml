@@ -15,4 +15,3 @@ env:
 mod_timestamp: "{{ .CommitTimestamp }}"
 hooks:
   post: sh -c "upx --best --lzma \"{{ .Path }}\" || /bin/true"
-no_unique_dist_dir: true
