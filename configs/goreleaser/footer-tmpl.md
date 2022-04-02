@@ -12,7 +12,7 @@ $ docker run -it --rm ghcr.io/${INPUT_IMAGE_NAME}:{{.Major}}
 #### Build info
 
    * **Built with**: `${GOBUILDINFO}`
-   * **Release job**: [${GITHUB_WORKFLOW}/${GITHUB_JOB}](https://github.com/lrstanley/liam.sh/actions/runs/${GITHUB_RUN_ID}) by @{GITHUB_ACTOR}.
+   * **Release job**: [${GITHUB_WORKFLOW}/${GITHUB_JOB}](https://github.com/lrstanley/liam.sh/actions/runs/${GITHUB_RUN_ID}) by @${GITHUB_ACTOR}.
 
 ## What to do next?
 
