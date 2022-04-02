@@ -23,7 +23,10 @@ if [ -f ".goreleaser.yml" ]; then
 fi
 
 function envrepl {
-	echo "$(envsubst <"$1")" >"$1"
+	set +x
+	envsubst <"$1" >/tmp/out
+	cat </tmp/out >"$1"
+	set -x
 }
 
 function yaml {
@@ -107,13 +110,8 @@ if [ -f ".goreleaser.post.yml" ]; then
 	yaml '. *= load(".goreleaser.post.yml")'
 fi
 
-echo -e "\n[resulting config]"
 cat "$CONFIG"
-
-echo -e "\n[resulting header]"
 cat "${BASE}/configs/goreleaser/header-tmpl.md"
-
-echo -e "\n[resulting footer]"
 cat "${BASE}/configs/goreleaser/footer-tmpl.md"
 
 goreleaser release \
