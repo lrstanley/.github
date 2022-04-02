@@ -12,20 +12,37 @@ on:
   workflow_call:
     inputs:
       go-version:
-        description: "Go version to use for linting -- defaults to the latest stable Go version."
+        description: >
+          Go version to use for linting -- defaults to the latest stable Go
+          version.
         required: false
         type: string
       has-ghcr:
-        description: "If GHCR packages exist for this project"
+        description: "If GHCR packages exist for this project."
         required: false
         type: boolean
         default: false
       image-name:
-        description: "If 'has-ghcr' is enabled, this will be the image name referenced."
+        description: >
+          If 'has-ghcr' is enabled, this will be the image name referenced.
         required: false
         type: string
+      archives:
+        description: >
+          If archives, rather than just direct binaries, should be used.
+        required: false
+        type: boolean
+        default: false
+      draft:
+        description: >
+          If the release (if publishing) should be marked as a draft.
+        required: false
+        type: boolean
+        default: false
       upload-artifacts:
-        description: "If artifacts should be uploaded via GH Actions artifacts (for snapshot only)."
+        description: >
+          If artifacts should be uploaded via GH Actions artifacts (for
+          snapshot only).
         required: false
         type: boolean
         default: true
@@ -36,7 +53,11 @@ jobs:
     permissions:
       checks: write
       contents: read
-      pull-requests: write
+      discussions: write
+      packages: write
+      pages: write
+      repository-projects: write
+      security-events: write
       statuses: write
     steps:
       - uses: actions/checkout@v3
@@ -54,9 +75,14 @@ jobs:
           go-version: "${{ inputs.go-version || steps.goversion.outputs.version }}"
       - run: ./ghmeta/scripts/goreleaser.sh
         env:
-          GIT_SHA: ${{ github.sha }}
-          GIT_REF: ${{ github.ref }}
-          GIT_REF_NAME: ${{ github.ref_name }}
-          GIT_REF_TYPE: ${{ github.ref_type }}
-          EVENT_NAME: ${{ github.event_name }}
-          PR_ID: ${{ github.event.pull_request.number }}
+          # GIT_SHA: ${{ github.sha }} GITHUB_SHA
+          # GIT_REF: ${{ github.ref }} GITHUB_REF
+          # GIT_REF_NAME: ${{ github.ref_name }} GITHUB_REF_NAME
+          # GIT_REF_TYPE: ${{ github.ref_type }} GITHUB_REF_TYPE
+          # EVENT_NAME: ${{ github.event_name }} GITHUB_EVENT_NAME
+          # GITHUB_REPOSITORY_OWNER
+          INPUT_HAS_GHCR: ${{ inputs.has-ghcr }}
+          INPUT_IMAGE_NAME: ${{ github.repository_owner }}/${{ inputs.name || github.event.repository.name }}
+          INPUT_ARCHIVES: ${{ inputs.archives }}
+          INPUT_DRAFT: ${{ inputs.draft }}
+          INPUT_PR_ID: ${{ github.event.pull_request.number }}

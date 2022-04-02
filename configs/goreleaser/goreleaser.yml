@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+builds:
+  - dir: .
+    main: .
+    goos:
+      - freebsd
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - "386"
+      - arm
+      - arm64
+      - amd64
+    goarm:
+      - "6"
+
+archives:
+  - id: archives
+    format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+  - id: binary
+    format: binary
+
+release:
+  draft: false
+  prerelease: auto
+  mode: replace
+  disable: false
+  extra_files:
+    - glob: LICENSE
+
+changelog:
+  skip: false
+  use: github
+  groups:
+    - title: Breaking Changes
+      regexp: "(?i).*breaking.*"
+      order: 0
+    - title: New Features
+      regexp: "(?i)(^feat|.*issue.*|.*feature.*|.*support.*)"
+      order: 1
+    - title: Bug Fixes
+      regexp: "(?i)(^fix|.*fixes.*|.*resolv.*|.*issue.*)"
+      order: 2
+    - title: Misc
+      order: 999
+  filters:
+    exclude:
+      - "(?i)(^docs?:)"
+      - "(?i)typo|spelling"
+      - "(?i)(^\\.|^fix$|^test$|^testing$|^ignore|^ok\\s+)"
+
+milestones:
+  - close: true
+    fail_on_error: false
+    name_template: "{{ .Tag }}"

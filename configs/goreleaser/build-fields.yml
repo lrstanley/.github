@@ -1,0 +1,20 @@
+flags:
+  - "-tags=netgo"
+  - "-installsuffix=netgo"
+  - "-trimpath"
+asmflags:
+  - "all=-trimpath={{.Env.GOPATH}}"
+ldflags:
+  - "-d"
+  - "-s"
+  - "-w"
+  - "-X main.version={{.Version}}"
+  - "-X main.commit={{.Commit}}"
+  - "-X main.date={{.CommitDate}}"
+  - "-X main.builtBy=github-actions"
+env:
+  - CGO_ENABLED=0
+mod_timestamp: "{{ .CommitTimestamp }}"
+hooks:
+  post: sh -c 'upx --best --lzma "{{ .Path }}" || /bin/true'
+no_unique_dist_dir: true
