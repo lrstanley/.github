@@ -117,6 +117,7 @@ goreleaser release \
 	--rm-dist \
 	--skip-validate \
 	--timeout "10m" \
+	--parallelism 5 \
 	--release-header-tmpl "${BASE}/configs/goreleaser/header-tmpl.md" \
 	--release-footer-tmpl "${BASE}/configs/goreleaser/footer-tmpl.md" "${FLAGS[@]}"
 
