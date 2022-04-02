@@ -55,7 +55,6 @@ fi
 
 yaml ".release.draft = ${INPUT_DRAFT}"
 yaml '.release.mode = "replace"'
-yaml ".project_name = \"${GITHUB_REPOSITORY}\""
 
 if [ -f "Makefile" ]; then
 	if grep -qE "^fetch:" Makefile; then

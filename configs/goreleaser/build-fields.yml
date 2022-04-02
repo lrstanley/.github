@@ -2,8 +2,6 @@ flags:
   - "-tags=netgo"
   - "-installsuffix=netgo"
   - "-trimpath"
-asmflags:
-  - "all=-trimpath={{.Env.GOPATH}}"
 ldflags:
   - "-d"
   - "-s"
