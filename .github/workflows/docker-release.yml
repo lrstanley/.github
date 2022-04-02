@@ -79,7 +79,7 @@ jobs:
             type=semver,pattern={{major}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}.{{minor}}.{{patch}}
-            type=semver,pattern={{major}}.{{minor}}.{{patch}},suffix={{date 'YYYYMMDD'}}-{{sha}}
+            type=semver,pattern={{major}}.{{minor}}.{{patch}},suffix=-{{date 'YYYYMMDD'}}-{{sha}}
             type=ref,event=branch
             type=ref,event=pr
           labels: |
