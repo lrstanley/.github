@@ -60,20 +60,20 @@ yaml ".project_name = \"${GITHUB_REPOSITORY}\""
 
 if [ -f "Makefile" ]; then
 	if grep -qE "^fetch:" Makefile; then
-		yaml '.before.hooks += "make fetch"'
+		yaml '.before.hooks += ["make fetch"]'
 	else
-		yaml '.before.hooks += "go mod download"'
-		yaml '.before.hooks += "go mod tidy"'
+		yaml '.before.hooks += ["go mod download"]'
+		yaml '.before.hooks += ["go mod tidy"]'
 	fi
 
 	if grep -qE "^clean:" Makefile; then
-		yaml '.before.hooks += "make clean"'
+		yaml '.before.hooks += ["make clean"]'
 	fi
 
 	if grep -qE "^generate:" Makefile; then
-		yaml '.before.hooks += "make generate"'
+		yaml '.before.hooks += ["make generate"]'
 	else
-		yaml '.before.hooks += "go generate ./..."'
+		yaml '.before.hooks += ["go generate ./..."]'
 	fi
 fi
 
