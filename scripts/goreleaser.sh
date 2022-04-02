@@ -130,3 +130,5 @@ goreleaser release \
 	--timeout "10m" \
 	--release-header-tmpl "ghmeta/configs/header-tmpl.md" \
 	--release-footer-tmpl "ghmeta/configs/footer-tmpl.md"
+
+tree dist/
