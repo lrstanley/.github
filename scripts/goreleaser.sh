@@ -1,5 +1,5 @@
 #!/bin/bash -eux
-# shellcheck disable=SC2155
+# shellcheck disable=SC2155,SC2005
 
 set -o pipefail
 export BASE="$(readlink -f "$(dirname "$0")/..")"
@@ -23,7 +23,7 @@ if [ -f ".goreleaser.yml" ]; then
 fi
 
 function envrepl {
-	envsubst <"$1" | sponge "$1"
+	echo "$(envsubst <"$1")" >"$1"
 }
 
 function yaml {
@@ -87,8 +87,8 @@ if [ "$INPUT_HAS_GHCR" == "true" ]; then
 		echo "$ docker run -it --rm ghcr.io/${INPUT_IMAGE_NAME}:{{.Major}}.{{.Minor}}"
 		echo "$ docker run -it --rm ghcr.io/${INPUT_IMAGE_NAME}:{{.Major}}"
 		echo -e '```\n'
-		cat "${BASE}/configs/goreleaser/footer-tmpl.md"
-	} | sponge "${BASE}/configs/goreleaser/footer-tmpl.md"
+		echo "$(cat ${BASE}/configs/goreleaser/footer-tmpl.md)"
+	} >"${BASE}/configs/goreleaser/footer-tmpl.md"
 fi
 
 # vars needed by header/footer/etc.
