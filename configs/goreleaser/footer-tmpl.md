@@ -1,3 +1,14 @@
+~START_GHCR~
+### Container Images (ghcr)
+
+```console
+$ docker run -it --rm ghcr.io/${INPUT_IMAGE_NAME}:latest
+$ docker run -it --rm ghcr.io/${INPUT_IMAGE_NAME}:{{.RawVersion}}
+$ docker run -it --rm ghcr.io/${INPUT_IMAGE_NAME}:{{.Major}}.{{.Minor}}
+$ docker run -it --rm ghcr.io/${INPUT_IMAGE_NAME}:{{.Major}}
+```
+~END_GHCR~
+
 #### Build info
 
    * **Built with**: `${GOBUILDINFO}`

@@ -79,16 +79,9 @@ if [ "$INPUT_ARCHIVES" != "true" ]; then
 fi
 
 if [ "$INPUT_HAS_GHCR" == "true" ]; then
-	{
-		echo -e "### Container Images (ghcr)\n"
-		echo -e '```console'
-		echo "$ docker run -it --rm ghcr.io/${INPUT_IMAGE_NAME}:latest"
-		echo "$ docker run -it --rm ghcr.io/${INPUT_IMAGE_NAME}:{{.RawVersion}}"
-		echo "$ docker run -it --rm ghcr.io/${INPUT_IMAGE_NAME}:{{.Major}}.{{.Minor}}"
-		echo "$ docker run -it --rm ghcr.io/${INPUT_IMAGE_NAME}:{{.Major}}"
-		echo -e '```\n'
-		echo "$(cat ${BASE}/configs/goreleaser/footer-tmpl.md)"
-	} >"${BASE}/configs/goreleaser/footer-tmpl.md"
+	sed -ri '/~(START|END)_GHCR~/d' "${BASE}/configs/goreleaser/footer-tmpl.md"
+else
+	sed -ri '/~START_GHCR~/,/~END_GHCR~/d' "${BASE}/configs/goreleaser/footer-tmpl.md"
 fi
 
 # vars needed by header/footer/etc.
