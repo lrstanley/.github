@@ -15,9 +15,9 @@ chmod +x /usr/local/bin/goreleaser
 # TODO: if not a tag, just run build command, and not release command.
 # TODO: make sure dist folder is uploaded to artifacts.
 
-env | sort
+env | sort # TODO: remove
 
-CONFIG="ghmeta/configs/goreleaser/goreleaser.yml"
+CONFIG="${BASE}/configs/goreleaser/goreleaser.yml"
 if [ -f ".goreleaser.yml" ]; then
 	CONFIG=".goreleaser.yml"
 fi
@@ -34,7 +34,7 @@ if [ -f ".goreleaser.pre.yml" ]; then
 	yaml '. *= load(".goreleaser.pre.yml")'
 fi
 
-yaml '.builds = (.builds[] *+ load("configs/goreleaser/build-fields.yml"))'
+yaml '.builds = (.builds[] *+ load(env(BASE) + "/configs/goreleaser/build-fields.yml"))'
 
 if [ "$GITHUB_EVENT_NAME" == "tag" ]; then
 	yaml '.release.prerelease = "auto"'
@@ -87,8 +87,8 @@ if [ "$INPUT_HAS_GHCR" == "true" ]; then
 		echo "$ docker run -it --rm ghcr.io/${INPUT_IMAGE_NAME}:{{.Major}}.{{.Minor}}"
 		echo "$ docker run -it --rm ghcr.io/${INPUT_IMAGE_NAME}:{{.Major}}"
 		echo -e '```\n'
-		cat "ghmeta/configs/goreleaser/footer-tmpl.md"
-	} | sponge ghmeta/configs/goreleaser/footer-tmpl.md
+		cat "${BASE}/configs/goreleaser/footer-tmpl.md"
+	} | sponge "${BASE}/configs/goreleaser/footer-tmpl.md"
 fi
 
 # vars needed by header/footer/etc.
@@ -107,8 +107,8 @@ if [ -f "SUPPORT.md" ]; then
 fi
 
 envrepl "$CONFIG"
-envrepl "ghmeta/configs/goreleaser/header-tmpl.md"
-envrepl "ghmeta/configs/goreleaser/footer-tmpl.md"
+envrepl "${BASE}/configs/goreleaser/header-tmpl.md"
+envrepl "${BASE}/configs/goreleaser/footer-tmpl.md"
 
 if [ -f ".goreleaser.post.yml" ]; then
 	yaml '. *= load(".goreleaser.post.yml")'
@@ -118,17 +118,17 @@ echo -e "\n[resulting config]"
 cat "$CONFIG"
 
 echo -e "\n[resulting header]"
-cat "ghmeta/configs/goreleaser/header-tmpl.md"
+cat "${BASE}/configs/goreleaser/header-tmpl.md"
 
 echo -e "\n[resulting footer]"
-cat "ghmeta/configs/goreleaser/footer-tmpl.md"
+cat "${BASE}/configs/goreleaser/footer-tmpl.md"
 
 goreleaser release \
 	--config "$CONFIG" \
 	--rm-dist \
 	--skip-validate \
 	--timeout "10m" \
-	--release-header-tmpl "ghmeta/configs/goreleaser/header-tmpl.md" \
-	--release-footer-tmpl "ghmeta/configs/goreleaser/footer-tmpl.md"
+	--release-header-tmpl "${BASE}/configs/goreleaser/header-tmpl.md" \
+	--release-footer-tmpl "${BASE}/configs/goreleaser/footer-tmpl.md"
 
 tree dist/
