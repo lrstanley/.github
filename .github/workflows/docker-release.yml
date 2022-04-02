@@ -53,6 +53,7 @@ jobs:
           images: ghcr.io/${{ github.repository_owner }}/${{ inputs.name || github.event.repository.name }}
           flavor: |
             latest=false
+          sep-tags: " "
           tags: |
             type=raw,priority=1000,value=latest,enable=${{ github.ref_name == steps.get-latest-tag.outputs.version || !steps.get-latest-tag.outputs.version }}
             type=semver,pattern={{version}}
@@ -74,8 +75,9 @@ jobs:
           load: true
           tags: tmp
           labels: ${{ steps.meta.outputs.labels }}
-      - run: |
-          for tag in ${{ steps.meta.outputs.tags }};do
+      - name: docker-tag-and-push
+        run: |
+          for tag in "${{ steps.meta.outputs.tags }}";do
             (
               set -x
               docker tag tmp "$tag"
