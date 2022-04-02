@@ -40,31 +40,6 @@ jobs:
         run: |
           LATEST=$(git tag --sort=-v:refname | egrep "^v?[0-9]+\.[0-9]+\.[0-9]+$" | head -1)
           echo "::set-output name=version::$LATEST"
-      - name: git-clone-tools-repo
-        uses: actions/checkout@v3
-        with:
-          repository: lrstanley/.github
-          path: ghmeta
-      # - id: generate-tags
-      #   run: ./ghmeta/scripts/generate-docker-tags.sh
-      #   env:
-      #     GIT_SHA: ${{ github.sha }}
-      #     GIT_REF: ${{ github.ref }}
-      #     GIT_REF_NAME: ${{ github.ref_name }}
-      #     GIT_REF_TYPE: ${{ github.ref_type }}
-      #     EVENT_NAME: ${{ github.event_name }}
-      #     PR_ID: ${{ github.event.pull_request.number }}
-      # - name: build-and-push
-      #   uses: lrstanley/Publish-Docker-Github-Action@patch/quoted-buildoptions
-      #   with:
-      #     name: ${{ github.repository_owner }}/${{ inputs.name || github.event.repository.name }}
-      #     tags: ${{ steps.generate-tags.outputs.tags }}
-      #     registry: ghcr.io
-      #     username: ${{ github.repository_owner }}
-      #     password: ${{ secrets.GITHUB_TOKEN }}
-      #     dockerfile: ${{ inputs.dockerfile }}
-      #     workdir: ${{ inputs.workdir }}
-      #     context: ${{ inputs.context }}
       - name: docker-login
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
