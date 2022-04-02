@@ -15,6 +15,20 @@ on:
         description: "Go version to use for linting -- defaults to the latest stable Go version."
         required: false
         type: string
+      has-ghcr:
+        description: "If GHCR packages exist for this project"
+        required: false
+        type: boolean
+        default: false
+      image-name:
+        description: "If 'has-ghcr' is enabled, this will be the image name referenced."
+        required: false
+        type: string
+      upload-artifacts:
+        description: "If artifacts should be uploaded via GH Actions artifacts (for snapshot only)."
+        required: false
+        type: boolean
+        default: true
 
 jobs:
   go-release:
@@ -25,16 +39,24 @@ jobs:
       pull-requests: write
       statuses: write
     steps:
+      - uses: actions/checkout@v3
+      - name: git-clone-tools-repo
+        if: ${{ !inputs.go-version }}
+        uses: actions/checkout@v3
+        with:
+          repository: lrstanley/.github
+          path: ghmeta
       - id: goversion
         if: ${{ !inputs.go-version }}
-        run: |
-          VERSION=$(
-              curl -sSL https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json \
-                  | jq -r '[.[] | select(.stable == true)][0].version'
-          )
-          echo ::set-output name=version::${VERSION}
+        run: ./ghmeta/scripts/versions-go.sh ${{ inputs.go-version || 'latest' }}
       - uses: actions/setup-go@v3
         with:
           go-version: "${{ inputs.go-version || steps.goversion.outputs.version }}"
-      - uses: actions/checkout@v3
-      - run: go install github.com/goreleaser/goreleaser@latest
+      - run: ./ghmeta/scripts/goreleaser.sh
+        env:
+          GIT_SHA: ${{ github.sha }}
+          GIT_REF: ${{ github.ref }}
+          GIT_REF_NAME: ${{ github.ref_name }}
+          GIT_REF_TYPE: ${{ github.ref_type }}
+          EVENT_NAME: ${{ github.event_name }}
+          PR_ID: ${{ github.event.pull_request.number }}
