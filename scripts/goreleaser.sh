@@ -110,9 +110,9 @@ if [ -f ".goreleaser.post.yml" ]; then
 	yaml '. *= load(".goreleaser.post.yml")'
 fi
 
-cat "$CONFIG"
-cat "${BASE}/configs/goreleaser/header-tmpl.md"
-cat "${BASE}/configs/goreleaser/footer-tmpl.md"
+cat "$CONFIG" && sleep 1
+cat "${BASE}/configs/goreleaser/header-tmpl.md" && sleep 1
+cat "${BASE}/configs/goreleaser/footer-tmpl.md" && sleep 1
 
 goreleaser release \
 	--config "$CONFIG" \
