@@ -1,124 +1,174 @@
-#!/bin/bash -eux
+#!/bin/bash -eu
 # shellcheck disable=SC2155,SC2005
 
 set -o pipefail
 export BASE="$(readlink -f "$(dirname "$0")/..")"
 
 VERSION_GOREL="1.7.0"
-
-curl -sSL \
-	"https://github.com/goreleaser/goreleaser/releases/download/v${VERSION_GOREL}/goreleaser_Linux_x86_64.tar.gz" \
-	| tar -C /usr/local/bin/ -xzvf- goreleaser
-
-chmod +x /usr/local/bin/goreleaser
-
 FLAGS=()
 
-CONFIG="${BASE}/configs/goreleaser/goreleaser.yml"
+export HEADER="${BASE}/configs/goreleaser/header-tmpl.md"
+export FOOTER="${BASE}/configs/goreleaser/footer-tmpl.md"
+export CONFIG="${BASE}/configs/goreleaser/goreleaser.yml"
 if [ -f ".goreleaser.yml" ]; then
 	CONFIG=".goreleaser.yml"
 fi
 
+echo "using config file: ${CONFIG}"
+
+function install_goreleaser {
+	echo "installing goreleaser '${VERSION_GOREL}'"
+	curl -sSL \
+		"https://github.com/goreleaser/goreleaser/releases/download/v${VERSION_GOREL}/goreleaser_Linux_x86_64.tar.gz" \
+		| tar -C /usr/local/bin/ -xzvf- goreleaser
+
+	chmod +x /usr/local/bin/goreleaser
+}
+
 function envrepl {
-	set +x
 	envsubst <"$1" >/tmp/out
 	cat </tmp/out >"$1"
-	set -x
 }
 
 function yaml {
-	yq -i "$1" "$CONFIG"
+	(
+		set -x
+		yq -i "$1" "$CONFIG"
+	)
 }
 
-if [ -f ".goreleaser.pre.yml" ]; then
-	yaml '. *= load(".goreleaser.pre.yml")'
-fi
-
-yaml '.builds = [(.builds[] *+ load(env(BASE) + "/configs/goreleaser/build-fields.yml"))]'
-
-if [ "$GITHUB_EVENT_NAME" == "tag" ]; then
-	yaml '.release.prerelease = "auto"'
-
-	if grep -qEi "\-(alpha)" <<<"$GITHUB_REF"; then
-		yaml ".changelog.skip = true"
+function make_has {
+	if [ ! -f "Makefile" ]; then
+		return 1
 	fi
-elif [ "$GITHUB_EVENT_NAME" == "push" ]; then
-	yaml '.release.disable = true'
-	FLAGS+=(--snapshot)
-elif [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
-	yaml '.release.disable = true'
-	FLAGS+=(--snapshot)
-else
-	echo "unknown event type: $GITHUB_EVENT_NAME"
-	exit 1
-fi
 
-yaml ".release.draft = ${INPUT_DRAFT}"
-yaml '.release.mode = "replace"'
+	grep -qE "^${1}:" Makefile && return 0 || return 1
+}
 
-if [ -f "Makefile" ]; then
-	if grep -qE "^fetch:" Makefile; then
-		yaml '.before.hooks += ["make fetch"]'
+function inject_pre {
+	if [ -f ".goreleaser.pre.yml" ]; then
+		yaml '. *n= load(".goreleaser.pre.yml")'
+	fi
+}
+
+function inject_post {
+	if [ -f ".goreleaser.post.yml" ]; then
+		yaml '. *= load(".goreleaser.post.yml")'
+	fi
+}
+
+function add_before_hook {
+	yaml '.before.hooks += ["'"$1"'"]'
+}
+
+function inject_hooks {
+	if make_has fetch; then
+		add_before_hook "make fetch"
 	else
-		yaml '.before.hooks += ["go mod download"]'
-		yaml '.before.hooks += ["go mod tidy"]'
+		add_before_hook "go mod download"
+		add_before_hook "go mod tidy"
 	fi
 
-	if grep -qE "^clean:" Makefile; then
-		yaml '.before.hooks += ["make clean"]'
+	if make_has clean; then
+		add_before_hook "make clean"
 	fi
 
-	if grep -qE "^generate:" Makefile; then
-		yaml '.before.hooks += ["make generate"]'
+	if make_has generate; then
+		add_before_hook "make generate"
 	else
-		yaml '.before.hooks += ["go generate ./..."]'
+		add_before_hook "go generate ./..."
 	fi
-fi
+}
 
-if [ "$INPUT_ARCHIVES" != "true" ]; then
-	yaml 'del(.archives[] | select(.id == "archives"))'
-fi
+function inject_builds {
+	if [ -f ".builds.yml" ]; then
+		yaml '.builds = ([load(".builds.yml")] | flatten)'
+	fi
 
-if [ "$INPUT_HAS_GHCR" == "true" ]; then
-	sed -ri '/~(START|END)_GHCR~/d' "${BASE}/configs/goreleaser/footer-tmpl.md"
-else
-	sed -ri '/~START_GHCR~/,/~END_GHCR~/d' "${BASE}/configs/goreleaser/footer-tmpl.md"
-fi
+	yaml '.builds = [(.builds[] *n load(env(BASE) + "/configs/goreleaser/build-fields.yml"))]'
+}
 
-# vars needed by header/footer/etc.
-export GOBUILDINFO="$(go version)"
-export CONTRIBUTING="https://github.com/lrstanley/.github/blob/master/CONTRIBUTING.md"
-export SUPPORT="https://github.com/lrstanley/.github/blob/master/SUPPORT.md"
+function inject_required {
+	if [ "$GITHUB_EVENT_NAME" == "tag" ]; then
+		yaml '.release.prerelease = "auto"'
 
-# if repo already has a doc for this, use it instead.
-if [ -f "CONTRIBUTING.md" ]; then
-	export CONTRIBUTING="https://github.com/${GITHUB_REPOSITORY}/blob/${GITHUB_REF_NAME}/CONTRIBUTING.md"
-fi
+		if grep -qEi "\-(alpha)" <<<"$GITHUB_REF"; then
+			yaml ".changelog.skip = true"
+		fi
+	elif [ "$GITHUB_EVENT_NAME" == "push" ]; then
+		yaml '.release.disable = true'
+		FLAGS+=(--snapshot)
+	elif [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
+		yaml '.release.disable = true'
+		FLAGS+=(--snapshot)
+	else
+		echo "unknown event type: $GITHUB_EVENT_NAME"
+		exit 1
+	fi
 
-# if repo already has a doc for this, use it instead.
-if [ -f "SUPPORT.md" ]; then
-	export SUPPORT="https://github.com/${GITHUB_REPOSITORY}/blob/${GITHUB_REF_NAME}/SUPPORT.md"
-fi
+	yaml ".release.draft = ${INPUT_DRAFT}"
+	yaml '.release.mode = "replace"'
 
-envrepl "$CONFIG"
-envrepl "${BASE}/configs/goreleaser/header-tmpl.md"
-envrepl "${BASE}/configs/goreleaser/footer-tmpl.md"
+	if [ "$INPUT_ARCHIVES" != "true" ]; then
+		yaml 'del(.archives[] | select(.id == "archives"))'
+	fi
 
-if [ -f ".goreleaser.post.yml" ]; then
-	yaml '. *= load(".goreleaser.post.yml")'
-fi
+	envrepl "$CONFIG"
+}
 
-cat "$CONFIG" && sleep 1
-cat "${BASE}/configs/goreleaser/header-tmpl.md" && sleep 1
-cat "${BASE}/configs/goreleaser/footer-tmpl.md" && sleep 1
+function generate_headers {
+	if [ "$INPUT_HAS_GHCR" == "true" ]; then
+		sed -ri '/~(START|END)_GHCR~/d' "$FOOTER"
+	else
+		sed -ri '/~START_GHCR~/,/~END_GHCR~/d' "$FOOTER"
+	fi
 
-goreleaser release \
-	--config "$CONFIG" \
-	--rm-dist \
-	--skip-validate \
-	--timeout "10m" \
-	--parallelism 5 \
-	--release-header-tmpl "${BASE}/configs/goreleaser/header-tmpl.md" \
-	--release-footer-tmpl "${BASE}/configs/goreleaser/footer-tmpl.md" "${FLAGS[@]}"
+	# vars needed by header/footer/etc.
+	export GOBUILDINFO="$(go version)"
+	export CONTRIBUTING="https://github.com/${GITHUB_REPOSITORY_OWNER}/.github/blob/master/CONTRIBUTING.md"
+	export SUPPORT="https://github.com/${GITHUB_REPOSITORY_OWNER}/.github/blob/master/SUPPORT.md"
 
-tree dist/
+	# if repo already has a doc for this, use it instead.
+	if [ -f "CONTRIBUTING.md" ]; then
+		export CONTRIBUTING="https://github.com/${GITHUB_REPOSITORY}/blob/${GITHUB_REF_NAME}/CONTRIBUTING.md"
+	fi
+
+	# if repo already has a doc for this, use it instead.
+	if [ -f "SUPPORT.md" ]; then
+		export SUPPORT="https://github.com/${GITHUB_REPOSITORY}/blob/${GITHUB_REF_NAME}/SUPPORT.md"
+	fi
+
+	envrepl "$HEADER"
+	envrepl "$FOOTER"
+}
+
+function main {
+	for fn in \
+		install_goreleaser \
+		inject_pre \
+		inject_hooks \
+		inject_required \
+		inject_builds \
+		inject_post \
+		generate_headers; do
+
+		echo "running '${fn}'"
+		"$fn"
+	done
+
+	set -x
+	cat "$CONFIG"
+	cat "$HEADER"
+	cat "$FOOTER"
+
+	goreleaser release \
+		--config "$CONFIG" \
+		--rm-dist \
+		--skip-validate \
+		--timeout "10m" \
+		--parallelism 5 \
+		--release-header-tmpl "$HEADER" \
+		--release-footer-tmpl "$FOOTER" "${FLAGS[@]}"
+
+	tree dist/
+}
