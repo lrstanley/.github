@@ -110,21 +110,15 @@ function inject_builds {
 }
 
 function inject_required {
-	if [ "$GITHUB_EVENT_NAME" == "tag" ]; then
+	if [ "$GITHUB_REF_TYPE" == "tag" ]; then
 		yaml '.release.prerelease = "auto"'
 
 		if grep -qEi "\-(alpha)" <<<"$GITHUB_REF"; then
 			yaml ".changelog.skip = true"
 		fi
-	elif [ "$GITHUB_EVENT_NAME" == "push" ]; then
-		yaml '.release.disable = true'
-		FLAGS+=(--snapshot)
-	elif [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
-		yaml '.release.disable = true'
-		FLAGS+=(--snapshot)
 	else
-		echo "unknown event type: $GITHUB_EVENT_NAME"
-		exit 1
+		yaml '.release.disable = true'
+		FLAGS+=(--snapshot)
 	fi
 
 	yaml ".release.draft = ${INPUT_DRAFT}"
