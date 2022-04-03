@@ -1,22 +1,43 @@
 #!/bin/bash -eu
 # shellcheck disable=SC2155,SC2005
 
+# testing locally:
+# export GITHUB_EVENT_NAME=push
+# export GITHUB_REF_NAME=master
+# export GITHUB_REPOSITORY_OWNER=lrstanley
+# export GITHUB_REPOSITORY=lrstanley/liam.sh
+# export INPUT_ARCHIVES=false
+# export INPUT_DRAFT=false
+# export INPUT_HAS_GHCR=true
+# export INPUT_IMAGE_NAME=liam.sh
+
 set -o pipefail
 export BASE="$(readlink -f "$(dirname "$0")/..")"
 
 VERSION_GOREL="1.7.0"
 FLAGS=()
 
-export HEADER="${BASE}/configs/goreleaser/header-tmpl.md"
-export FOOTER="${BASE}/configs/goreleaser/footer-tmpl.md"
-export CONFIG="${BASE}/configs/goreleaser/goreleaser.yml"
-if [ -f ".goreleaser.yml" ]; then
-	CONFIG=".goreleaser.yml"
-fi
+function setup_config {
+	export HEADER="${BASE}/configs/goreleaser/header-tmpl.md"
+	export FOOTER="${BASE}/configs/goreleaser/footer-tmpl.md"
+	export CONFIG="${BASE}/configs/goreleaser/goreleaser.yml"
+	if [ -f ".goreleaser.yml" ]; then
+		CONFIG=".goreleaser.yml"
+	fi
 
-echo "using config file: ${CONFIG}"
+	echo "using config file: ${CONFIG}"
+
+	# copy everything, so we're not operating on things locally.
+	cp -v "$HEADER" /tmp/header.md && HEADER=/tmp/header.md
+	cp -v "$FOOTER" /tmp/footer.md && FOOTER=/tmp/footer.md
+	cp -v "$CONFIG" /tmp/goreleaser.yml && CONFIG=/tmp/goreleaser.yml
+}
 
 function install_goreleaser {
+	if command -v goreleaser >/dev/null 2>&1; then
+		return
+	fi
+
 	echo "installing goreleaser '${VERSION_GOREL}'"
 	curl -sSL \
 		"https://github.com/goreleaser/goreleaser/releases/download/v${VERSION_GOREL}/goreleaser_Linux_x86_64.tar.gz" \
@@ -145,6 +166,7 @@ function generate_headers {
 function main {
 	for fn in \
 		install_goreleaser \
+		setup_config \
 		inject_pre \
 		inject_hooks \
 		inject_required \
@@ -172,3 +194,5 @@ function main {
 
 	tree dist/
 }
+
+main
