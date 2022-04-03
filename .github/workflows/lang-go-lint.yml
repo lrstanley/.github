@@ -127,7 +127,11 @@ jobs:
     needs: [go-version]
     if: ${{ inputs.scan }}
     runs-on: ubuntu-latest
-    permissions: {}
+    permissions:
+      checks: write
+      contents: read
+      security-events: write
+      statuses: write
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
