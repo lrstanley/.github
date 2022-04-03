@@ -192,6 +192,10 @@ function main {
 	cat "$HEADER"
 	cat "$FOOTER"
 
+	if [ "$GITHUB_REF_TYPE" == "tag" ]; then
+		export GORELEASER_CURRENT_TAG="$GITHUB_REF_NAME"
+	fi
+
 	goreleaser release \
 		--config "$CONFIG" \
 		--rm-dist \
