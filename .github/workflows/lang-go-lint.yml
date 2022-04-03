@@ -10,6 +10,12 @@ name: go-lint
 
 on:
   workflow_call:
+    # secrets:
+    #   snyk-token:
+    #     description: >
+    #       Snyk token for vulnerability scanning -- if not provided, will
+    #       skip snyk tests.
+    #     required: false
     inputs:
       go-version:
         description: >
@@ -84,15 +90,15 @@ jobs:
             make lint
           fi
       - name: scan-snyk
-        if: inputs.scan
+        if: ${{ inputs.scan && secrets.SNYK_TOKEN }}
         uses: snyk/actions/golang@master
         continue-on-error: true
-        # env:
-        #   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           args: --sarif-file-output=snyk.sarif
       - name: scan-snyk-upload-sarif
-        if: inputs.scan
+        if: ${{ inputs.scan && secrets.SNYK_TOKEN }}
         uses: github/codeql-action/upload-sarif@v1
         with:
           sarif_file: snyk.sarif
