@@ -13,8 +13,6 @@ ldflags:
 env:
   - CGO_ENABLED=0
 mod_timestamp: "{{ .CommitTimestamp }}"
-no_unique_dist_dir: true
-binary: "{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}{{ if .Mips }}_{{ .Mips }}{{ end }}{{ if .IsSnapshot }}_{{.Version}}{{ end }}"
 hooks:
   post: sh -c "upx --best --lzma \"{{ .Path }}\" || /bin/true"
 targets:
