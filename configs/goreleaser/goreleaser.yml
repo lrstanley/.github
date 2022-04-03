@@ -26,16 +26,16 @@ changelog:
   skip: false
   use: github
   groups:
-    - title: Breaking Changes
+    - title: ":warning: Breaking Changes :warning:"
       regexp: "(?i).*breaking.*"
       order: 0
-    - title: New Features
+    - title: ":sparkles: New Features"
       regexp: "(?i)(^feat|.*issue.*|.*feature.*|.*support.*)"
       order: 1
-    - title: Bug Fixes
+    - title: ":lady_beetle: Bug Fixes"
       regexp: "(?i)(^fix|.*fixes.*|.*resolv.*|.*issue.*)"
       order: 2
-    - title: Misc
+    - title: ":broom: Misc"
       order: 999
   filters:
     exclude:
