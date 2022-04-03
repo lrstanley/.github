@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       checks: write
-      contents: read
+      contents: write
       discussions: write
       packages: write
       pages: write
