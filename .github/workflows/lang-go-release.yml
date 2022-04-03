@@ -81,7 +81,7 @@ jobs:
           INPUT_DRAFT: ${{ inputs.draft }}
           INPUT_PR_ID: ${{ github.event.pull_request.number }}
       - name: upload-snapshot-binaries
-        if: ${{ inputs.upload-artifacts && github.event_name != "tag" }}
+        if: ${{ inputs.upload-artifacts && github.event_name != 'tag' }}
         uses: actions/upload-artifact@v3
         with:
           name: snapshot-binaries
