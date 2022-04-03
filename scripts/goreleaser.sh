@@ -58,6 +58,15 @@ function yaml {
 	)
 }
 
+# snippet <enable|disable> <snippet> <file>
+function snippet {
+	if [ "$1" == "enable" ]; then
+		sed -ri "/~(START|END)_${2}~/d" "$3"
+	else
+		sed -ri "/~START_${2}~/,/~END_${2}~/d" "$3"
+	fi
+}
+
 function make_has {
 	if [ ! -f "Makefile" ]; then
 		return 1
@@ -133,9 +142,15 @@ function inject_required {
 
 function generate_headers {
 	if [ "$INPUT_HAS_GHCR" == "true" ]; then
-		sed -ri '/~(START|END)_GHCR~/d' "$FOOTER"
+		snippet enable GHCR "$FOOTER"
 	else
-		sed -ri '/~START_GHCR~/,/~END_GHCR~/d' "$FOOTER"
+		snippet disable GHCR "$FOOTER"
+	fi
+
+	if grep -qEi "\-(rc)" <<<"$GITHUB_REF"; then
+		snippet enable PRERELEASE "$HEADER"
+	else
+		snippet disable PRERELEASE "$HEADER"
 	fi
 
 	# vars needed by header/footer/etc.
