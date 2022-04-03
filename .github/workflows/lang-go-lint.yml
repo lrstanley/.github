@@ -87,6 +87,7 @@ jobs:
           elif [ -f "Makefile" ] && grep -q "^lint:" Makefile; then
             make lint
           fi
+      - run: tree -L 3
       - name: scan-snyk
         if: ${{ inputs.scan }}
         uses: snyk/actions/golang@master
@@ -94,9 +95,14 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --sarif-file-output=snyk.sarif
+          args: >-
+            --all-projects
+            --detection-depth=4
+            --prune-repeated-subdependencies
+            --severity-threshold=medium
+            --sarif-file-output=snyk.sarif
       - name: scan-snyk-upload-sarif
-        if: ${{ inputs.scan }}
+        if: ${{ inputs.scan && github.event_name != 'pull_request' }}
         uses: github/codeql-action/upload-sarif@v1
         with:
           sarif_file: snyk.sarif
