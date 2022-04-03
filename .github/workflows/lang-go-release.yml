@@ -80,6 +80,7 @@ jobs:
           INPUT_ARCHIVES: ${{ inputs.archives }}
           INPUT_DRAFT: ${{ inputs.draft }}
           INPUT_PR_ID: ${{ github.event.pull_request.number }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: upload-snapshot-binaries
         if: ${{ inputs.upload-artifacts && github.ref_type != 'tag' }}
         uses: actions/upload-artifact@v3
