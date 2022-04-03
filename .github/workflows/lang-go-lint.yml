@@ -88,18 +88,22 @@ jobs:
             make lint
           fi
       - run: tree -L 3
+      - name: snyk-setup
+        if: ${{ inputs.scan }}
+        uses: snyk/actions/setup@master
       - name: scan-snyk
         if: ${{ inputs.scan }}
-        uses: snyk/actions/golang@master
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: >-
-            --all-projects
-            --detection-depth=4
-            --prune-repeated-subdependencies
-            --severity-threshold=medium
+        run: |
+          tree -L 3
+          set -x
+          snyk test \
+            --all-projects \
+            --detection-depth=4 \
+            --prune-repeated-subdependencies \
+            --severity-threshold=medium \
             --sarif-file-output=snyk.sarif
       - name: scan-snyk-upload-sarif
         if: ${{ inputs.scan && github.event_name != 'pull_request' }}
