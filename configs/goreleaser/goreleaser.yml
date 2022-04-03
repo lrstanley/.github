@@ -30,7 +30,7 @@ changelog:
       regexp: "(?i).*breaking.*"
       order: 0
     - title: ":sparkles: New Features"
-      regexp: "(?i)(^feat|.*issue.*|.*feature.*|.*support.*)"
+      regexp: "(?i)(^add|^feat|.*feature.*|.*support.*)"
       order: 1
     - title: ":lady_beetle: Bug Fixes"
       regexp: "(?i)(^fix|.*fixes.*|.*resolv.*|.*issue.*)"
