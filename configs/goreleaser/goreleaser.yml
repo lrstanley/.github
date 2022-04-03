@@ -43,6 +43,9 @@ changelog:
       - "(?i)typo|spelling"
       - "(?i)(^\\.|^fix$|^test$|^testing$|^ignore|^ok\\s+)"
 
+checksum:
+  name_template: "{{ .ProjectName }}_checksums.txt"
+
 milestones:
   - close: true
     fail_on_error: false
