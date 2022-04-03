@@ -10,12 +10,12 @@ name: go-lint
 
 on:
   workflow_call:
-    # secrets:
-    #   snyk-token:
-    #     description: >
-    #       Snyk token for vulnerability scanning -- if not provided, will
-    #       skip snyk tests.
-    #     required: false
+    secrets:
+      SNYK_TOKEN:
+        description: >
+          Snyk token for vulnerability scanning -- if not provided, will
+          skip snyk tests.
+        required: false
     inputs:
       go-version:
         description: >
