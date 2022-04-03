@@ -5,12 +5,14 @@ builds:
 
 archives:
   - id: archives
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}{{ if .Mips }}_{{ .Mips }}{{ end }}"
     format: tar.gz
     format_overrides:
       - goos: windows
         format: zip
   - id: binary
     format: binary
+    name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}{{ if .Mips }}_{{ .Mips }}{{ end }}"
 
 release:
   draft: false
