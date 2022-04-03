@@ -33,6 +33,12 @@ on:
         default: True
         required: False
         type: boolean
+      scan:
+        description: >
+          If code vulnerability scanning should be enabled.
+        default: True
+        required: False
+        type: boolean
 
 # TODO: permissions
 jobs:
@@ -77,3 +83,16 @@ jobs:
           elif [ -f "Makefile" ] && grep -q "^lint:" Makefile; then
             make lint
           fi
+      - name: scan-snyk
+        if: inputs.scan
+        uses: snyk/actions/golang@master
+        continue-on-error: true
+        # env:
+        #   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --sarif-file-output=snyk.sarif
+      - name: scan-snyk-upload-sarif
+        if: inputs.scan
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: snyk.sarif
