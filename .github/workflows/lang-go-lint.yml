@@ -56,7 +56,7 @@ jobs:
         with:
           repository: lrstanley/.github
       - id: fetch-versions
-        run: ./ghmeta/scripts/versions-go.sh ${{ inputs.go-version || 'latest' }}
+        run: ./scripts/versions-go.sh ${{ inputs.go-version || 'latest' }}
 
   codecov:
     needs: [go-version]
