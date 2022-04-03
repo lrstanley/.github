@@ -75,14 +75,14 @@ jobs:
           go-version: "${{ inputs.go-version || steps.goversion.outputs.version }}"
       - run: ./ghmeta/scripts/goreleaser.sh
         env:
-          # GIT_SHA: ${{ github.sha }} GITHUB_SHA
-          # GIT_REF: ${{ github.ref }} GITHUB_REF
-          # GIT_REF_NAME: ${{ github.ref_name }} GITHUB_REF_NAME
-          # GIT_REF_TYPE: ${{ github.ref_type }} GITHUB_REF_TYPE
-          # EVENT_NAME: ${{ github.event_name }} GITHUB_EVENT_NAME
-          # GITHUB_REPOSITORY_OWNER
           INPUT_HAS_GHCR: ${{ inputs.has-ghcr }}
           INPUT_IMAGE_NAME: ${{ github.repository_owner }}/${{ inputs.name || github.event.repository.name }}
           INPUT_ARCHIVES: ${{ inputs.archives }}
           INPUT_DRAFT: ${{ inputs.draft }}
           INPUT_PR_ID: ${{ github.event.pull_request.number }}
+      - name: upload-snapshot-binaries
+        if: ${{ inputs.upload-artifacts && github.event_name != "tag" }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: snapshot-binaries
+          path: dist/**
