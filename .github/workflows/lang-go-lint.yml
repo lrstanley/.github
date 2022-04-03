@@ -87,9 +87,7 @@ jobs:
           elif [ -f "Makefile" ] && grep -q "^lint:" Makefile; then
             make lint
           fi
-      - run: tree -L 3
-      - name: snyk-setup
-        if: ${{ inputs.scan }}
+      - if: ${{ inputs.scan }}
         uses: snyk/actions/setup@master
       - name: scan-snyk
         if: ${{ inputs.scan }}
@@ -97,7 +95,6 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
-          tree -L 3
           set -x
           snyk test \
             --all-projects \
