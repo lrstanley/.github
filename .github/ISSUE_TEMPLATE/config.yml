@@ -1,8 +1,8 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Questions & Ideas
-    url: ../../discussions/new
-    about: Please ask and answer questions here.
   - name: Discord chat
     url: https://liam.sh/chat
     about: On-topic and off-topic discussions.
+  - name: Additional support information
+    url: https://github.com/lrstanley/.github/blob/master/SUPPORT.md
+    about: Looking for something else? Check here.
