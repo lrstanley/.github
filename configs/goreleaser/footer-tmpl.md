@@ -11,7 +11,7 @@ $ docker run -it --rm ghcr.io/${INPUT_IMAGE_NAME}:{{.Major}}
 
 #### :test_tube: Build info
 
-{{if .PreviousTag}}   * :open_file_folder: **Full changelog**: [](https://github.com/${GITHUB_REPOSITORY}/compare/{{.PreviousTag}}...{{.Tag}}){{end}}
+{{if .PreviousTag}}   * :open_file_folder: **Full changelog**: [`{{.PreviousTag}}..{{.Tag}}`](https://github.com/${GITHUB_REPOSITORY}/compare/{{.PreviousTag}}...{{.Tag}}){{end}}
    * :heart: **Built with**: `${GOBUILDINFO}`
    * :gear: **Release job**: [${GITHUB_WORKFLOW}/${GITHUB_JOB}](https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}) triggered by @${GITHUB_ACTOR}.
 
