@@ -3,6 +3,6 @@ contact_links:
   - name: Questions & Ideas
     url: ../../discussions/new
     about: Please ask and answer questions here.
-  # - name: GitHub Security Bug Bounty
-  #   url: https://bounty.github.com/
-  #   about: Please report security vulnerabilities here.
+  - name: Discord chat
+    url: https://liam.sh/chat
+    about: On-topic and off-topic discussions.
