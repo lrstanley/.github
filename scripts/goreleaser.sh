@@ -206,6 +206,7 @@ function main {
 		fi
 	fi
 
+	set -x
 	goreleaser release \
 		--config "$CONFIG" \
 		--rm-dist \
