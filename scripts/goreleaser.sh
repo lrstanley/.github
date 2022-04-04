@@ -201,7 +201,7 @@ function main {
 			if [ "$PREV" != "$GITHUB_REF_NAME" ]; then
 				export GORELEASER_PREVIOUS_TAG="$PREV"
 			else
-				export GORELEASER_PREVIOUS_TAG="v0.0.0"
+				export GORELEASER_PREVIOUS_TAG="$(git rev-list --max-parents=0 HEAD | cut -c -7)"
 			fi
 		fi
 	fi
