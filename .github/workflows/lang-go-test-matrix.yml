@@ -35,7 +35,7 @@ on:
         type: string
 
 jobs:
-  go-get-versions:
+  go-versions:
     runs-on: ubuntu-latest
     permissions: {}
     outputs:
@@ -55,11 +55,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    needs: [go-get-versions]
+    needs: [go-versions]
     strategy:
       fail-fast: false
       matrix:
-        go-version: ${{ fromJSON(needs.go-get-versions.outputs.versions) }}
+        go-version: ${{ fromJSON(needs.go-versions.outputs.versions) }}
     steps:
       - uses: actions/setup-go@v3
         with: { go-version: "${{ matrix.go-version }}" }
