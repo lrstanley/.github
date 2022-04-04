@@ -21,16 +21,6 @@ on:
           version.
         required: false
         type: string
-      staticcheck:
-        description: "Enables linting with staticcheck."
-        default: True
-        required: False
-        type: boolean
-      govet:
-        description: "Enables linting with go vet."
-        default: True
-        required: False
-        type: boolean
       codecov:
         description: >
           Enables Codecov integration (requires running tests at least once).
@@ -81,9 +71,8 @@ jobs:
           go test -v -coverprofile=coverage.txt -timeout 3m ./...
           codecov -f coverage.txt
 
-  govet:
+  golangci-lint:
     needs: [go-version]
-    if: inputs.govet
     runs-on: ubuntu-latest
     permissions: {}
     steps:
@@ -91,21 +80,9 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ needs.go-version.outputs.version }}
-      - run: go vet -composites=false ./...
-
-  staticcheck:
-    needs: [go-version]
-    if: inputs.staticcheck
-    runs-on: ubuntu-latest
-    permissions: {}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
+      - uses: golangci/golangci-lint-action@v2
         with:
-          go-version: ${{ needs.go-version.outputs.version }}
-      - run: |
-          go install honnef.co/go/tools/cmd/staticcheck@latest
-          staticcheck -f stylish ./...
+          only-new-issues: true
 
   make:
     needs: [go-version]
