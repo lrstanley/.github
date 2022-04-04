@@ -10,8 +10,8 @@ Please ensure you read through it thoroughly.
 
 ## Asking quality questions
 
-Questions can go to Github Discussions (if available on the repository) or
-[here][chat].
+Questions can go to Github Discussions of the respective repository or feel
+free to join the Discord [here][chat].
 
 Help me help you! Spend time framing questions and add links and resources.
 Spending the extra time up front can help save everyone time in the long run.
@@ -45,11 +45,11 @@ See [`CONTRIBUTING.md`][contributing] on how to contribute.
 
 [security]: SECURITY.md
 
-[coc]: https://github.com/remarkjs/.github/blob/main/code-of-conduct.md
+[coc]: https://github.com/lrstanley/.github/blob/master/CODE_OF_CONDUCT.md
 
 [xy]: https://meta.stackexchange.com/questions/66377/what-is-the-xy-problem/66378#66378
 
-[chat]: https://github.com/remarkjs/remark/discussions
+[chat]: https://liam.sh/chat
 
 [cs]: https://codesandbox.io
 
