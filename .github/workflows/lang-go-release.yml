@@ -75,7 +75,7 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: "${{ inputs.go-version || steps.goversion.outputs.version }}"
-      - run: ./ghmeta/scripts/goreleaser.sh
+      - run: ./ghmeta/goreleaser/run.sh
         env:
           INPUT_HAS_GHCR: ${{ inputs.has-ghcr }}
           INPUT_IMAGE_NAME: ${{ github.repository_owner }}/${{ inputs.name || github.event.repository.name }}
