@@ -8,7 +8,8 @@ The following restrictions apply for versions that are still supported in terms 
    * Must be using a supported platform for the repository (e.g. OS, browser, etc), and that platform must
      be within its supported versions (for example: don't use a legacy or unsupported version of Ubuntu or
      Google Chrome).
-   * Repository must not be archived.
+   * Repository must not be archived (unless the vulnerability is critical, and the repository moderately
+     popular).
 
 If one of the above doesn't apply to you, feel free to submit an issue and we can discuss the
 issue/vulnerability further.
