@@ -41,7 +41,7 @@ jobs:
           LATEST=$(git tag --sort=-v:refname | egrep "^v?[0-9]+\.[0-9]+\.[0-9]+$" | head -1)
           echo "::set-output name=version::$LATEST"
       - name: docker-login
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        uses: docker/login-action@dd4fa0671be5250ee6f50aedf4cb05514abda2c7
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
