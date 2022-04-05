@@ -29,7 +29,7 @@ resource "github_repository_file" "standard_files" {
   repository          = each.value.repo.name
   branch              = each.value.repo.default_branch
   commit_message      = <<-EOT
-  terraform: auto-applied "${each.value.file.path}"
+  terraform: auto-applied "${each.value.file.path}" file
 
   this file was auto-applied from the "${local.module_name}"
   module located here:
