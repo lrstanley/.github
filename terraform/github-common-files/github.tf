@@ -46,4 +46,12 @@ resource "github_repository_file" "standard_files" {
     user = local.github_user
     repo = each.value.repo
   })
+
+  lifecycle {
+    ignore_changes = [
+      commit_message,
+      commit_author,
+      commit_email,
+    ]
+  }
 }
