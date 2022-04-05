@@ -74,7 +74,9 @@ jobs:
   golangci-lint:
     needs: [go-version]
     runs-on: ubuntu-latest
-    permissions: {}
+    permissions:
+      contents: read
+      pull-requests: read
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
