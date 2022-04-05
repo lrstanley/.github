@@ -1,6 +1,7 @@
+<!-- THIS FILE IS GENERATED! DO NOT EDIT! Maintained by Terraform. -->
 # Code of Conduct
 
-## Our Pledge
+## Our Pledge :purple_heart:
 
 We as members, contributors, and leaders pledge to make participation in our
 community a harassment-free experience for everyone, regardless of age, body
@@ -119,5 +120,5 @@ version 2.1, available at
 [https://www.contributor-covenant.org/version/2/1/code_of_conduct.html][v2.1].
 
 For answers to common questions about this code of conduct, see the FAQ at
-[https://www.contributor-covenant.org/faq][FAQ]. Translations are available at
+[https://www.contributor-covenant.org/faq]. Translations are available at
 [https://www.contributor-covenant.org/translations][translations].

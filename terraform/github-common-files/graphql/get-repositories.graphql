@@ -1,0 +1,58 @@
+{
+  viewer {
+    login
+    repositories(
+      first: 100
+      isFork: false
+      privacy: PUBLIC
+      isLocked: false
+      ownerAffiliations: [OWNER]
+      orderBy: {field: PUSHED_AT, direction: DESC}
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      totalCount
+      nodes {
+        isArchived
+        defaultBranchRef {
+          name
+        }
+        hasIssuesEnabled
+        homepageUrl
+        isDisabled
+        isFork
+        isEmpty
+        isLocked
+        isMirror
+        isPrivate
+        isTemplate
+        isUserConfigurationRepository
+        languages(first: 15, orderBy: {field: SIZE, direction: DESC}) {
+          nodes {
+            name
+          }
+        }
+        name
+        nameWithOwner
+        owner {
+          login
+        }
+        pushedAt
+        url
+        createdAt
+      }
+    }
+    name
+    email
+    avatarUrl
+    websiteUrl
+  }
+  rateLimit {
+    limit
+    cost
+    remaining
+    resetAt
+  }
+}

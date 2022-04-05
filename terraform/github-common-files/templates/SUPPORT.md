@@ -1,17 +1,17 @@
-# Support
+# :raising_hand_man: Support
 
 This document explains where and how to get help with most of my projects.
 Please ensure you read through it thoroughly.
 
-> 👉 **Note**: before participating in the community, please read our
+> :point_right: **Note**: before participating in the community, please read our
 > [Code of Conduct][coc].
 > By interacting with this repository, organization, or community you agree to
 > abide by its terms.
 
-## Asking quality questions
+## :grey_question: Asking quality questions
 
-Questions can go to Github Discussions of the respective repository or feel
-free to join the Discord [here][chat].
+Questions can go to [Github Discussions][discussions] or feel free to join
+the Discord [here][chat].
 
 Help me help you! Spend time framing questions and add links and resources.
 Spending the extra time up front can help save everyone time in the long run.
@@ -32,25 +32,25 @@ Here are some tips:
 * The more time you put into asking your question, the better I and others
   can help you.
 
-## Security
+## :old_key: Security
 
 For any security or vulnerability related disclosure, please follow the
-guidelines outlined in the [`SECURITY.md`][security] file.
+guidelines outlined in our [security policy][security].
 
-## Contributions
+## :handshake: Contributions
 
 See [`CONTRIBUTING.md`][contributing] on how to contribute.
 
-<!-- Definitions -->
-
-[security]: SECURITY.md
-
-[coc]: https://github.com/lrstanley/.github/blob/master/CODE_OF_CONDUCT.md
+<!-- definitions -->
+[coc]: ${repo.url}/blob/${repo.default_branch}/CODE_OF_CONDUCT.md
+[contributing]: ${repo.url}/blob/${repo.default_branch}/CONTRIBUTING.md
+[discussions]: ${repo.url}/discussions
+[issues]: ${repo.url}/issues/new/choose
+[license]: ${repo.url}/blob/${repo.default_branch}/LICENSE
+[pull-requests]: ${repo.url}/issues/new/choose
+[security]: ${repo.url}/security/policy
+[support]: ${repo.url}/blob/${repo.default_branch}/SUPPORT.md
 
 [xy]: https://meta.stackexchange.com/questions/66377/what-is-the-xy-problem/66378#66378
-
-[chat]: https://liam.sh/chat
-
+[chat]: ${user.chat_url}
 [cs]: https://codesandbox.io
-
-[contributing]: CONTRIBUTING.md
