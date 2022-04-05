@@ -83,9 +83,16 @@ jobs:
         with:
           go-version: ${{ needs.go-version.outputs.version }}
       - uses: golangci/golangci-lint-action@v2
+        continue-on-error: true
         with:
+          args: --out-format github-actions,json:results.json --issues-exit-code 0
           only-new-issues: true
-
+      - name: parse-results
+        run: |
+          if [ "$(jq -cr '(.Issues[].Severity | select(. == "failure") | length) // 0' results.json)" > 0 ];then
+            echo "at least one failure from golangci-lint detected"
+            exit 1
+          fi
   make:
     needs: [go-version]
     runs-on: ubuntu-latest
