@@ -107,7 +107,9 @@ jobs:
 
           golangci-lint run --new-from-rev "$GITHUB_SHA" --out-format github-actions,json:results.json --issues-exit-code 0
 
-          if [ "$(jq -cr '([.Issues[].Severity | select(. | IN("failure", "error", "fail"))] | length) // 0' results.json)" > 0 ];then
+          ERRORS=$(jq -cr '([.Issues[].Severity | select(. | IN("failure", "error", "fail"))] | length) // 0' results.json)
+
+          if [ "$ERRORS" -gt 0 ];then
             echo "at least one failure from golangci-lint detected"
             exit 1
           fi
