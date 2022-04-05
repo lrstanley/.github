@@ -17,30 +17,37 @@ locals {
     "CONTRIBUTING.md" = {
       path      = "CONTRIBUTING.md"
       languages = []
+      skip_ci   = true
     }
     "CODE_OF_CONDUCT.md" = {
       path      = "CODE_OF_CONDUCT.md"
       languages = []
+      skip_ci   = true
     }
     "SUPPORT.md" = {
       path      = "SUPPORT.md"
       languages = []
+      skip_ci   = true
     }
     "SECURITY.md" = {
       path      = "SECURITY.md"
       languages = ["*"]
+      skip_ci   = true
     }
     "LICENSE" = {
       path      = "LICENSE"
       languages = ["*"]
+      skip_ci   = true
     }
     ".golangci.yml" = {
       path      = ".golangci.yml"
       languages = ["Go"]
+      skip_ci   = false
     }
     ".editorconfig" = {
       path      = ".editorconfig"
       languages = ["*"]
+      skip_ci   = true
     }
   }
 
