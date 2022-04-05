@@ -62,6 +62,14 @@ jobs:
         with:
           repository: lrstanley/.github
           path: ghmeta
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ needs.go-version.outputs.version }}
@@ -79,17 +87,27 @@ jobs:
       pull-requests: read
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+            ~/.cache/golangci-lint
+          key: ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-golangcilint-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ needs.go-version.outputs.version }}
-      - uses: golangci/golangci-lint-action@v2
-        continue-on-error: true
-        with:
-          args: --out-format github-actions,json:results.json --issues-exit-code 0
-          only-new-issues: true
       - name: parse-results
         run: |
-          if [ "$(jq -cr '(.Issues[].Severity | select(. == "failure") | length) // 0' results.json)" > 0 ];then
+          set -ex
+
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.45.2
+
+          golangci-lint run --new-from-rev "$GITHUB_SHA" --out-format github-actions,json:results.json --issues-exit-code 0
+
+          if [ "$(jq -cr '([.Issues[].Severity | select(. | IN("failure", "error", "fail"))] | length) // 0' results.json)" > 0 ];then
             echo "at least one failure from golangci-lint detected"
             exit 1
           fi
@@ -99,6 +117,14 @@ jobs:
     permissions: {}
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ needs.go-version.outputs.version }}
@@ -120,6 +146,14 @@ jobs:
       statuses: write
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ needs.go-version.outputs.version }}
