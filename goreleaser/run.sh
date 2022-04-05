@@ -18,9 +18,9 @@ VERSION_GOREL="1.7.0"
 FLAGS=()
 
 function setup_config {
-	export HEADER="${BASE}/goreleaser/configs/header-tmpl.md"
-	export FOOTER="${BASE}/goreleaser/configs/footer-tmpl.md"
-	export CONFIG="${BASE}/goreleaser/configs/goreleaser.yml"
+	export HEADER="${BASE}/goreleaser/config/header-tmpl.md"
+	export FOOTER="${BASE}/goreleaser/config/footer-tmpl.md"
+	export CONFIG="${BASE}/goreleaser/config/goreleaser.yml"
 	if [ -f ".goreleaser.yml" ]; then
 		CONFIG=".goreleaser.yml"
 	fi
@@ -115,7 +115,7 @@ function inject_builds {
 		yaml '.builds = ([load(".builds.yml")] | flatten)'
 	fi
 
-	yaml '.builds = [(.builds[] *n load(env(BASE) + "/goreleaser/configs/build-fields.yml"))]'
+	yaml '.builds = [(.builds[] *n load(env(BASE) + "/goreleaser/config/build-fields.yml"))]'
 }
 
 function inject_required {
