@@ -61,6 +61,14 @@ jobs:
       matrix:
         go-version: ${{ fromJSON(needs.go-versions.outputs.versions) }}
     steps:
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ matrix.go-version }}-
       - uses: actions/setup-go@v3
         with: { go-version: "${{ matrix.go-version }}" }
       - uses: actions/checkout@v3
