@@ -49,9 +49,22 @@ locals {
       languages = ["*"]
       skip_ci   = true
     }
+    "example.ci-config.yml" = {
+      path      = ".github/example.ci-config.yml"
+      languages = ["*"]
+      skip_ci   = true
+    }
   }
 
   repositories_raw = jsondecode(data.graphql_query.repositories.query_response).data
+  ci_configs_raw   = jsondecode(data.graphql_query.ci_config.query_response).data
+
+  ci_configs = {
+    for repo in local.ci_configs_raw.viewer.repositories.nodes : repo.name => (
+      try(yamldecode(repo.object.text), null)
+    )
+  }
+
   github_user = {
     login       = local.repositories_raw.viewer.login
     name        = local.repositories_raw.viewer.name

@@ -47,3 +47,7 @@ output "github_user" {
 output "github_repositories" {
   value = local.repositories
 }
+
+output "configs" {
+  value = local.ci_configs
+}

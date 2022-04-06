@@ -3,9 +3,14 @@ data "graphql_query" "repositories" {
   query           = file("${path.module}/graphql/get-repositories.graphql")
 }
 
+data "graphql_query" "ci_config" {
+  query_variables = {}
+  query           = file("${path.module}/graphql/get-ci-config.graphql")
+}
+
 resource "github_repository_file" "standard_files" {
-  # For each file map, check to see if the repository has a matching
-  # language. If so, make a new object with all the necessary fields, and
+  # for each file map, check to see if the repository has a matching
+  # language. if so, make a new object with all the necessary fields, and
   # then convert that to a id => object map to make it usable by for_each.
   for_each = {
     for obj in flatten([
@@ -17,11 +22,20 @@ resource "github_repository_file" "standard_files" {
           file          = file
         }
         # file doesn't need any language.
-        if length(file.languages) == 0
-        # file needs any language.
-        || contains(file.languages, "*")
-        # file needs one of multiple specified language.
-        || anytrue([for lang in file.languages : contains(repo.languages, lang)])
+        if(
+          length(file.languages) == 0
+          # file needs any language.
+          || contains(file.languages, "*")
+          # file needs one of multiple specified language.
+          || anytrue([for lang in file.languages : contains(repo.languages, lang)])
+          ) && (
+          # check to see if the file is in the list of excluded files
+          # configured inside of the repository.
+          !try(anytrue([
+            for excl in local.ci_configs[repo.name].common_exclude :
+            length(regexall(excl, file.path)) > 0
+          ]), false)
+        )
       ]
     ]) : obj.key => obj
   }

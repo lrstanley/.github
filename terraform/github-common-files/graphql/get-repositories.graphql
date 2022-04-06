@@ -4,10 +4,10 @@
     repositories(
       first: 100
       isFork: false
-      privacy: PUBLIC
       isLocked: false
-      ownerAffiliations: [OWNER]
+      ownerAffiliations: OWNER
       orderBy: {field: PUSHED_AT, direction: DESC}
+      privacy: PUBLIC
     ) {
       pageInfo {
         endCursor

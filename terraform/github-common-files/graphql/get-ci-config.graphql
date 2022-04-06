@@ -1,0 +1,33 @@
+{
+  viewer {
+    repositories(
+      first: 100
+      isFork: false
+      isLocked: false
+      ownerAffiliations: OWNER
+      orderBy: {field: PUSHED_AT, direction: DESC}
+      privacy: PUBLIC
+    ) {
+      nodes {
+        object(expression: "HEAD:.github/ci-config.yml") {
+          ... on Blob {
+            text
+          }
+        }
+        nameWithOwner
+        name
+        url
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+  rateLimit {
+    limit
+    cost
+    remaining
+    resetAt
+  }
+}

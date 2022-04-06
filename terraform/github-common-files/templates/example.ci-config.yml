@@ -1,0 +1,11 @@
+# THIS FILE IS GENERATED! DO NOT EDIT! Maintained by Terraform.
+# copy to ".github/ci-config.yml" for Terraform to pick it up.
+
+# common_exclude is a list of files (or regex match) to be excluded from being
+# updated by Terraform. note that if the file is tracked by Terraform, then
+# it is excluded, Terraform will remove it (after which it will no longer
+# track it).
+common_exclude:
+  - some-example-file.yml
+  - path/to/another/file.yml
+  - ".*" # tell Terraform to not manage any files in this repository.
