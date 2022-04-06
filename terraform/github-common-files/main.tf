@@ -1,5 +1,5 @@
 terraform {
-  backend "remote" {
+  cloud {
     organization = "lrstanley"
 
     workspaces {
@@ -12,10 +12,6 @@ terraform {
       source  = "integrations/github"
       version = "~> 4.0"
     }
-    graphql = {
-      source  = "sullivtr/graphql"
-      version = "2.5.1"
-    }
   }
 
   required_version = ">= 1.0.0"
@@ -26,17 +22,11 @@ provider "github" {
   token = var.github-token
 }
 
-provider "graphql" {
-  url = "https://api.github.com/graphql"
-  headers = {
-    "Authorization" = "Bearer ${var.github-token}"
-  }
-}
-
 // Variables.
 variable "github-token" {
-  type        = string
   description = "Github personal access token"
+  type        = string
+  sensitive   = true
 }
 
 // Outputs.
