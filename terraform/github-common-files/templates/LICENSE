@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) ${ formatdate("YYYY", repo.created_at) }-${ formatdate("YYYY", repo.pushed_at) } ${user.name} <${user.email}>
+Copyright (c) ${ formatdate("YYYY", repo.created_at) } ${user.name} <${user.email}>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
