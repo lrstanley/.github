@@ -31,9 +31,9 @@ jobs:
             }
           }
           EOF
-          curl \
+          curl -sS \
             --header "Authorization: Bearer ${TF_API_TOKEN}" \
             --header "Content-Type: application/vnd.api+json" \
             --request POST \
             --data @payload.json \
-            https://app.terraform.io/api/v2/runs
+            https://app.terraform.io/api/v2/runs | jq '.'
