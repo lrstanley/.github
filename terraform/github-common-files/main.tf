@@ -40,14 +40,10 @@ variable "github-token" {
 }
 
 // Outputs.
-output "github_user" {
-  value = local.github_user
-}
-
 output "github_repositories" {
-  value = local.repositories
+  value = module.base.repositories
 }
 
 output "configs" {
-  value = local.ci_configs
+  value = module.base.ci_configs
 }

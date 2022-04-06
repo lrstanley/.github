@@ -1,11 +1,14 @@
-data "graphql_query" "repositories" {
-  query_variables = {}
-  query           = file("${path.module}/graphql/get-repositories.graphql")
-}
+module "base" {
+  source = "../modules/github-base"
 
-data "graphql_query" "ci_config" {
-  query_variables = {}
-  query           = file("${path.module}/graphql/get-ci-config.graphql")
+  filters = {
+    isTemplate = false
+    isFork     = false
+    isEmpty    = false
+    isEmpty    = false
+    isPrivate  = false
+    name       = ["liam.sh"]
+  }
 }
 
 resource "github_repository_file" "standard_files" {
@@ -14,7 +17,7 @@ resource "github_repository_file" "standard_files" {
   # then convert that to a id => object map to make it usable by for_each.
   for_each = {
     for obj in flatten([
-      for repo in local.repositories : [
+      for repo in module.base.repositories : [
         for name, file in local.file_map : {
           key           = replace(join("_", [repo.name, name]), "/[^a-zA-Z0-9]+/", "_"),
           repo          = repo
@@ -32,7 +35,7 @@ resource "github_repository_file" "standard_files" {
           # check to see if the file is in the list of excluded files
           # configured inside of the repository.
           !try(anytrue([
-            for excl in local.ci_configs[repo.name].common_exclude :
+            for excl in module.base.ci_configs[repo.name].common_exclude :
             length(regexall(excl, file.path)) > 0
           ]), false)
         )
@@ -47,20 +50,20 @@ resource "github_repository_file" "standard_files" {
 
   this file was auto-applied from the "${local.module_name}" module
   located here:
-    - https://github.com/${local.github_user.login}/.github/tree/master/terraform/${local.module_name}
+    - https://github.com/${module.base.user.login}/.github/tree/master/terraform/${local.module_name}
 
   instructions on how to tell Terraform to exclude this file:
-    - https://github.com/${local.github_user.login}/.github/blob/master/example.ci-config.yml
+    - https://github.com/${module.base.user.login}/.github/blob/master/example.ci-config.yml
 
-  Signed-off-by: ${local.github_user.name} <${local.github_user.email}>
+  Signed-off-by: ${module.base.user.name} <${module.base.user.email}>
   EOT
-  commit_author       = local.github_user.name
-  commit_email        = local.github_user.email
+  commit_author       = module.base.user.name
+  commit_email        = module.base.user.email
   overwrite_on_create = true
 
   file = each.value.file.path
   content = templatefile("${path.module}/templates/${each.value.template_name}", {
-    user = local.github_user
+    user = module.base.user
     repo = each.value.repo
   })
 
