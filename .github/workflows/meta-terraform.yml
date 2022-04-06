@@ -13,7 +13,7 @@ jobs:
           TF_WORKSPACE: ws-gAVzwxnWWbUvW7ez
           TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
         run: |
-          cat <<EOF >> playload.json
+          cat <<EOF >> payload.json
           {
             "data": {
               "attributes": {
