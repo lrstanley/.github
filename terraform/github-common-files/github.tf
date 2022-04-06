@@ -49,6 +49,9 @@ resource "github_repository_file" "standard_files" {
   module located here:
     - ${local.github_user.login}/.github/terraform/${local.module_name}/
 
+  how to tell Terraform to exclude this file:
+    - https://github.com/${local.github_user.login}/.github/blob/master/example.ci-config.yml
+
   Signed-off-by: ${local.github_user.name} <${local.github_user.email}>
   EOT
   commit_author       = local.github_user.name

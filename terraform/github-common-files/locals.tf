@@ -49,11 +49,6 @@ locals {
       languages = ["*"]
       skip_ci   = true
     }
-    "example.ci-config.yml" = {
-      path      = ".github/example.ci-config.yml"
-      languages = ["*"]
-      skip_ci   = true
-    }
   }
 
   repositories_raw = jsondecode(data.graphql_query.repositories.query_response).data
