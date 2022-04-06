@@ -1,6 +1,7 @@
 # example ci-config.yml file.
 #
-# copy to ".github/ci-config.yml" for Terraform to pick it up.
+# copy to ".github/ci-config.yml" in the respective repository for Terraform
+# to pick it up.
 
 # common_exclude is a list of files (or regex match) to be excluded from being
 # updated by Terraform. note that if the file is tracked by Terraform, then

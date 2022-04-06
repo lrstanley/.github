@@ -43,13 +43,13 @@ resource "github_repository_file" "standard_files" {
   repository          = each.value.repo.name
   branch              = each.value.repo.default_branch
   commit_message      = <<-EOT
-  terraform: auto-applied "${each.value.file.path}" file${each.value.file.skip_ci ? " [skip ci]" : ""}
+  terraform: auto-applied "${each.value.file.path}" ${each.value.file.skip_ci ? "[skip ci]" : ""}
 
-  this file was auto-applied from the "${local.module_name}"
-  module located here:
-    - ${local.github_user.login}/.github/terraform/${local.module_name}/
+  this file was auto-applied from the "${local.module_name}" module
+  located here:
+    - https://github.com/${local.github_user.login}/.github/tree/master/terraform/${local.module_name}
 
-  how to tell Terraform to exclude this file:
+  instructions on how to tell Terraform to exclude this file:
     - https://github.com/${local.github_user.login}/.github/blob/master/example.ci-config.yml
 
   Signed-off-by: ${local.github_user.name} <${local.github_user.email}>
