@@ -58,13 +58,10 @@ body:
         - label: >-
             I have confirmed that someone else has not submitted a similar
             feature request.
-          validations:
-            required: true
+          required: true
         - label: >-
             If implemented, this feature will help others, in addition to
             solving my problems.
-          validations:
-            required: true
+          required: true
         - label: I have looked into alternative solutions to the best of my ability.
-          validations:
-            required: true
+          required: true

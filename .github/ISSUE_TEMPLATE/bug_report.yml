@@ -83,5 +83,4 @@ body:
         - label: >-
             I have confirmed that someone else has not submitted a similar
             feature request.
-          validations:
-            required: true
+          required: true
