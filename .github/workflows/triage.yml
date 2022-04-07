@@ -4,7 +4,7 @@ on: [workflow_call]
 
 jobs:
   issues:
-    if: ${{ contains(["issues", "issue_comment"], github.event_name) && !github.event.issue.pull_request }}
+    if: ${{ contains(['issues', 'issue_comment'], github.event_name) && !github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -14,20 +14,20 @@ jobs:
         with:
           repository: lrstanley/.github
       - name: label-issues
-        if: ${{ github.event_name == "issues" && contains(["opened", "edited"], github.event.action) }}
+        if: ${{ github.event_name == 'issues' && contains(['opened', 'edited'], github.event.action) }}
         uses: github/issue-labeler@v2
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           configuration-path: triage/label-issues.yml
       - name: remove-labels
-        if: github.event_name == "issue_comment"
+        if: github.event_name == 'issue_comment'
         uses: actions-ecosystem/action-remove-labels@v1
         with:
           labels: |
             stale
             waiting-reply
   pull-requests:
-    if: ${{ contains(["pull_request", "pull_request_target"], github.event_name) || (github.event_name == "issue_comment" && github.event.issue.pull_request) }}
+    if: ${{ contains(['pull_request', 'pull_request_target'], github.event_name) || (github.event_name == 'issue_comment' && github.event.issue.pull_request) }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -39,19 +39,19 @@ jobs:
         with:
           repository: lrstanley/.github
       - name: dependabot-auto-merge
-        if: github.event_name == "pull_request"
+        if: github.event_name == 'pull_request'
         uses: ahmadnassri/action-dependabot-auto-merge@v2
         with:
           config: triage/dependabot-auto-merge.yml
       - name: label-pull-requests
-        if: github.event_name == "pull_request_target"
+        if: github.event_name == 'pull_request_target'
         uses: actions/labeler@v4
         with:
           configuration-path: triage/label-pull-requests.yml
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           sync-labels: true
       - name: label-pull-requests-sizes
-        if: github.event_name == "pull_request"
+        if: github.event_name == 'pull_request'
         uses: codelytv/pr-size-labeler@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
