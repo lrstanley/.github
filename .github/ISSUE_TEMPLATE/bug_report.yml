@@ -16,7 +16,7 @@ body:
   - type: textarea
     id: description
     attributes:
-      label: Describe the problem
+      label: "📝 Describe the problem"
       description: A clear and concise description of what the problem is
       placeholder: 'Example: "When I attempted to do X, I got X error"'
     validations:
@@ -24,7 +24,7 @@ body:
   - type: textarea
     id: expected
     attributes:
-      label: Expected behavior
+      label: "📝 Expected behavior"
       description: A clear and concise description of what you expected to happen.
       placeholder: 'Example: "I expected X to let me add Y component, and be successful"'
     validations:
@@ -32,7 +32,7 @@ body:
   - type: textarea
     id: reproduce
     attributes:
-      label: Minimal reproduction
+      label: "📝 Minimal reproduction"
       description: >-
         Steps to reproduce the behavior (including code examples and/or
         configuration files if necessary)
@@ -42,7 +42,7 @@ body:
   - type: textarea
     id: context
     attributes:
-      label: Additional context
+      label: "⚙ Additional context"
       description: >-
         Add any other context about the problem here. This includes things
         like logs, screenshots, code examples, what was the state when the
@@ -53,7 +53,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: Version
+      label: "📝 Version"
       description: What version of this repository is being used?
       placeholder: 'Examples: "v1.2.3, master branch, commit 1a2b3c"'
     validations:
@@ -61,7 +61,7 @@ body:
   - type: dropdown
     id: os
     attributes:
-      label: Operating system
+      label: "📝 Operating system"
       description: >-
         What operating system did this issue occur on (if other, specify in
         "Additional context" section)?
@@ -81,7 +81,7 @@ body:
   - type: checkboxes
     id: requirements
     attributes:
-      label: "Requirements ✔"
+      label: "🤝 Requirements"
       description: "Please confirm the following:"
       options:
         - label: >-
