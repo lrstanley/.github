@@ -29,7 +29,7 @@ updates:
       day: "monday"
       time: "12:10"
 %{ endif ~}
-%{ if if length(setintersection(repo.languages, ["JavaScript", "Vue"])) > 0 ~}
+%{ if length(setintersection(repo.languages, ["JavaScript", "Vue"])) > 0 ~}
   - package-ecosystem: npm
     directory: "/"
     schedule:
