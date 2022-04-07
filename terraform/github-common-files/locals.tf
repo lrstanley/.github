@@ -69,5 +69,12 @@ locals {
       languages = []
       skip_ci   = true
     }
+
+    # scanning/dependency configs.
+    "dependabot.yml" = {
+      path      = ".github/dependabot.yml"
+      languages = []
+      skip_ci   = true
+    }
   }
 }
