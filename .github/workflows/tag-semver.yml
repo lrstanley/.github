@@ -6,10 +6,6 @@
 
 name: tag-semver
 
-# TODO: this requires a custom personal access token, as the default token
-# doesn't allow events created by it, to trigger other workflows (e.g. release
-# upon creating a new tag).
-
 on:
   workflow_call:
     inputs:

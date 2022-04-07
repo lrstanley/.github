@@ -183,7 +183,6 @@ function main {
 	if [ "$GITHUB_REF_TYPE" == "tag" ]; then
 		export GORELEASER_CURRENT_TAG="$GITHUB_REF_NAME"
 
-		# TODO: automatically calculate previous tag?
 		if ! grep -qEi "\-(rc|alpha)" <<< "$GITHUB_REF_NAME"; then
 			PREV=$(git tag --sort=-version:refname | grep -vEi "\-(rc|alpha)" | grep -FiA1 "$GITHUB_REF_NAME" | tail -1)
 			if [ "$PREV" != "$GITHUB_REF_NAME" ]; then
