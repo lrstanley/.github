@@ -8,8 +8,8 @@ body:
     attributes:
       value: >-
         Thanks for submitting a bug report! Make sure to check out the
-        [**discussions**](../../discussions) section of this repository.
-        Please also [**search**](../../labels/bug) to see if someone else
+        [**discussions**](../discussions) section of this repository.
+        Please also [**search**](../labels/bug) to see if someone else
         has submitted a similar bug report, before making a new report.
   - type: textarea
     id: description
@@ -84,5 +84,5 @@ body:
       options:
         - label: >-
             I have confirmed that someone else has not
-            [submitted a similar bug report](../../labels/bug).
+            [submitted a similar bug report](../labels/bug).
           required: true

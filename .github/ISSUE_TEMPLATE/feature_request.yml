@@ -8,8 +8,8 @@ body:
     attributes:
       value: >-
         Thanks for submitting a feature request! Make sure to check out the
-        [**discussions**](../../discussions) section of this repository.
-        Please also [**search**](../../labels/enhancement) to see if someone
+        [**discussions**](../discussions) section of this repository.
+        Please also [**search**](../labels/enhancement) to see if someone
         else has submitted a similar feature request, before making a new
         request.
   - type: textarea
@@ -60,7 +60,7 @@ body:
       options:
         - label: >-
             I have confirmed that someone else has not
-            [submitted a similar feature request](../../labels/enhancement).
+            [submitted a similar feature request](../labels/enhancement).
           required: true
         - label: >-
             If implemented, this feature will help others, in addition to
