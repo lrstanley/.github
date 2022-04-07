@@ -7,12 +7,10 @@ body:
   - type: markdown
     attributes:
       value: >-
-        #### Thanks for submitting a bug report! 📋
+        ### Thanks for submitting a bug report! 📋
 
-        - 💬 Make sure to check out the [**discussions**](../discussions)
-          section of this repository.
-        - 🔎 Please [**search**](../labels/bug) to see if someone else has
-          submitted a similar bug report, before making a new report.
+        - 💬 Make sure to check out the [**discussions**](../discussions) section of this repository.
+        - 🔎 Please [**search**](../labels/bug) to see if someone else has submitted a similar bug report, before making a new report.
 
         ----------------------------------------
   - type: textarea
