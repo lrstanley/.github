@@ -1,6 +1,6 @@
 name: "🐞 Submit a bug report"
 description: Create a report to help us improve!
-title: "bug: "
+title: "bug: [REPLACE ME]"
 labels:
   - bug
 body:

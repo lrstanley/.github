@@ -1,6 +1,6 @@
 name: "💡 Submit a feature request"
 description: Suggest an awesome idea for this project!
-title: "feature: "
+title: "feature: [REPLACE ME]"
 labels:
   - enhancement
 body:
