@@ -40,6 +40,7 @@ changelog:
   filters:
     exclude:
       - "(?i)(^docs?:)"
+      - "(?i)auto-applied"
       - "(?i)typo|spelling"
       - "(?i)(^\\.|^fix$|^test$|^testing$|^ignore|^ok\\s+)"
 
