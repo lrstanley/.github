@@ -1,0 +1,17 @@
+name: sh-lint
+
+on: [workflow_call]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        env:
+          SHELLCHECK_OPTS: >-
+            -e SC1090
+            -e SC1091
