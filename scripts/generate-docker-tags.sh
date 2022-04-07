@@ -28,12 +28,12 @@ if [ "$EVENT_NAME" == "pull_request" ]; then
 elif [ "$EVENT_NAME" == "push" ]; then
 	if [ "$GIT_REF_TYPE" == "branch" ]; then
 		# sanitize and validate the branch name.
-		if grep -qE '^v?[0-9]+' <<<"$GIT_REF_NAME"; then
+		if grep -qE '^v?[0-9]+' <<< "$GIT_REF_NAME"; then
 			echo "error: invalid branch name, might overwrite semver"
 			exit 1
 		fi
 
-		VERSION="$(sanitize <<<"$GIT_REF_NAME")"
+		VERSION="$(sanitize <<< "$GIT_REF_NAME")"
 		TAGS+="${VERSION},"
 	else
 		# assume tag
@@ -41,12 +41,12 @@ elif [ "$EVENT_NAME" == "push" ]; then
 		LATEST=$(svu current --strip-prefix --no-metadata --tag-mode=all-branches)
 
 		# check if requested tag is semver compliant (at least somewhat).
-		read -r MAJOR MINOR PATCH SUFFIX <<<"$(sed -r 's:^v?([0-9]+)\.([0-9]+)\.([0-9]+)(.*)$:\1 \2 \3 \4:g' <<<"$GIT_REF_NAME")"
+		read -r MAJOR MINOR PATCH SUFFIX <<< "$(sed -r 's:^v?([0-9]+)\.([0-9]+)\.([0-9]+)(.*)$:\1 \2 \3 \4:g' <<< "$GIT_REF_NAME")"
 
 		if [ -n "$SUFFIX" ] || [ -z "$MINOR" ]; then
 			# assume semver with alpha/rc/etc (and maybe build metadata)
 			# OR tag isn't semver.
-			VERSION="$(sanitize <<<"$GIT_REF_NAME")"
+			VERSION="$(sanitize <<< "$GIT_REF_NAME")"
 			TAGS+="${VERSION},"
 		elif [ -n "$MAJOR" ] && [ -n "$MINOR" ] && [ -n "$PATCH" ]; then
 			TAGS+="${MAJOR}.${MINOR}.${PATCH},${MAJOR}.${MINOR},"
@@ -68,5 +68,5 @@ else
 	exit 1
 fi
 
-echo "::set-output name=tags::$(sed -r 's:,+$::g' <<<"$TAGS")"
+echo "::set-output name=tags::$(sed -r 's:,+$::g' <<< "$TAGS")"
 echo "::set-output name=version::$VERSION"

@@ -21,7 +21,7 @@ case "$METHOD" in
 		fi
 
 		BUILD="next.$(git rev-parse --short HEAD)"
-		read -r PR_TYPE REV <<<"$(sed -rn 's:^v?[0-9]+\.[0-9]+\.[0-9]+-(alpha|rc)\.([0-9]+)(\+.*)?$:\1 \2:p' <<<"$CURRENT")"
+		read -r PR_TYPE REV <<< "$(sed -rn 's:^v?[0-9]+\.[0-9]+\.[0-9]+-(alpha|rc)\.([0-9]+)(\+.*)?$:\1 \2:p' <<< "$CURRENT")"
 
 		if [ -z "$PR_TYPE" ] || [ -z "$REV" ] || [ "$PR_TYPE" != "$METHOD" ]; then
 			REV=0
