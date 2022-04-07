@@ -19,13 +19,13 @@ jobs:
         if: >-
           github.event_name == 'issues'
           && (github.event.action == 'opened' || github.event.action == 'edited')
-        uses: github/issue-labeler@v2
+        uses: github/issue-labeler@99b4c5dda477c65f4ef08486b73c5787e1e33601
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           configuration-path: triage/label-issues.yml
       - name: remove-labels
         if: github.event_name == 'issue_comment'
-        uses: actions-ecosystem/action-remove-labels@v1
+        uses: actions-ecosystem/action-remove-labels@2ce5d41b4b6aa8503e285553f75ed56e0a40bae0
         with:
           labels: |
             stale
@@ -46,19 +46,19 @@ jobs:
           repository: lrstanley/.github
       - name: dependabot-auto-merge
         if: github.event_name == 'pull_request'
-        uses: ahmadnassri/action-dependabot-auto-merge@v2
+        uses: ahmadnassri/action-dependabot-auto-merge@5d98f10d910782d0bb431fc03ae26532543ae184
         with:
           config: triage/dependabot-auto-merge.yml
       - name: label-pull-requests
         if: github.event_name == 'pull_request_target'
-        uses: actions/labeler@v4
+        uses: actions/labeler@9fd24f1f9d6ceb64ba34d181b329ee72f99978a0
         with:
           configuration-path: triage/label-pull-requests.yml
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           sync-labels: true
       - name: label-pull-requests-sizes
         if: github.event_name == 'pull_request'
-        uses: codelytv/pr-size-labeler@v1
+        uses: codelytv/pr-size-labeler@bfc42c990b778f5dcedd44470f9ac055ae1f8c61
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           xs_max_size: "30"
