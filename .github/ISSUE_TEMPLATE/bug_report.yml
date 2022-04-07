@@ -8,9 +8,9 @@ body:
     attributes:
       value: >-
         Thanks for submitting a bug report! Make sure to check out the
-        **discussions** section of this repository. Please also **search**
-        to see if someone else has submitted a similar bug report, before
-        making a new report.
+        [**discussions**](../../discussions) section of this repository.
+        Please also [**search**](../../labels/bug) to see if someone else
+        has submitted a similar bug report, before making a new report.
   - type: textarea
     id: description
     attributes:
@@ -73,7 +73,7 @@ body:
         - windows/11
         - windows/other
         - macos
-        - other (specify in context)
+        - other
     validations:
       required: true
   - type: checkboxes
@@ -83,6 +83,6 @@ body:
       description: "Please confirm the following:"
       options:
         - label: >-
-            I have confirmed that someone else has not submitted a similar
-            bug report.
+            I have confirmed that someone else has not
+            [submitted a similar bug report](../../labels/bug).
           required: true
