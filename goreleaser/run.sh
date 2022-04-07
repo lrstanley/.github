@@ -34,7 +34,7 @@ function setup_config {
 }
 
 function install_goreleaser {
-	if command -v goreleaser >/dev/null 2>&1; then
+	if command -v goreleaser > /dev/null 2>&1; then
 		return
 	fi
 
@@ -47,8 +47,8 @@ function install_goreleaser {
 }
 
 function envrepl {
-	envsubst <"$1" >/tmp/out
-	cat </tmp/out >"$1"
+	envsubst < "$1" > /tmp/out
+	cat < /tmp/out > "$1"
 }
 
 function yaml {
@@ -122,7 +122,7 @@ function inject_required {
 	if [ "$GITHUB_REF_TYPE" == "tag" ]; then
 		yaml '.release.prerelease = "auto"'
 
-		if grep -qEi "\-(alpha)" <<<"$GITHUB_REF"; then
+		if grep -qEi "\-(alpha)" <<< "$GITHUB_REF"; then
 			yaml ".changelog.skip = true"
 		fi
 	else
@@ -147,7 +147,7 @@ function generate_headers {
 		snippet disable GHCR "$FOOTER"
 	fi
 
-	if grep -qEi "\-(rc)" <<<"$GITHUB_REF"; then
+	if grep -qEi "\-(rc)" <<< "$GITHUB_REF"; then
 		snippet enable PRERELEASE "$HEADER"
 	else
 		snippet disable PRERELEASE "$HEADER"
@@ -155,18 +155,6 @@ function generate_headers {
 
 	# vars needed by header/footer/etc.
 	export GOBUILDINFO="$(go version)"
-	export CONTRIBUTING="https://github.com/${GITHUB_REPOSITORY_OWNER}/.github/blob/master/CONTRIBUTING.md"
-	export SUPPORT="https://github.com/${GITHUB_REPOSITORY_OWNER}/.github/blob/master/SUPPORT.md"
-
-	# if repo already has a doc for this, use it instead.
-	if [ -f "CONTRIBUTING.md" ]; then
-		export CONTRIBUTING="https://github.com/${GITHUB_REPOSITORY}/blob/${GITHUB_REF_NAME}/CONTRIBUTING.md"
-	fi
-
-	# if repo already has a doc for this, use it instead.
-	if [ -f "SUPPORT.md" ]; then
-		export SUPPORT="https://github.com/${GITHUB_REPOSITORY}/blob/${GITHUB_REF_NAME}/SUPPORT.md"
-	fi
 
 	envrepl "$HEADER"
 	envrepl "$FOOTER"
@@ -196,7 +184,7 @@ function main {
 		export GORELEASER_CURRENT_TAG="$GITHUB_REF_NAME"
 
 		# TODO: automatically calculate previous tag?
-		if ! grep -qEi "\-(rc|alpha)" <<<"$GITHUB_REF_NAME"; then
+		if ! grep -qEi "\-(rc|alpha)" <<< "$GITHUB_REF_NAME"; then
 			PREV=$(git tag --sort=-version:refname | grep -vEi "\-(rc|alpha)" | grep -FiA1 "$GITHUB_REF_NAME" | tail -1)
 			if [ "$PREV" != "$GITHUB_REF_NAME" ]; then
 				export GORELEASER_PREVIOUS_TAG="$PREV"

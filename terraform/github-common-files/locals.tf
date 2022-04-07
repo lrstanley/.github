@@ -14,6 +14,7 @@ locals {
   //   1 Vue
   //   1 Jsonnet
   file_map = {
+    # base OSS documents.
     "CONTRIBUTING.md" = {
       path      = "CONTRIBUTING.md"
       languages = []
@@ -39,6 +40,8 @@ locals {
       languages = ["*"]
       skip_ci   = true
     }
+
+    # IDE and/or linter configs.
     ".golangci.yml" = {
       path      = ".golangci.yml"
       languages = ["Go"]
@@ -47,6 +50,23 @@ locals {
     ".editorconfig" = {
       path      = ".editorconfig"
       languages = ["*"]
+      skip_ci   = true
+    }
+
+    # issue templates.
+    "ISSUE_TEMPLATE/bug_report.yml" = {
+      path      = "ISSUE_TEMPLATE/bug_report.yml"
+      languages = []
+      skip_ci   = true
+    }
+    "ISSUE_TEMPLATE/feature_request.yml" = {
+      path      = "ISSUE_TEMPLATE/feature_request.yml"
+      languages = []
+      skip_ci   = true
+    }
+    "ISSUE_TEMPLATE/config.yml" = {
+      path      = "ISSUE_TEMPLATE/config.yml"
+      languages = []
       skip_ci   = true
     }
   }

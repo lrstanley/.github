@@ -44,7 +44,7 @@ See [`CONTRIBUTING.md`][contributing] on how to contribute.
 <!-- definitions -->
 [coc]: ${repo.url}/blob/${repo.default_branch}/CODE_OF_CONDUCT.md
 [contributing]: ${repo.url}/blob/${repo.default_branch}/CONTRIBUTING.md
-[discussions]: ${repo.url}/discussions
+[discussions]: ${repo.url}/discussions/categories/q-a
 [issues]: ${repo.url}/issues/new/choose
 [license]: ${repo.url}/blob/${repo.default_branch}/LICENSE
 [pull-requests]: ${repo.url}/issues/new/choose

@@ -1,5 +1,5 @@
 name: "💡 Submit a feature request"
-description: Suggest an awesome idea for this project!
+description: Suggest an awesome feature for this project!
 title: "feature: [REPLACE ME]"
 labels:
   - enhancement
@@ -9,14 +9,14 @@ body:
       value: |
         ### Thanks for submitting a feature request! 📋
 
-        - 💬 Make sure to check out the [**discussions**](../discussions) section of this repository.
+        - 💬 Make sure to check out the [**discussions**](../discussions) section of this repository. Do you have an idea for an improvement, but want to brainstorm it with others first? [Start a discussion here](../discussions/new?category=ideas) first.
         - 🔎 Please [**search**](../labels/enhancement) to see if someone else has submitted a similar feature request, before making a new request.
 
         ---------------------------------------------
   - type: textarea
     id: describe
     attributes:
-      label: "📝 Describe the feature you'd like"
+      label: "✨ Describe the feature you'd like"
       description: >-
         A clear and concise description of what you want to happen, or what
         feature you'd like added.
@@ -26,7 +26,7 @@ body:
   - type: textarea
     id: related
     attributes:
-      label: "📝 Is your feature request related to a problem?"
+      label: "🌧 Is your feature request related to a problem?"
       description: >-
         A clear and concise description of what the problem is. Ex. I'm always
         frustrated when [...]
@@ -36,13 +36,26 @@ body:
   - type: textarea
     id: alternatives
     attributes:
-      label: "📝 Describe alternatives you've considered"
+      label: "🔎 Describe alternatives you've considered"
       description: >-
         A clear and concise description of any alternative solutions or features
         you've considered.
       placeholder: >-
         Example: "I've considered X and Y, however the potential problems with
         those solutions would be [...]"
+    validations:
+      required: true
+  - type: dropdown
+    id: breaking
+    attributes:
+      label: "⚠ If implemented, do you think this future will be a breaking change to users?"
+      description: >-
+        To the best of your ability, do you think implementing this change
+        would impact users in a way during an upgrade process?
+      options:
+        - "Yes"
+        - "No"
+        - "Not sure"
     validations:
       required: true
   - type: textarea
@@ -64,8 +77,13 @@ body:
             [submitted a similar feature request](../labels/enhancement).
           required: true
         - label: >-
-            If implemented, this feature will help others, in addition to
-            solving my problems.
+            If implemented, I believe this feature will help others, in
+            addition to solving my problems.
           required: true
         - label: I have looked into alternative solutions to the best of my ability.
           required: true
+        - label: >-
+            (optional) I would be willing to contribute to testing this
+            feature if implemented, or making a PR to implement this
+            functionality.
+          required: false
