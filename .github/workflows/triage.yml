@@ -16,15 +16,16 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: lrstanley/.github
-      - name: label-issues
-        if: >-
-          github.event_name == 'issues'
-          && (github.event.action == 'opened' || github.event.action == 'edited')
-        uses: github/issue-labeler@99b4c5dda477c65f4ef08486b73c5787e1e33601
-        with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          configuration-path: triage/label-issues.yml
-          enable-versioned-regex: 0
+      # - name: label-issues
+      #   if: >-
+      #     github.event_name == 'issues'
+      #     && (github.event.action == 'opened' || github.event.action == 'edited')
+      #   uses: github/issue-labeler@99b4c5dda477c65f4ef08486b73c5787e1e33601
+      #   with:
+      #     repo-token: "${{ secrets.GITHUB_TOKEN }}"
+      #     # TODO: https://github.com/github/issue-labeler/issues/39
+      #     configuration-path: triage/label-issues.yml
+      #     enable-versioned-regex: 0
       - name: remove-labels
         if: github.event_name == 'issue_comment'
         uses: actions-ecosystem/action-remove-labels@2ce5d41b4b6aa8503e285553f75ed56e0a40bae0
