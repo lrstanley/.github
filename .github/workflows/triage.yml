@@ -4,7 +4,9 @@ on: [workflow_call]
 
 jobs:
   issues:
-    if: ${{ contains(['issues', 'issue_comment'], github.event_name) && !github.event.issue.pull_request }}
+    if: >-
+      (github.event_name == 'issues' || github.event_name == 'issue_comment')
+      && !github.event.issue.pull_request
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -14,7 +16,9 @@ jobs:
         with:
           repository: lrstanley/.github
       - name: label-issues
-        if: ${{ github.event_name == 'issues' && contains(['opened', 'edited'], github.event.action) }}
+        if: >-
+          github.event_name == 'issues'
+          && (github.event.action == 'opened' || github.event.action == 'edited')
         uses: github/issue-labeler@v2
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
@@ -27,7 +31,9 @@ jobs:
             stale
             waiting-reply
   pull-requests:
-    if: ${{ contains(['pull_request', 'pull_request_target'], github.event_name) || (github.event_name == 'issue_comment' && github.event.issue.pull_request) }}
+    if: >-
+      (github.event_name == 'pull_request' || github.event_name == 'pull_request_target')
+      || (github.event_name == 'issue_comment' && github.event.issue.pull_request)
     runs-on: ubuntu-latest
     permissions:
       contents: write
