@@ -6,11 +6,14 @@ labels:
 body:
   - type: markdown
     attributes:
-      value: >-
+      value: |
         ### Thanks for submitting a feature request! 📋
 
-        - 💬 Make sure to check out the [**discussions**](../discussions) section of this repository.
-        - 🔎 Please [**search**](../labels/enhancement) to see if someone else has submitted a similar feature request, before making a new request.
+        - 💬 Make sure to check out the [**discussions**](../discussions)
+          section of this repository.
+        - 🔎 Please [**search**](../labels/enhancement) to see if someone else
+          has submitted a similar feature request, before making a new
+          request.
 
         ---------------------------------------------
   - type: textarea
