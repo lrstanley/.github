@@ -82,5 +82,5 @@ body:
       options:
         - label: >-
             I have confirmed that someone else has not submitted a similar
-            feature request.
+            bug report.
           required: true
