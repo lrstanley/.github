@@ -7,7 +7,7 @@ body:
   - type: markdown
     attributes:
       value: >-
-        ##### Thanks for submitting a bug report!
+        #### Thanks for submitting a bug report!
 
         - Make sure to check out the
           [**discussions**](../discussions) section of this repository.
