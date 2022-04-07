@@ -3,3 +3,5 @@ bug:
 crash:
   - "panic:"
   - "exception"
+breaking:
+  - "be a breaking change[^\n]+\n+Yes"

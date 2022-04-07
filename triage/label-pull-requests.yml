@@ -4,6 +4,7 @@ dependencies:
   - "**/go.sum"
   - "**/go.work"
   - "**/package.json"
+  - "**/package-lock.json"
   - "**/requirements.txt"
 workflows:
   - ".github/workflows/*"
@@ -13,3 +14,8 @@ documentation:
   - "docs/**/*"
   - "**/*.md"
   - ".github/ISSUE_TEMPLATE/*"
+tests:
+  - "**/*.spec.js"
+  - "**/test.*.js"
+  - "**/*.test.js"
+  - "**/*_test.go"
