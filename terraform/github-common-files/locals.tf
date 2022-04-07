@@ -55,17 +55,17 @@ locals {
 
     # issue templates.
     "ISSUE_TEMPLATE/bug_report.yml" = {
-      path      = "ISSUE_TEMPLATE/bug_report.yml"
+      path      = ".github/ISSUE_TEMPLATE/bug_report.yml"
       languages = []
       skip_ci   = true
     }
     "ISSUE_TEMPLATE/feature_request.yml" = {
-      path      = "ISSUE_TEMPLATE/feature_request.yml"
+      path      = ".github/ISSUE_TEMPLATE/feature_request.yml"
       languages = []
       skip_ci   = true
     }
     "ISSUE_TEMPLATE/config.yml" = {
-      path      = "ISSUE_TEMPLATE/config.yml"
+      path      = ".github/ISSUE_TEMPLATE/config.yml"
       languages = []
       skip_ci   = true
     }
