@@ -42,10 +42,12 @@ body:
     attributes:
       label: Additional context
       description: >-
-        Add any other context about the problem here. This includes things like
-        logs, code examples, what was the state when the bug occurred?
-      placeholder: "Examples: logs, code snippets, os/browser version info, etc"
-      render: console
+        Add any other context about the problem here. This includes things
+        like logs, screenshots, code examples, what was the state when the
+        bug occurred?
+      placeholder: >
+        Examples: "logs, code snippets, screenshots, os/browser version info,
+        etc"
   - type: input
     id: version
     attributes:
