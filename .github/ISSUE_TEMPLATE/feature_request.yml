@@ -7,13 +7,15 @@ body:
   - type: markdown
     attributes:
       value: >-
-        #### Thanks for submitting a feature request!
+        #### Thanks for submitting a feature request! 📋
 
-        - Make sure to check out the
-          [**discussions**](../discussions) section of this repository.
-        - Please [**search**](../labels/enhancement) to see if someone else
+        - 💬 Make sure to check out the [**discussions**](../discussions)
+          section of this repository.
+        - 🔎 Please [**search**](../labels/enhancement) to see if someone else
           has submitted a similar feature request, before making a new
           request.
+
+        ---------------------------------------------
   - type: textarea
     id: describe
     attributes:
@@ -57,7 +59,7 @@ body:
   - type: checkboxes
     id: requirements
     attributes:
-      label: Requirements
+      label: "Requirements ✔"
       description: "Please confirm the following:"
       options:
         - label: >-
