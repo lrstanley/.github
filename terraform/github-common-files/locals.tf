@@ -69,6 +69,11 @@ locals {
       languages = []
       skip_ci   = true
     }
+    "PULL_REQUEST_TEMPLATE.md" = {
+      path      = ".github/PULL_REQUEST_TEMPLATE.md"
+      languages = []
+      skip_ci   = true
+    }
 
     # scanning/dependency configs.
     "dependabot.yml" = {
