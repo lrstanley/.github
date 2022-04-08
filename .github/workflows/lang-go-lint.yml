@@ -67,7 +67,7 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-codecov-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-
       - uses: actions/setup-go@v3
@@ -121,14 +121,6 @@ jobs:
     permissions: {}
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ needs.go-version.outputs.version }}
@@ -150,14 +142,6 @@ jobs:
       statuses: write
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ needs.go-version.outputs.version }}
