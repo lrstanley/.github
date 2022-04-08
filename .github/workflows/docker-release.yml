@@ -2,6 +2,10 @@ name: docker-release
 
 on:
   workflow_call:
+    secrets:
+      SNYK_TOKEN:
+        description: "Snyk token for vulnerability scanning."
+        required: false
     inputs:
       name:
         description: >
@@ -34,8 +38,11 @@ jobs:
   docker-release:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
       packages: write
+      checks: write
+      contents: read
+      security-events: write
+      statuses: write
     steps:
       - uses: actions/checkout@v3
       - run: git fetch --force --tags
@@ -52,7 +59,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: fetch-metadata
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@f2a13332ac1ce8c0a71aeac48a150dbb1838ab67
         with:
           images: ghcr.io/${{ github.repository_owner }}/${{ inputs.name || github.event.repository.name }}
           flavor: |
@@ -78,6 +85,21 @@ jobs:
           load: true
           tags: tmp
           labels: ${{ steps.meta.outputs.labels }}
+      - name: scan-snyk-docker
+        if: inputs.scan
+        continue-on-error: true
+        uses: snyk/actions/docker@7fad562681122205233d1242c3bb39598c5393da
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: tmp
+          args: --file=${{ inputs.dockerfile }}
+      - name: Upload result to GitHub Code Scanning
+        if: inputs.scan
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: snyk.sarif
+          wait-for-processing: true
       - name: docker-tag-and-push
         if: inputs.push
         run: |
