@@ -85,6 +85,8 @@ jobs:
           load: true
           tags: tmp
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - name: scan-snyk-docker
         if: inputs.scan
         continue-on-error: true
