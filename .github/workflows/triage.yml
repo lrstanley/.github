@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       issues: write
-      contents: read
     steps:
       - name: git-clone-tools-repo
         uses: actions/checkout@v3
@@ -35,11 +34,10 @@ jobs:
             waiting-reply
   pull-requests:
     if: >-
-      (github.event_name == 'pull_request' || github.event_name == 'pull_request_target')
+      github.event_name == 'pull_request_target'
       || (github.event_name == 'issue_comment' && github.event.issue.pull_request)
     runs-on: ubuntu-latest
     permissions:
-      contents: write
       issues: write
       pull-requests: write
     steps:
@@ -48,7 +46,7 @@ jobs:
         with:
           repository: lrstanley/.github
       - name: dependabot-auto-merge
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request_target'
         uses: ahmadnassri/action-dependabot-auto-merge@5d98f10d910782d0bb431fc03ae26532543ae184
         with:
           config: triage/dependabot-auto-merge.yml
@@ -60,7 +58,7 @@ jobs:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           sync-labels: true
       - name: label-pull-requests-sizes
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request_target'
         uses: codelytv/pr-size-labeler@bfc42c990b778f5dcedd44470f9ac055ae1f8c61
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
