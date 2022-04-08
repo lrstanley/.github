@@ -15,6 +15,11 @@ locals {
   //   1 Jsonnet
   file_map = {
     # base OSS documents.
+    "CODEOWNERS" = {
+      path      = ".github/CODEOWNERS"
+      languages = []
+      skip_ci   = true
+    }
     "CONTRIBUTING.md" = {
       path      = "CONTRIBUTING.md"
       languages = []

@@ -1,0 +1,7 @@
+# THIS FILE IS GENERATED! DO NOT EDIT! Maintained by Terraform.
+.github/*          @${user.login}
+LICENSE            @${user.login}
+CONTRIBUTING.md    @${user.login}
+SECURITY.md        @${user.login}
+SUPPORT.md         @${user.login}
+CODE_OF_CONDUCT.md @${user.login}
