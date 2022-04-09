@@ -65,7 +65,7 @@ jobs:
           sync-labels: true
       - name: label-pull-requests-sizes
         if: github.event_name == 'pull_request_target'
-        uses: codelytv/pr-size-labeler@bfc42c990b778f5dcedd44470f9ac055ae1f8c61
+        uses: codelytv/pr-size-labeler@54ef36785e9f4cb5ecf1949cfc9b00dbb621d761
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           xs_max_size: "30"
