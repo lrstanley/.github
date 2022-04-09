@@ -30,7 +30,7 @@ function update_field {
 	if ! grep -qE "template:begin:${FIELD}" <<< "$README"; then
 		echo -e "$README"
 		return
-	fi
+	else /bin/true; fi
 
 	awk \
 		-v CONTENT="$CONTENT" \
