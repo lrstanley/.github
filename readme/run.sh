@@ -99,63 +99,20 @@ function generate_metadata {
 	echo "$JSON"
 }
 
-function generate_toc {
-	declare -a TOC
-	declare -A IDLIST
-	CODE_BLOCK=0
-	CODE_BLOCK_REGEX='^```'
-	HEADING_REGEX='^#{1,}'
-
-	while read -r LINE; do
-		# parse any code blocks.
-		if [[ ${LINE} =~ $CODE_BLOCK_REGEX ]]; then
-			# ignore until we see code block ending.
-			CODE_BLOCK=$((CODE_BLOCK + 1))
-			if [[ ${CODE_BLOCK} -eq 2 ]]; then
-				# closing code block.
-				CODE_BLOCK=0
-			fi
-			continue
-		fi
-
-		# normal lines.
-		if [[ ${CODE_BLOCK} == 0 ]]; then
-			# if we see a heading, we save it to the TOC array.
-			if [[ ${LINE} =~ ${HEADING_REGEX} ]]; then
-				TOC+=("$LINE")
-			fi
-		fi
-	done <<< "$(grep -v 'Table of Contents' <<< "$README")"
+function generate_toc_new {
+	TOC=$(
+		gh api \
+			-X POST \
+			-H 'Content-Type: text/x-markdown' \
+			--input - /markdown/raw <<< "$README" \
+			| sed -rn 's:.*user-content.* href="(#[^"]+)" .*>\s+?([^<]+)</h([0-9]+)>.*:\3 \1 \2:p' \
+			| grep -v 'table-of-contents'
+	)
 
 	echo -e "## :link: Table of Contents\n"
-	for LINE in "${TOC[@]}"; do
-		# strip links, if they exist in the heading.
-		LINE="$(sed -r 's:^([^\[]+)\[(.+)\].*:\1\2:g' <<< "$LINE")"
-
-		# strip any emojis if they exist.
-		LINK="$(sed -r 's/\s+?:([^:]+):\s+?/ \1 /g' <<< "$LINE")"
-		LINE="$(sed -r 's/\s+?:[^:]+:\s+?/ /g' <<< "$LINE")"
-
-		# special characters (besides '-') in page links in markdown are deleted
-		# and spaces are converted to dashes.
-		LINK=$(tr -dc "[:alnum:] _-" <<< "$LINK")
-		LINK="${LINK/ /}"
-		LINK="${LINK// /-}"
-		LINK="${LINK,,}"
-		LINK=$(tr -s "-" <<< "$LINK")
-
-		if [ "${IDLIST[$LINK]:=0}" == 0 ]; then
-			IDLIST[$LINK]=0
-		else
-			IDLIST[$LINK]=$((IDLIST[$LINK] + 1))
-			LINK+="-${IDLIST[$LINK]}"
-		fi
-
-		LENGTH=$(tr -cd '#' <<< "$LINE" | wc -c)
-		LENGTH=$(($((LENGTH - 1)) * 2))
-
-		printf "%${LENGTH}s- [%s](#%s)\n" '' "${LINE#\#* }" "$LINK"
-	done
+	while read -r INDENT ID NAME; do
+		printf "%${INDENT}s- [%s](%s)\n" '' "$NAME" "$ID"
+	done <<< "$TOC"
 }
 
 function generate {
@@ -181,7 +138,7 @@ function generate {
 		README=$(update_field_file "license" "license.md")
 	fi
 
-	README=$(update_field "toc" "$(generate_toc)")
+	README=$(update_field "toc" "$(generate_toc_new)")
 
 	echo -e "$README" > "$FILEPATH"
 }
