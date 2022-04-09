@@ -9,7 +9,7 @@ module "base" {
     isEmpty     = false
     isPrivate   = false
     config_repo = false
-    # name       = ["liam.sh"]
+    name        = ["liam.sh"]
   }
 }
 
