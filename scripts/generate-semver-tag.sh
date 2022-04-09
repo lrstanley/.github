@@ -9,9 +9,15 @@ export BASE="$(readlink -f "$(dirname "$0")/..")"
 git config user.name "github-actions"
 git config user.email "github-actions@github.com"
 
+TAG_ARGS=()
+
+if [ -n "$ANNOTATION" ]; then
+	TAG_ARGS+=("--message" "$ANNOTATION")
+fi
+
 case "$METHOD" in
 	major | minor | patch)
-		git tag "$(svu "$METHOD")"
+		git tag "${TAG_ARGS[@]}" "$(svu "$METHOD")"
 		;;
 	alpha | rc)
 		CURRENT=$(svu current --tag-mode=all-branches)
@@ -32,10 +38,10 @@ case "$METHOD" in
 			METHOD="current"
 		fi
 
-		git tag "$(svu "$METHOD" --tag-mode=all-branches --no-metadata)-${PR_TYPE}.${REV}+${BUILD}"
+		git tag "${TAG_ARGS[@]}" "$(svu "$METHOD" --tag-mode=all-branches --no-metadata)-${PR_TYPE}.${REV}+${BUILD}"
 		;;
 	custom)
-		git tag "$CUSTOM"
+		git tag "${TAG_ARGS[@]}" "$CUSTOM"
 		;;
 	*)
 		echo "error: unknown method"

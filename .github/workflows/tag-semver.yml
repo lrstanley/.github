@@ -23,6 +23,10 @@ on:
         description: "Git ref to apply tag to"
         required: false
         type: string
+      annotation:
+        description: "Optional annotation to add to the commit"
+        required: false
+        type: string
     secrets:
       token:
         description: >
@@ -52,3 +56,4 @@ jobs:
         env:
           METHOD: ${{ inputs.method }}
           CUSTOM: ${{ inputs.custom }}
+          ANNOTATION: ${{ inputs.annotation }}
