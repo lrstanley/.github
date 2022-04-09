@@ -43,7 +43,7 @@ function update_field {
 }
 
 function update_field_file {
-	SECTION=$(p2 --format=json --template "${BASE}/readme/sections/$2" <<< "$JSON")
+	SECTION=$(GITHUB_TOKEN='' jq -r '.env |= env' <<< "$JSON" | p2 --format=json --template "${BASE}/readme/sections/$2")
 	update_field "$1" "$SECTION"
 }
 
@@ -57,13 +57,13 @@ function generate_metadata {
 		echo "{}" > /tmp/latest-release.json
 	else /bin/true; fi
 
-	gh api '/user/packages?package_type=container&visibility=public' | jq '[
+	gh api '/user/packages?package_type=container&visibility=public' | GITHUB_TOKEN='' jq '[
 		.[] | select(.repository.full_name == env.GITHUB_REPOSITORY) | {
 			name: .name,
 			repo: .repository.name,
 			user: .owner.login,
 			visibility: .visibility,
-			url: .html_url
+			url: .html_url,
 		}
 	]' > /tmp/ghcr.json
 
@@ -159,6 +159,12 @@ function generate_toc {
 }
 
 function generate {
+	# misc things that may be used.
+	if [ -f go.mod ]; then
+		export GO_MODULE=$(sed -rn 's:^module (.*)$:\1:p' go.mod)
+		README=$(update_field_file "goget" "goget.md")
+	fi
+
 	README=$(update_field_file "header" "header.md")
 	README=$(update_field_file "ghcr" "ghcr.md")
 

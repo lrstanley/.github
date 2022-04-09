@@ -7,6 +7,9 @@
 <!-- template:begin:ghcr -->
 <!-- template:end:ghcr -->
 
+<!-- template:begin:goget -->
+<!-- template:end:goget -->
+
 <!-- template:begin:support -->
 <!-- template:end:support -->
 
