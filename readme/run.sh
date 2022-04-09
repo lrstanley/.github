@@ -125,7 +125,7 @@ function generate_toc {
 		fi
 	done <<< "$(grep -v 'Table of Contents' <<< "$README")"
 
-	echo -e "## Table of Contents\n"
+	echo -e "## :link: Table of Contents\n"
 	for LINE in "${TOC[@]}"; do
 		# strip links, if they exist in the heading.
 		LINE="$(sed -r 's:^([^\[]+)\[(.+)\].*:\1\2:g' <<< "$LINE")"

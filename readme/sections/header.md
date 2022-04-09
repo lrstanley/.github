@@ -1,3 +1,4 @@
+{% spaceless %}
 <p align="center">{{ repo.name }}{% if repo.description %} -- {{ repo.description }}{% endif %}</p>
 <p align="center">
 {%- if latest_release|length > 0 %}
@@ -20,6 +21,14 @@
 {%- if language_count > 0 %}
   <img alt="Code Coverage" src="https://img.shields.io/codecov/c/github/{{ repo.full_name }}/{{ repo.default_branch }}?style=flat-square">
 {% endif -%}
+{%- if "Go" in languages %}
+  <a href="https://pkg.go.dev/github.com/{{ repo.full_name }}">
+    <img alt="Go Documentation" src="https://pkg.go.dev/badge/github.com/{{ repo.full_name }}">
+  </a>
+  <a href="https://goreportcard.com/report/github.com/{{ repo.full_name }}">
+    <img alt="Go Report Card" src="https://goreportcard.com/badge/github.com/{{ repo.full_name }}">
+  </a>
+{%- endif %}
 {%- if repo.has_issues %}
   <img alt="Bug reports" src="https://img.shields.io/github/issues/{{ repo.full_name }}/bug?label=issues&style=flat-square">
   <img alt="Feature requests" src="https://img.shields.io/github/issues/{{ repo.full_name }}/enhancement?label=feature%20requests&style=flat-square">
@@ -39,7 +48,8 @@
 {%- endif %}
   <img alt="Last commit" src="https://img.shields.io/github/last-commit/{{ repo.full_name }}?style=flat-square">
   <a href="{{ repo.html_url }}/discussions/new?category=q-a">
-    <img alt="Ask a Question" src="https://img.shields.io/badge/Discussions-Ask_a_Question!-green?style=flat-square">
+    <img alt="Ask a Question" src="https://img.shields.io/badge/discussions-ask_a_question!-green?style=flat-square">
   </a>
   <a href="https://liam.sh/chat"><img src="https://img.shields.io/badge/discord-bytecord-blue.svg?style=flat-square" alt="Discord Chat"></a>
 </p>
+{% endspaceless %}
