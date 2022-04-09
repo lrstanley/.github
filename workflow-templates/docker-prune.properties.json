@@ -3,8 +3,5 @@
     "description": "Auto-prunes containers no longer labeled, or alpha/pr versions.",
     "categories": [
         "Dockerfile"
-    ],
-    "filePatterns": [
-        "^Dockerfile"
     ]
 }
