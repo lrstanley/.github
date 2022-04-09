@@ -51,9 +51,9 @@ function generate_metadata {
 	gh api "/repos/${GITHUB_REPOSITORY}/actions/workflows" | jq -r '.workflows' > /tmp/workflows.json
 	gh api "/repos/${GITHUB_REPOSITORY}/languages" > /tmp/languages.json
 
-	if ! gh api "/repos/${GITHUB_REPOSITORY}/releases/latest" > /tmp/latest-release.json; then
+	if ! gh api "/repos/${GITHUB_REPOSITORY}/releases/latest" > /tmp/latest-release.json 2> /dev/null; then
 		echo "{}" > /tmp/latest-release.json
-	fi
+	else /bin/true; fi
 
 	gh api '/user/packages?package_type=container&visibility=public' | jq '[
 		.[] | select(.repository.full_name == env.GITHUB_REPOSITORY) | {
