@@ -20,6 +20,8 @@ jobs:
           repository: lrstanley/.github
       - name: generate
         continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ./ghmeta/readme/run.sh README.md
           git config user.name "github-actions"
