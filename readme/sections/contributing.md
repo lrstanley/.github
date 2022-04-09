@@ -5,4 +5,4 @@
 	   community.
    * :clipboard: Please review the [contributing](CONTRIBUTING.md) doc for submitting
      issues/a guide on submitting pull requests and helping out.
-   * :old_key: For anything security related, please review this repositories [security policy](/security/policy).
+   * :old_key: For anything security related, please review this repositories [security policy]({{ repo.html_url }}/security/policy).

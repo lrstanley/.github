@@ -5,4 +5,4 @@
      the community.
    * :raising_hand_man: Take a look at the [support](SUPPORT.md) document on
      guidelines for tips on how to ask the right questions.
-   * :lady_beetle: For all features/bugs/issues/questions/etc, [head over here](/issues/new/choose).
+   * :lady_beetle: For all features/bugs/issues/questions/etc, [head over here]({{ repo.html_url }}/issues/new/choose).

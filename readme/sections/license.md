@@ -3,3 +3,5 @@
 ```
 ${LICENSE}
 ```
+
+_Also located [here](LICENSE)_
