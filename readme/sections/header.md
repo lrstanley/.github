@@ -1,14 +1,8 @@
-{% spaceless %}
 <p align="center">{{ repo.name }}{% if repo.description %} -- {{ repo.description }}{% endif %}</p>
 <p align="center">
 {%- if latest_release|length > 0 %}
   <a href="{{ repo.html_url }}/releases">
     <img alt="Release Downloads" src="https://img.shields.io/github/downloads/{{ repo.full_name }}/total?style=flat-square">
-  </a>
-{%- endif %}
-{%- if repo.license %}
-  <a href="{{ repo.html_url }}/blob/{{ repo.default_branch }}/LICENSE">
-    <img alt="Software License" src="https://img.shields.io/github/license/{{ repo.full_name }}?style=flat-square">
   </a>
 {%- endif %}
 {%- for workflow in workflows %}
@@ -52,4 +46,3 @@
   </a>
   <a href="https://liam.sh/chat"><img src="https://img.shields.io/badge/discord-bytecord-blue.svg?style=flat-square" alt="Discord Chat"></a>
 </p>
-{% endspaceless %}
