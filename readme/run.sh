@@ -124,9 +124,8 @@ function generate_toc {
 		LINE="$(sed -r 's:^([^\[]+)\[(.+)\].*:\1\2:g' <<< "$LINE")"
 
 		# strip any emojis if they exist.
+		LINK="$(sed -r 's/\s+?:([^:]+):\s+?/ \1 /g' <<< "$LINE")"
 		LINE="$(sed -r 's/\s+?:[^:]+:\s+?/ /g' <<< "$LINE")"
-
-		LINK="$LINE"
 
 		# special characters (besides '-') in page links in markdown are deleted
 		# and spaces are converted to dashes.
