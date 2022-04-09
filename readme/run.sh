@@ -32,6 +32,8 @@ function update_field {
 		return
 	else /bin/true; fi
 
+	CONTENT="<!-- do not edit anything in this \"template\" block, its auto-generated -->\n$CONTENT"
+
 	awk \
 		-v CONTENT="$CONTENT" \
 		-v FIELD="$FIELD" \
