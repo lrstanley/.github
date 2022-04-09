@@ -50,6 +50,11 @@ function generate_metadata {
 	gh api "/repos/${GITHUB_REPOSITORY}" > /tmp/repository.json
 	gh api "/repos/${GITHUB_REPOSITORY}/actions/workflows" | jq -r '.workflows' > /tmp/workflows.json
 	gh api "/repos/${GITHUB_REPOSITORY}/languages" > /tmp/languages.json
+
+	if ! gh api "/repos/${GITHUB_REPOSITORY}/releases/latest" > /tmp/latest-release.json; then
+		echo "{}" > /tmp/latest-release.json
+	fi
+
 	gh api '/user/packages?package_type=container&visibility=public' | jq '[
 		.[] | select(.repository.full_name == env.GITHUB_REPOSITORY) | {
 			name: .name,
@@ -79,12 +84,14 @@ function generate_metadata {
 			cat /tmp/workflows.json
 			cat /tmp/languages.json
 			cat /tmp/ghcr-tags.json
+			cat /tmp/latest-release.json
 		} | jq -s '{
 			repo: .[0],
 			workflows: .[1],
 			languages: .[2],
 			language_count: (.[2] | length),
 			ghcr: .[3],
+			latest_release: .[4],
 		}'
 	)
 	echo "$JSON"
@@ -172,7 +179,5 @@ function generate {
 }
 
 setup
-set -x
 generate_metadata
-set +x
 generate

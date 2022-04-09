@@ -1,6 +1,6 @@
 <p align="center">{{ repo.name }}{% if repo.description %} -- {{ repo.description }}{% endif %}</p>
 <p align="center">
-{%- if repo.has_downloads %}
+{%- if latest_release|keys|length > 0 %}
   <a href="{{ repo.html_url }}/releases">
     <img alt="Release Downloads" src="https://img.shields.io/github/downloads/{{ repo.full_name }}/total?style=flat-square">
   </a>
@@ -13,7 +13,7 @@
 {%- for workflow in workflows %}
 {%- if "build" in workflow.name || "release" in workflow.name || "test" in workflow.name %}
   <a href="{{ repo.html_url }}/actions?query=workflow%3A{{ workflow.name }}+event%3Apush">
-    <img alt="GitHub Workflow Status ({{ workflow.name }} @ {{ repo.default_branch }})" src="https://img.shields.io/github/workflow/status/{{ repo.full_name }}/{{ workflow.name }}/{{ repo.default_branch }}?style=flat-square&event=push">
+    <img alt="GitHub Workflow Status ({{ workflow.name }} @ {{ repo.default_branch }})" src="https://img.shields.io/github/workflow/status/{{ repo.full_name }}/{{ workflow.name }}/{{ repo.default_branch }}?label={{ workflow.name|urlencode }}&style=flat-square&event=push">
   </a>
 {%- endif %}
 {% endfor -%}
@@ -27,7 +27,7 @@
   <a href="{{ repo.html_url }}/pulls">
     <img alt="Open Pull Requests" src="https://img.shields.io/github/issues-pr/{{ repo.full_name }}?style=flat-square">
   </a>
-{%- if repo.has_downloads %}
+{%- if latest_release|keys|length > 0 %}
   <a href="{{ repo.html_url }}/releases">
     <img alt="Latest Semver Release" src="https://img.shields.io/github/v/release/{{ repo.full_name }}?style=flat-square">
     <img alt="Latest Release Date" src="https://img.shields.io/github/release-date/{{ repo.full_name }}?style=flat-square">
