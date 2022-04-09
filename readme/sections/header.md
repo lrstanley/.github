@@ -23,10 +23,10 @@
 {% endif -%}
 {%- if "Go" in languages %}
   <a href="https://pkg.go.dev/github.com/{{ repo.full_name }}">
-    <img alt="Go Documentation" src="https://pkg.go.dev/badge/github.com/{{ repo.full_name }}">
+    <img alt="Go Documentation" src="https://pkg.go.dev/badge/github.com/{{ repo.full_name }}?style=flat-square">
   </a>
   <a href="https://goreportcard.com/report/github.com/{{ repo.full_name }}">
-    <img alt="Go Report Card" src="https://goreportcard.com/badge/github.com/{{ repo.full_name }}">
+    <img alt="Go Report Card" src="https://goreportcard.com/badge/github.com/{{ repo.full_name }}?style=flat-square">
   </a>
 {%- endif %}
 {%- if repo.has_issues %}
