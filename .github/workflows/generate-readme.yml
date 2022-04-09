@@ -19,7 +19,11 @@ jobs:
           path: ghmeta
           repository: lrstanley/.github
       - name: generate
+        continue-on-error: true
         run: |
-          cp -av README.md{,.bak}
-          find "$PWD" ! -path "**/ghmeta/**" -type f -name "*.md" -exec ./ghmeta/readme/run.sh "{}" \;
-          diff -up README.md{,.bak}
+          ./ghmeta/readme/run.sh README.md
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add README.md
+          git commit -m "docs(readme): auto-update [skip ci]"
+          git push
