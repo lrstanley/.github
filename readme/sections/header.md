@@ -1,6 +1,6 @@
 <p align="center">{{ repo.name }}{% if repo.description %} -- {{ repo.description }}{% endif %}</p>
 <p align="center">
-{%- if latest_release|keys|length > 0 %}
+{%- if latest_release|length > 0 %}
   <a href="{{ repo.html_url }}/releases">
     <img alt="Release Downloads" src="https://img.shields.io/github/downloads/{{ repo.full_name }}/total?style=flat-square">
   </a>
@@ -27,7 +27,7 @@
   <a href="{{ repo.html_url }}/pulls">
     <img alt="Open Pull Requests" src="https://img.shields.io/github/issues-pr/{{ repo.full_name }}?style=flat-square">
   </a>
-{%- if latest_release|keys|length > 0 %}
+{%- if latest_release|length > 0 %}
   <a href="{{ repo.html_url }}/releases">
     <img alt="Latest Semver Release" src="https://img.shields.io/github/v/release/{{ repo.full_name }}?style=flat-square">
     <img alt="Latest Release Date" src="https://img.shields.io/github/release-date/{{ repo.full_name }}?style=flat-square">
