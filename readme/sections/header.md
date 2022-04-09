@@ -41,6 +41,5 @@
   <a href="{{ repo.html_url }}/discussions/new?category=q-a">
     <img alt="Ask a Question" src="https://img.shields.io/badge/Discussions-Ask_a_Question!-green?style=flat-square">
   </a>
-
-  <a href="https://liam.sh/chat"><img src="https://img.shields.io/badge/discord-bytecord-blue.svg" alt="Discord Chat"></a>
+  <a href="https://liam.sh/chat"><img src="https://img.shields.io/badge/discord-bytecord-blue.svg?style=flat-square" alt="Discord Chat"></a>
 </p>
