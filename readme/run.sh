@@ -64,7 +64,7 @@ function generate_metadata {
 	while read -r PKG; do
 		export PKG
 		export TAGS=$(
-			gh api "/user/packages/container/${PKG}/versions?per_page=100&state=active" \
+			gh api "/user/packages/container/${PKG}/versions?per_page=50&state=active" \
 				| jq -r '.[].metadata.container.tags[]' \
 				| grep -Ei "^master|^main|^v?[0-9]+\.[0-9]+\.[0-9]+$" \
 				| jq -sRr 'split("\n") | map(select(. != ""))'
