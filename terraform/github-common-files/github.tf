@@ -4,11 +4,10 @@ module "base" {
   github_token = var.github-token
 
   filters = {
-    isTemplate  = false
-    isFork      = false
-    isEmpty     = false
-    isPrivate   = false
-    config_repo = false
+    isTemplate = false
+    isFork     = false
+    isEmpty    = false
+    isPrivate  = false
     # name        = ["liam.sh"]
   }
 }
