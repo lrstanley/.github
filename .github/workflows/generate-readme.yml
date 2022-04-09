@@ -3,9 +3,10 @@ name: generate-readme
 on: [workflow_call]
 
 jobs:
-  lint:
+  generate:
     runs-on: ubuntu-latest
     permissions:
+      contents: write
       packages: read
       actions: read
 
