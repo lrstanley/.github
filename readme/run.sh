@@ -173,5 +173,7 @@ function generate {
 }
 
 setup
+set -x
 generate_metadata
+set +x
 generate
