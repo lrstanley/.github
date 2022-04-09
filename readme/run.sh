@@ -18,7 +18,7 @@ function setup {
 	fi
 
 	VERSION="r11"
-	curl -L -sS -O /usr/local/bin/p2 "https://github.com/wrouesnel/p2cli/releases/download/${VERSION}/p2-linux-x86_64"
+	wget -O /usr/local/bin/p2 "https://github.com/wrouesnel/p2cli/releases/download/${VERSION}/p2-linux-x86_64"
 	chmod +x /usr/local/bin/p2
 }
 
