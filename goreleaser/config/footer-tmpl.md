@@ -17,11 +17,11 @@ $ docker run -it --rm ghcr.io/${INPUT_IMAGE_NAME}:{{.Major}}
 
 ## :speech_balloon: What to do next?
 
-   * :raising_hand_man: Running into an issue or want a specific feature? [Take a look here](https://github.com/${GITHUB_REPOSITORY}/issues/new)!
+   * :raising_hand_man: Running into an issue or want a specific feature? [Take a look here](https://github.com/${GITHUB_REPOSITORY}/issues/new/choose)!
    * :watch: Find [previous releases](https://github.com/${GITHUB_REPOSITORY}/releases).
    * :old_key: Find a vulnerability? Check out our [Security and Disclosure](https://github.com/${GITHUB_REPOSITORY}/security/policy) policy.
    * :link: Other useful links:
       * [License](https://github.com/${GITHUB_REPOSITORY}/blob/${DEFAULT_BRANCH}/LICENSE)
-      * [Contributing](https://github.com/${GITHUB_REPOSITORY}/blob/${DEFAULT_BRANCH}/CONTRIBUTING.md)
-      * [Support](https://github.com/${GITHUB_REPOSITORY}/blob/${DEFAULT_BRANCH}/SUPPORT.md)
-      * [Code of Conduct](https://github.com/${GITHUB_REPOSITORY}/blob/${DEFAULT_BRANCH}/CODE_OF_CONDUCT.md)
+      * [Contributing](https://github.com/${GITHUB_REPOSITORY}/blob/${DEFAULT_BRANCH}/.github/CONTRIBUTING.md)
+      * [Support](https://github.com/${GITHUB_REPOSITORY}/blob/${DEFAULT_BRANCH}/.github/SUPPORT.md)
+      * [Code of Conduct](https://github.com/${GITHUB_REPOSITORY}/blob/${DEFAULT_BRANCH}/.github/CODE_OF_CONDUCT.md)
