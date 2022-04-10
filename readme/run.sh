@@ -127,11 +127,11 @@ function generate {
 	README=$(update_field_file "header" "header.md")
 	README=$(update_field_file "ghcr" "ghcr.md")
 
-	if [ -f "SUPPORT.md" ]; then
+	if [ -f ".github/SUPPORT.md" ]; then
 		README=$(update_field_file "support" "support.md")
 	fi
 
-	if [ -f "CONTRIBUTING.md" ]; then
+	if [ -f ".github/CONTRIBUTING.md" ]; then
 		README=$(update_field_file "contributing" "contributing.md")
 	fi
 
