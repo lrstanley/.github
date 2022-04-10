@@ -73,7 +73,7 @@ function generate_metadata {
 		export TAGS=$(
 			gh api "/user/packages/container/${PKG}/versions?per_page=50&state=active" \
 				| jq -r '.[].metadata.container.tags[]' \
-				| grep -Ei "^master|^main|^v?[0-9]+\.[0-9]+\.[0-9]+$" \
+				| grep -Ei "^master|^main|^latest|^v?[0-9]+\.[0-9]+\.[0-9]+$" \
 				| jq -sRr 'split("\n") | map(select(. != ""))'
 		)
 		jq -r '.[] | select(.name == env.PKG) | .tags = (env.TAGS | fromjson)' /tmp/ghcr.json
