@@ -3,7 +3,7 @@
 
 ```console
 {%- for container in ghcr %}
-{%- for tag in container.tags|sorted %}
+{%- for tag in container.tags sorted %}
 $ docker run -it --rm ghcr.io/{{ container.user }}/{{ container.name }}:{{tag}}
 {%- endfor %}
 {%- endfor %}
