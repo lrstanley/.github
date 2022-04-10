@@ -93,21 +93,27 @@ function add_before_hook {
 }
 
 function inject_hooks {
-	if make_has fetch; then
-		add_before_hook "make fetch"
+	if make_has prepare; then
+		add_before_hook "make prepare"
 	else
-		add_before_hook "go mod download"
-		add_before_hook "go mod tidy"
-	fi
+		if make_has fetch; then
+			add_before_hook "make fetch"
+		elif make_has fetch-go; then
+			add_before_hook "make fetch-go"
+		else
+			add_before_hook "go mod download"
+			add_before_hook "go mod tidy"
+		fi
 
-	if make_has clean; then
-		add_before_hook "make clean"
-	fi
+		if make_has clean; then
+			add_before_hook "make clean"
+		fi
 
-	if make_has generate; then
-		add_before_hook "make generate"
-	else
-		add_before_hook "go generate ./..."
+		if make_has generate; then
+			add_before_hook "make generate"
+		else
+			add_before_hook "go generate ./..."
+		fi
 	fi
 }
 

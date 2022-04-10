@@ -19,6 +19,17 @@ on:
           version.
         required: false
         type: string
+      node-version:
+        description: >
+          Node version (e.g. to build frontends).
+        required: false
+        type: string
+      node-cache:
+        description: >
+          What file to cache, when using node. e.g. path to package-lock.json.
+        required: false
+        default: "package-lock.json"
+        type: string
       has-ghcr:
         description: "If GHCR packages exist for this project."
         required: false
@@ -74,9 +85,17 @@ jobs:
       - id: goversion
         if: ${{ !inputs.go-version }}
         run: ./ghmeta/scripts/versions-go.sh ${{ inputs.go-version || 'latest' }}
-      - uses: actions/setup-go@v3
+      - name: install-go
+        uses: actions/setup-go@v3
         with:
           go-version: "${{ inputs.go-version || steps.goversion.outputs.version }}"
+      - name: install-node
+        if: inputs.node-version
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: "npm"
+          cache-dependency-path: ${{ inputs.node-cache }}
       - run: ./ghmeta/goreleaser/run.sh
         env:
           INPUT_HAS_GHCR: ${{ inputs.has-ghcr }}

@@ -11,6 +11,23 @@ name: go-test-matrix
 on:
   workflow_call:
     inputs:
+      go-version:
+        description: >
+          Go version if only a specific version is desired (overrides
+          minor/patch).
+        required: false
+        type: string
+      node-version:
+        description: >
+          Node version (e.g. to build frontends).
+        required: false
+        type: string
+      node-cache:
+        description: >
+          What file to cache, when using node. e.g. path to package-lock.json.
+        required: false
+        default: "package-lock.json"
+        type: string
       num-minor:
         description: "Number of minor semver versions of Go to use"
         required: false
@@ -21,12 +38,6 @@ on:
         required: false
         type: number
         default: 1
-      go-version:
-        description: >
-          Go version if only a specific version is desired (overrides
-          minor/patch).
-        required: false
-        type: string
       run:
         description: >
           Alternative command to run, instead of the builtin testing
@@ -69,8 +80,16 @@ jobs:
           key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-${{ matrix.go-version }}-
-      - uses: actions/setup-go@v3
+      - name: install-go
+        uses: actions/setup-go@v3
         with: { go-version: "${{ matrix.go-version }}" }
+      - name: install-node
+        if: inputs.node-version
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: "npm"
+          cache-dependency-path: ${{ inputs.node-cache }}
       - uses: actions/checkout@v3
       - name: custom-go-test
         if: inputs.run
