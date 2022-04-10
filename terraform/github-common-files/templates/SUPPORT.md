@@ -42,14 +42,14 @@ guidelines outlined in our [security policy][security].
 See [`CONTRIBUTING.md`][contributing] on how to contribute.
 
 <!-- definitions -->
-[coc]: ${repo.url}/blob/${repo.default_branch}/CODE_OF_CONDUCT.md
-[contributing]: ${repo.url}/blob/${repo.default_branch}/CONTRIBUTING.md
+[coc]: ${repo.url}/blob/${repo.default_branch}/.github/CODE_OF_CONDUCT.md
+[contributing]: ${repo.url}/blob/${repo.default_branch}/.github/CONTRIBUTING.md
 [discussions]: ${repo.url}/discussions/categories/q-a
 [issues]: ${repo.url}/issues/new/choose
 [license]: ${repo.url}/blob/${repo.default_branch}/LICENSE
 [pull-requests]: ${repo.url}/issues/new/choose
 [security]: ${repo.url}/security/policy
-[support]: ${repo.url}/blob/${repo.default_branch}/SUPPORT.md
+[support]: ${repo.url}/blob/${repo.default_branch}/.github/SUPPORT.md
 
 [xy]: https://meta.stackexchange.com/questions/66377/what-is-the-xy-problem/66378#66378
 [chat]: ${user.chat_url}

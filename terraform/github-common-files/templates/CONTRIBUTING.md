@@ -129,11 +129,11 @@ Below are a few guidelines if you would like to contribute:
    * [Code of Conduct][coc].
 
 <!-- definitions -->
-[coc]: ${repo.url}/blob/${repo.default_branch}/CODE_OF_CONDUCT.md
+[coc]: ${repo.url}/blob/${repo.default_branch}/.github/CODE_OF_CONDUCT.md
 [dco]: https://developercertificate.org/
 [discussions]: ${repo.url}/discussions
 [issues]: ${repo.url}/issues/new/choose
 [license]: ${repo.url}/blob/${repo.default_branch}/LICENSE
 [pull-requests]: ${repo.url}/issues/new/choose
 [security]: ${repo.url}/security/policy
-[support]: ${repo.url}/blob/${repo.default_branch}/SUPPORT.md
+[support]: ${repo.url}/blob/${repo.default_branch}/.github/SUPPORT.md

@@ -21,22 +21,22 @@ locals {
       skip_ci   = true
     }
     "CONTRIBUTING.md" = {
-      path      = "CONTRIBUTING.md"
+      path      = ".github/CONTRIBUTING.md"
       languages = []
       skip_ci   = true
     }
     "CODE_OF_CONDUCT.md" = {
-      path      = "CODE_OF_CONDUCT.md"
+      path      = ".github/CODE_OF_CONDUCT.md"
       languages = []
       skip_ci   = true
     }
     "SUPPORT.md" = {
-      path      = "SUPPORT.md"
+      path      = ".github/SUPPORT.md"
       languages = []
       skip_ci   = true
     }
     "SECURITY.md" = {
-      path      = "SECURITY.md"
+      path      = ".github/SECURITY.md"
       languages = ["*"]
       skip_ci   = true
     }
