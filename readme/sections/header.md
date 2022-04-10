@@ -6,7 +6,7 @@
   </a>
 {%- endif %}
 {%- for workflow in workflows %}
-{%- if "build" in workflow.name || "release" in workflow.name || "test" in workflow.name %}
+{%- if "build" in workflow.name || "test" in workflow.name %}
   <a href="{{ repo.html_url }}/actions?query=workflow%3A{{ workflow.name }}+event%3Apush">
     <img alt="GitHub Workflow Status ({{ workflow.name }} @ {{ repo.default_branch }})" src="https://img.shields.io/github/workflow/status/{{ repo.full_name }}/{{ workflow.name }}/{{ repo.default_branch }}?label={{ workflow.name|urlencode }}&style=flat-square&event=push">
   </a>
