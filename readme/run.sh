@@ -99,7 +99,7 @@ function generate_metadata {
 	echo "$JSON"
 }
 
-function generate_toc_new {
+function generate_toc {
 	TOC=$(
 		gh api \
 			-X POST \
@@ -110,7 +110,9 @@ function generate_toc_new {
 	)
 
 	echo -e "## :link: Table of Contents\n"
+
 	while read -r INDENT ID NAME; do
+		INDENT=$(($((INDENT - 1)) * 2))
 		printf "%${INDENT}s- [%s](%s)\n" '' "$NAME" "$ID"
 	done <<< "$TOC"
 }
@@ -138,7 +140,7 @@ function generate {
 		README=$(update_field_file "license" "license.md")
 	fi
 
-	README=$(update_field "toc" "$(generate_toc_new)")
+	README=$(update_field "toc" "$(generate_toc)")
 
 	echo -e "$README" > "$FILEPATH"
 }
