@@ -8,6 +8,8 @@
 
 name: go-release
 
+# TODO: add explicit disable for publishing
+
 on:
   workflow_call:
     inputs:
