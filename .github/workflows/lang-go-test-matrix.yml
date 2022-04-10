@@ -66,6 +66,7 @@ jobs:
       matrix:
         go-version: ${{ fromJSON(needs.go-versions.outputs.versions) }}
     steps:
+      - uses: actions/checkout@v3
       - uses: actions/cache@v3
         with:
           path: |
@@ -84,7 +85,6 @@ jobs:
           node-version: ${{ inputs.node-version }}
           cache: "npm"
           cache-dependency-path: "**/package-lock.json"
-      - uses: actions/checkout@v3
       - name: custom-go-test
         if: inputs.run
         run: ${{ inputs.run }}
