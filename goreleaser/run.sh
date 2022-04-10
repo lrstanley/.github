@@ -4,12 +4,13 @@
 # testing locally:
 # export GITHUB_EVENT_NAME=push
 # export GITHUB_REF_NAME=master
+# export GITHUB_REF_TYPE=branch
 # export GITHUB_REPOSITORY_OWNER=lrstanley
-# export GITHUB_REPOSITORY=lrstanley/liam.sh
+# export GITHUB_REPOSITORY=lrstanley/vault-unseal
 # export INPUT_ARCHIVES=false
 # export INPUT_DRAFT=false
 # export INPUT_HAS_GHCR=true
-# export INPUT_IMAGE_NAME=liam.sh
+# export INPUT_IMAGE_NAME=vault-unseal
 
 set -o pipefail
 export BASE="$(readlink -f "$(dirname "$0")/..")"
@@ -76,14 +77,14 @@ function make_has {
 }
 
 function inject_pre {
-	if [ -f ".goreleaser.pre.yml" ]; then
-		yaml '. *n= load(".goreleaser.pre.yml")'
+	if [ -f ".github/ci-config.yml" ]; then
+		yaml '. *n (load(".github/ci-config.yml") | .goreleaser.pre // {})' # only new
 	fi
 }
 
 function inject_post {
-	if [ -f ".goreleaser.post.yml" ]; then
-		yaml '. *= load(".goreleaser.post.yml")'
+	if [ -f ".github/ci-config.yml" ]; then
+		yaml '. * (load(".github/ci-config.yml") | .goreleaser.post // {})' # only and replace existing.
 	fi
 }
 
@@ -111,10 +112,12 @@ function inject_hooks {
 }
 
 function inject_builds {
-	if [ -f ".builds.yml" ]; then
-		yaml '.builds = ([load(".builds.yml")] | flatten)'
+	if [ -f ".github/ci-config.yml" ]; then
+		# custom build array.
+		yaml '.builds = ([(load(".github/ci-config.yml") | .goreleaser.builds // {})] | flatten)'
 	fi
 
+	# merge any fields we have defined that each build doesn't.
 	yaml '.builds = [(.builds[] *n load(env(BASE) + "/goreleaser/config/build-fields.yml"))]'
 }
 
