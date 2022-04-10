@@ -46,6 +46,7 @@ jobs:
         with:
           ref: ${{ inputs.ref }}
           token: ${{ secrets.token }}
+          fetch-depth: 0
       - run: git fetch --force --tags
       - name: git-clone-tools-repo
         uses: actions/checkout@v3
