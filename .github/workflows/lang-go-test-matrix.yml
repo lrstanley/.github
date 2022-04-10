@@ -22,12 +22,6 @@ on:
           Node version (e.g. to build frontends).
         required: false
         type: string
-      node-cache:
-        description: >
-          What file to cache, when using node. e.g. path to package-lock.json.
-        required: false
-        default: "package-lock.json"
-        type: string
       num-minor:
         description: "Number of minor semver versions of Go to use"
         required: false
@@ -89,7 +83,7 @@ jobs:
         with:
           node-version: ${{ inputs.node-version }}
           cache: "npm"
-          cache-dependency-path: ${{ inputs.node-cache }}
+          cache-dependency-path: "**/package-lock.json"
       - uses: actions/checkout@v3
       - name: custom-go-test
         if: inputs.run

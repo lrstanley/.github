@@ -24,12 +24,6 @@ on:
           Node version (e.g. to build frontends).
         required: false
         type: string
-      node-cache:
-        description: >
-          What file to cache, when using node. e.g. path to package-lock.json.
-        required: false
-        default: "package-lock.json"
-        type: string
       has-ghcr:
         description: "If GHCR packages exist for this project."
         required: false
@@ -95,7 +89,7 @@ jobs:
         with:
           node-version: ${{ inputs.node-version }}
           cache: "npm"
-          cache-dependency-path: ${{ inputs.node-cache }}
+          cache-dependency-path: "**/package-lock.json"
       - run: ./ghmeta/goreleaser/run.sh
         env:
           INPUT_HAS_GHCR: ${{ inputs.has-ghcr }}
