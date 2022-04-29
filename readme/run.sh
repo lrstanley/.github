@@ -4,6 +4,7 @@
 # TODO: this could probably be a simple go cli tool, rather than a bash script.
 # or maybe its own action?
 
+set -x
 set -o pipefail
 export BASE=$(readlink -f "$(dirname "$0")/..")
 
