@@ -27,7 +27,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.token }}
         run: |
-          set -e
           ./ghmeta/readme/run.sh README.md
           set -x
           git config user.name "github-actions"
