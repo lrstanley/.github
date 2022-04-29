@@ -57,7 +57,7 @@ function generate_metadata {
 		echo "{}" > /tmp/latest-release.json
 	else /bin/true; fi
 
-	gh api '/user/packages?package_type=container&visibility=public' | GITHUB_TOKEN='' jq '[
+	gh api '/user/packages?package_type=container&visibility=public' 2> /dev/null | GITHUB_TOKEN='' jq '[
 		.[] | select(.repository.full_name == env.GITHUB_REPOSITORY) | {
 			name: .name,
 			repo: .repository.name,
@@ -69,6 +69,10 @@ function generate_metadata {
 
 	# get the tags for each ghcr container.
 	while read -r PKG; do
+		if [ -z "$PKG" ]; then
+			continue
+		fi
+
 		export PKG
 		export TAGS=$(
 			gh api "/user/packages/container/${PKG}/versions?per_page=50&state=active" \
