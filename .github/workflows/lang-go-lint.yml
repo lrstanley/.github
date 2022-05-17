@@ -103,7 +103,7 @@ jobs:
         run: |
           set -ex
 
-          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.45.2
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.46.2
 
           golangci-lint run --new-from-rev "$GITHUB_SHA" --out-format github-actions,json:results.json --issues-exit-code 0
 
