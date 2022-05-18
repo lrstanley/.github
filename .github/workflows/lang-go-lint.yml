@@ -106,6 +106,9 @@ jobs:
           curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.46.2
 
           # temp disable gocritic: https://github.com/golangci/golangci-lint/issues/2851
+          if [ -f .golangci.yml ];then
+            sed -ri '/gocritic/d' .golangci.yml
+          fi
           golangci-lint run --disable gocritic --new-from-rev "$GITHUB_SHA" --out-format github-actions,json:results.json --issues-exit-code 0
 
           ERRORS=$(jq -cr '([.Issues[].Severity | select(. | IN("failure", "error", "fail"))] | length) // 0' results.json)
