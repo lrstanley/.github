@@ -107,7 +107,7 @@ jobs:
 
           # temp disable gocritic: https://github.com/golangci/golangci-lint/issues/2851
           if [ -f .golangci.yml ];then
-            sed -ri '/gocritic/d' .golangci.yml
+            sed -ri '/- gocritic/d' .golangci.yml
           fi
           golangci-lint run --disable gocritic --new-from-rev "$GITHUB_SHA" --out-format github-actions,json:results.json --issues-exit-code 0
 
