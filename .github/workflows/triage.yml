@@ -61,7 +61,7 @@ jobs:
           github-token: ${{ secrets.token }}
       - name: label-pull-requests
         if: github.event_name == 'pull_request_target'
-        uses: actions/labeler@9fd24f1f9d6ceb64ba34d181b329ee72f99978a0
+        uses: lrstanley/labeler@f1a046e18d0a784320bb891cbbc5b6282d682e63
         with:
           configuration-path: ./ghmeta/triage/label-pull-requests.yml
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
