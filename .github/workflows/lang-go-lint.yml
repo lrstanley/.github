@@ -129,8 +129,11 @@ jobs:
         with:
           go-version: ${{ needs.go-version.outputs.version }}
       - run: |
+          go generate -x ./...
           if [ -f "Makefile" ] && grep -q "^lint-go:" Makefile; then
             make lint-go
+          [ -f "Makefile" ] && grep -q "^go-lint:" Makefile; then
+            make go-lint
           elif [ -f "Makefile" ] && grep -q "^lint:" Makefile; then
             make lint
           fi

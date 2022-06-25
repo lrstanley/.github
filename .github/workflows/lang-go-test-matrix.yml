@@ -91,12 +91,15 @@ jobs:
       - name: standard-go-test
         if: ${{ !inputs.run }}
         run: |
+          go generate -x ./...
           if [ -f "Makefile" ] && grep -q "^prepare:" Makefile; then
             make prepare
           fi
 
           if [ -f "Makefile" ] && grep -q "^test-go:" Makefile; then
             make test-go
+          elif [ -f "Makefile" ] && grep -q "^go-test:" Makefile; then
+            make go-test
           elif [ -f "Makefile" ] && grep -q "^test:" Makefile; then
             make test
           else
