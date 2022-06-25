@@ -93,7 +93,9 @@ function add_before_hook {
 }
 
 function inject_hooks {
-	if make_has prepare; then
+	if make_has go-prepare; then
+		add_before_hook "make go-prepare"
+	elif make_has prepare; then
 		add_before_hook "make prepare"
 	fi
 }

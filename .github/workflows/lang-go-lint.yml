@@ -75,10 +75,10 @@ jobs:
           go-version: ${{ needs.go-version.outputs.version }}
       - run: |
           ./ghmeta/scripts/install-codecov.sh
+          ./ghmeta/scripts/make.sh go-prepare prepare
 
           go test -v -coverprofile=coverage.txt -timeout 3m ./...
           codecov -f coverage.txt
-
   golangci-lint:
     needs: [go-version]
     runs-on: ubuntu-latest
@@ -87,6 +87,11 @@ jobs:
       pull-requests: read
     steps:
       - uses: actions/checkout@v3
+      - name: git-clone-tools-repo
+        uses: actions/checkout@v3
+        with:
+          repository: lrstanley/.github
+          path: ghmeta
       - uses: actions/cache@v3
         with:
           path: |
@@ -102,6 +107,8 @@ jobs:
       - name: parse-results
         run: |
           set -ex
+
+          ./ghmeta/scripts/make.sh go-prepare prepare
 
           curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.46.2
 
@@ -125,19 +132,17 @@ jobs:
     permissions: {}
     steps:
       - uses: actions/checkout@v3
+      - name: git-clone-tools-repo
+        uses: actions/checkout@v3
+        with:
+          repository: lrstanley/.github
+          path: ghmeta
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ needs.go-version.outputs.version }}
       - run: |
-          go generate -x ./...
-          if [ -f "Makefile" ] && grep -q "^lint-go:" Makefile; then
-            make lint-go
-          [ -f "Makefile" ] && grep -q "^go-lint:" Makefile; then
-            make go-lint
-          elif [ -f "Makefile" ] && grep -q "^lint:" Makefile; then
-            make lint
-          fi
-
+          ./ghmeta/scripts/make.sh go-prepare prepare
+          ./ghmeta/scripts/make.sh go-lint lint
   snyk:
     needs: [go-version]
     if: ${{ inputs.scan }}
@@ -149,6 +154,11 @@ jobs:
       statuses: write
     steps:
       - uses: actions/checkout@v3
+      - name: git-clone-tools-repo
+        uses: actions/checkout@v3
+        with:
+          repository: lrstanley/.github
+          path: ghmeta
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ needs.go-version.outputs.version }}
