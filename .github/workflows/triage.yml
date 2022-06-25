@@ -50,18 +50,19 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: lrstanley/.github
+          path: ghmeta
       - name: dependabot-auto-merge
         if: github.event_name == 'pull_request_target'
         continue-on-error: true
         uses: ahmadnassri/action-dependabot-auto-merge@5d98f10d910782d0bb431fc03ae26532543ae184
         with:
-          config: triage/dependabot-auto-merge.yml
+          config: ./ghmeta/triage/dependabot-auto-merge.yml
           github-token: ${{ secrets.token }}
       - name: label-pull-requests
         if: github.event_name == 'pull_request_target'
         uses: actions/labeler@9fd24f1f9d6ceb64ba34d181b329ee72f99978a0
         with:
-          configuration-path: triage/label-pull-requests.yml
+          configuration-path: ./ghmeta/triage/label-pull-requests.yml
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           sync-labels: true
       - name: label-pull-requests-sizes
