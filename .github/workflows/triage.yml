@@ -20,16 +20,15 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: lrstanley/.github
-      # - name: label-issues
-      #   if: >-
-      #     github.event_name == 'issues'
-      #     && (github.event.action == 'opened' || github.event.action == 'edited')
-      #   uses: github/issue-labeler@99b4c5dda477c65f4ef08486b73c5787e1e33601
-      #   with:
-      #     repo-token: "${{ secrets.GITHUB_TOKEN }}"
-      #     # TODO: https://github.com/github/issue-labeler/issues/39
-      #     configuration-path: triage/label-issues.yml
-      #     enable-versioned-regex: 0
+      - name: label-issues
+        if: >-
+          github.event_name == 'issues'
+          && (github.event.action == 'opened' || github.event.action == 'edited')
+        uses: lrstanley/issue-labeler@f8f64eee1c4400a26fdc25658b8512341c8478a5
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          configuration-path: triage/label-issues.yml
+          enable-versioned-regex: 0
       - name: remove-labels
         if: github.event_name == 'issue_comment'
         uses: actions-ecosystem/action-remove-labels@2ce5d41b4b6aa8503e285553f75ed56e0a40bae0
@@ -51,19 +50,18 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: lrstanley/.github
-          path: ghmeta
       - name: dependabot-auto-merge
         if: github.event_name == 'pull_request_target'
         continue-on-error: true
         uses: ahmadnassri/action-dependabot-auto-merge@5d98f10d910782d0bb431fc03ae26532543ae184
         with:
-          config: ./ghmeta/triage/dependabot-auto-merge.yml
+          config: triage/dependabot-auto-merge.yml
           github-token: ${{ secrets.token }}
       - name: label-pull-requests
         if: github.event_name == 'pull_request_target'
         uses: lrstanley/labeler@8ac5d9181f743b651f94b379c0e880dea40bb5c1
         with:
-          configuration-path: ./ghmeta/triage/label-pull-requests.yml
+          configuration-path: triage/label-pull-requests.yml
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           sync-labels: true
       - name: label-pull-requests-sizes
