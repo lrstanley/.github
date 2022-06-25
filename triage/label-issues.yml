@@ -3,4 +3,4 @@ bug:
 crash:
   - "(panic:|exception)"
 breaking:
-  - "be a breaking change to users\\?\n+Yes"
+  - "be a breaking change to users\\?[\\n\\s\\t]+Yes"
