@@ -51,7 +51,8 @@ jobs:
         with:
           repository: lrstanley/.github
       - name: dependabot-auto-merge
-        if: github.event_name == 'pull_request_target' && secrets.token
+        if: github.event_name == 'pull_request_target'
+        continue-on-error: true
         uses: ahmadnassri/action-dependabot-auto-merge@5d98f10d910782d0bb431fc03ae26532543ae184
         with:
           config: triage/dependabot-auto-merge.yml
