@@ -1,7 +1,6 @@
 bug:
   - "panic:"
 crash:
-  - "panic:"
-  - "exception"
+  - "(panic:|exception)"
 breaking:
-  - "be a breaking change[^\n]+\n+Yes"
+  - "be a breaking change to users\\?\n+Yes"
