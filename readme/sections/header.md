@@ -1,4 +1,6 @@
+{%- if not options.nodescription %}
 <p align="center">{{ repo.name }}{% if repo.description %} -- {{ repo.description }}{% endif %}</p>
+{%- endif %}
 <p align="center">
 {%- if latest_release|length > 0 %}
   <a href="{{ repo.html_url }}/releases">

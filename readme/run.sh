@@ -22,6 +22,11 @@ function setup {
 	chmod +x /usr/local/bin/p2
 }
 
+function read_field {
+	FIELD="$1"
+	sed -rn '/<!--\s+?template:define:'"$FIELD"'/,/-->/{ /<!--/! { /-->/! p } }' <<< "$README"
+}
+
 # usage: stdin | update_field "key" "my-content" | stdout
 function update_field {
 	FIELD="$1"
@@ -83,6 +88,9 @@ function generate_metadata {
 		jq -r '.[] | select(.name == env.PKG) | .tags = (env.TAGS | fromjson)' /tmp/ghcr.json
 	done <<< "$(jq -r '.[].name' /tmp/ghcr.json)" | jq -sr '.' > /tmp/ghcr-tags.json
 
+	# any settings that might be in the readme.
+	read_field "options" > /tmp/options.json
+
 	# generate a single object to pass into templates.
 	export JSON=$(
 		{
@@ -91,6 +99,7 @@ function generate_metadata {
 			cat /tmp/languages.json
 			cat /tmp/ghcr-tags.json
 			cat /tmp/latest-release.json
+			cat /tmp/options.json
 		} | jq -s '{
 			repo: .[0],
 			workflows: .[1],
@@ -98,6 +107,7 @@ function generate_metadata {
 			language_count: (.[2] | length),
 			ghcr: .[3],
 			latest_release: .[4],
+			options: (.[5] // {}),
 		}'
 	)
 	echo "$JSON"
