@@ -15,7 +15,6 @@ resource "github_repository_webhook" "discord" {
   for_each = { for repo in module.base.repositories : repo.name => repo }
 
   repository = each.value.name
-  name       = "discord-webhook"
 
   configuration {
     url          = sensitive(var.discord-webhook-url)
