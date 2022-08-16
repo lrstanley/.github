@@ -110,7 +110,7 @@ jobs:
 
           ./ghmeta/scripts/make.sh go-prepare prepare
 
-          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.46.2
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.48.0
 
           # temp disable gocritic: https://github.com/golangci/golangci-lint/issues/2851
           if [ -f .golangci.yml ];then
