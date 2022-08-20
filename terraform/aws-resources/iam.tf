@@ -46,6 +46,7 @@ data "aws_iam_policy_document" "cdn_user" {
       "s3:PutObject",
       "s3:GetObject",
       "s3:PutObjectAcl",
+      "s3:List*",
     ]
   }
 }
