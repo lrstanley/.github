@@ -21,3 +21,13 @@ resource "cloudflare_record" "cdn_acm" {
   proxied         = false
   allow_overwrite = true
 }
+
+resource "cloudflare_record" "cdn" {
+  zone_id = lookup(data.cloudflare_zones.cdn_domain.zones[0], "id")
+
+  name            = local.cdn_subdomain
+  type            = "CNAME"
+  value           = module.cdn.cloudfront_distribution_domain_name
+  proxied         = false
+  allow_overwrite = true
+}
