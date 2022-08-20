@@ -13,3 +13,7 @@ variable "aws_access_key_id" {
 variable "aws_secret_access_key" {
   sensitive = true
 }
+
+variable "cloudflare_api_token" {
+  sensitive = true
+}

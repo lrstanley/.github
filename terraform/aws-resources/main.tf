@@ -12,6 +12,11 @@ terraform {
       source  = "hashicorp/aws"
       version = "4.27.0"
     }
+
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "3.21.0"
+    }
   }
 
   required_version = ">= 1.0.0"
@@ -28,4 +33,8 @@ provider "aws" {
       repository = "github.com/lrstanley/.github"
     }
   }
+}
+
+provider "cloudflare" {
+  api_token = var.cloudflare_api_token
 }
