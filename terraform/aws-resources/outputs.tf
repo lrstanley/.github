@@ -11,3 +11,17 @@ output "outline_secret_key" {
   value     = aws_iam_access_key.outline.secret
   sensitive = true
 }
+
+output "cdn_bucket" {
+  value = aws_s3_bucket.cdn.id
+}
+
+output "cdn_access_key" {
+  value     = aws_iam_access_key.cdn.id
+  sensitive = true
+}
+
+output "cdn_secret_key" {
+  value     = aws_iam_access_key.cdn.secret
+  sensitive = true
+}
