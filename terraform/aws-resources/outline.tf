@@ -53,7 +53,6 @@ resource "aws_iam_access_key" "outline" {
 
 data "aws_iam_policy_document" "outline_s3" {
   statement {
-    sid       = "outline-s3"
     effect    = "Allow"
     resources = [aws_s3_bucket.outline.arn]
 
