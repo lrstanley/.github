@@ -14,7 +14,40 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "cdn" {
 
 resource "aws_s3_bucket_acl" "cdn" {
   bucket = aws_s3_bucket.cdn.id
-  acl    = "public-read"
+  acl    = "private"
+}
+
+data "aws_iam_policy_document" "cdn_s3" {
+  statement {
+    actions   = ["s3:GetObject"]
+    resources = [aws_s3_bucket.cdn.arn, "${aws_s3_bucket.cdn.arn}/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = module.cdn.cloudfront_origin_access_identity_iam_arns
+    }
+  }
+
+  statement {
+    actions = [
+      "s3:GetObjectAcl",
+      "s3:DeleteObject",
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:PutObjectAcl",
+    ]
+    resources = [aws_s3_bucket.cdn.arn, "${aws_s3_bucket.cdn.arn}/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = aws_iam_user.cdn.arn
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "cdn" {
+  bucket = aws_s3_bucket.cdn.id
+  policy = data.aws_iam_policy_document.cdn_s3.json
 }
 
 resource "aws_s3_bucket_public_access_block" "cdn" {
@@ -34,7 +67,7 @@ resource "aws_iam_access_key" "cdn" {
   user = aws_iam_user.cdn.name
 }
 
-data "aws_iam_policy_document" "cdn_s3" {
+data "aws_iam_policy_document" "cdn_user" {
   statement {
     effect    = "Allow"
     resources = [aws_s3_bucket.cdn.arn, "${aws_s3_bucket.cdn.arn}/*"]
@@ -52,7 +85,7 @@ data "aws_iam_policy_document" "cdn_s3" {
 resource "aws_iam_user_policy" "cdn_s3" {
   name   = "cdn-s3"
   user   = aws_iam_user.cdn.name
-  policy = data.aws_iam_policy_document.cdn_s3.json
+  policy = data.aws_iam_policy_document.cdn_user.json
 }
 
 resource "aws_s3_bucket_intelligent_tiering_configuration" "cdn" {
