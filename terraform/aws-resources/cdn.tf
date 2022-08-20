@@ -40,7 +40,7 @@ data "aws_iam_policy_document" "cdn_s3" {
 
     principals {
       type        = "AWS"
-      identifiers = aws_iam_user.cdn.arn
+      identifiers = [aws_iam_user.cdn.arn]
     }
   }
 }
