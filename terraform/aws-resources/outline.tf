@@ -72,25 +72,12 @@ resource "aws_iam_user_policy" "outline_s3" {
   policy = data.aws_iam_policy_document.outline_s3.json
 }
 
-resource "aws_s3_bucket_lifecycle_configuration" "outline" {
+resource "aws_s3_bucket_intelligent_tiering_configuration" "outline" {
   bucket = aws_s3_bucket.outline.id
+  name   = "all-objects"
 
-  rule {
-    id     = "transitions"
-    status = "Enabled"
-
-    abort_incomplete_multipart_upload {
-      days_after_initiation = 7
-    }
-
-    transition {
-      days          = 30
-      storage_class = "STANDARD_IA"
-    }
-
-    transition {
-      days          = 60
-      storage_class = "GLACIER"
-    }
+  tiering {
+    access_tier = "ARCHIVE_ACCESS"
+    days        = 180
   }
 }
