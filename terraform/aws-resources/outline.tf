@@ -21,9 +21,9 @@ resource "aws_s3_bucket_public_access_block" "outline" {
   bucket = aws_s3_bucket.outline.id
 
   block_public_acls       = false
-  block_public_policy     = true
+  block_public_policy     = false
   ignore_public_acls      = false
-  restrict_public_buckets = true
+  restrict_public_buckets = false
 }
 
 resource "aws_s3_bucket_cors_configuration" "outline" {
@@ -54,7 +54,7 @@ resource "aws_iam_access_key" "outline" {
 data "aws_iam_policy_document" "outline_s3" {
   statement {
     effect    = "Allow"
-    resources = [aws_s3_bucket.outline.arn]
+    resources = [aws_s3_bucket.outline.arn, "${aws_s3_bucket.outline.arn}/*"]
 
     actions = [
       "s3:GetObjectAcl",
