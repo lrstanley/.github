@@ -21,9 +21,9 @@ resource "aws_s3_bucket_public_access_block" "outline" {
   bucket = aws_s3_bucket.outline.id
 
   block_public_acls       = false
-  block_public_policy     = false
+  block_public_policy     = true
   ignore_public_acls      = false
-  restrict_public_buckets = false
+  restrict_public_buckets = true
 }
 
 resource "aws_s3_bucket_cors_configuration" "outline" {
@@ -67,7 +67,7 @@ data "aws_iam_policy_document" "outline_s3" {
 }
 
 resource "aws_iam_user_policy" "outline_s3" {
-  name   = "test"
+  name   = "outline-s3"
   user   = aws_iam_user.outline.name
   policy = data.aws_iam_policy_document.outline_s3.json
 }
