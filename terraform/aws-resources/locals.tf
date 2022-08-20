@@ -1,5 +1,7 @@
 locals {
-  region = "us-east-1"
+  region        = "us-east-1"
+  cdn_subdomain = "cdn"
+  cdn_domain    = "liam.sh"
 }
 
 variable "aws_account_id" {
