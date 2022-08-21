@@ -119,7 +119,9 @@ function generate_toc {
 			-X POST \
 			-H 'Content-Type: text/x-markdown' \
 			--input - /markdown/raw <<< "$README" \
-			| sed -rn 's:.*user-content.* href="(#[^"]+)" .*>\s+?([^<]+)</h([0-9]+)>.*:\3 \1 \2:p' \
+			| sed -rn 's:.*user-content.* href="(#[^"]+)"[^>]+?>\s+?(.*)</h([0-9]+)>.*:\3 \1 \2:p' \
+			| sed -r 's:<[^>]+>.*</[^>]+> +?::g' \
+			| sed -r 's:<[^>]+> +?::g' \
 			| grep -v 'table-of-contents'
 	)
 

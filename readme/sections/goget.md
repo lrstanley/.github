@@ -1,3 +1,3 @@
 ```console
-$ go get -u ${GO_MODULE}@latest
+go get -u ${GO_MODULE}@latest
 ```
