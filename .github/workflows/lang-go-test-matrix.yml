@@ -22,6 +22,18 @@ on:
           Node version (e.g. to build frontends).
         required: false
         type: string
+      node-package-manager:
+        description: >
+          Node package manager (npm/yarn/pnpm/etc).
+        required: false
+        type: string
+        default: "npm"
+      node-package-manager-lock:
+        description: >
+          Node package manager lock file (npm/yarn/pnpm/etc).
+        required: false
+        type: string
+        default: "**/package-lock.json"
       num-minor:
         description: "Number of minor semver versions of Go to use"
         required: false
@@ -88,8 +100,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ inputs.node-version }}
-          cache: "npm"
-          cache-dependency-path: "**/package-lock.json"
+          cache: ${{ inputs.node-package-manager }}
+          cache-dependency-path: ${{ inputs.node-package-manager-lock }}
       - name: custom-go-test
         if: inputs.run
         run: ${{ inputs.run }}
