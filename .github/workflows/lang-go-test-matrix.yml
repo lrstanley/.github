@@ -95,6 +95,13 @@ jobs:
       - name: install-go
         uses: actions/setup-go@v3
         with: { go-version: "${{ matrix.go-version }}" }
+      - name: install pnpm
+        if: inputs.node-package-manager == "pnpm"
+        uses: pnpm/action-setup@10693b3829bf86eb2572aef5f3571dcf5ca9287d
+        id: pnpm-install
+        with:
+          version: latest
+          run_install: false
       - name: install-node
         if: inputs.node-version
         uses: actions/setup-node@v3
