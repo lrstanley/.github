@@ -1,0 +1,49 @@
+# USAGE:
+#   jobs:
+#     node-test:
+#       uses: lrstanley/.github/.github/workflows/lang-node-test.yml@master
+#       with:
+#         node-version: 1.2.3
+
+name: node-test
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: >
+          Node version .
+        required: true
+        type: string
+      node-package-manager:
+        description: >
+          Node package manager (npm/yarn/pnpm/etc).
+        required: false
+        type: string
+        default: "npm"
+
+jobs:
+  make:
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - uses: actions/checkout@v3
+      - name: git-clone-tools-repo
+        uses: actions/checkout@v3
+        with:
+          repository: lrstanley/.github
+          path: ghmeta
+      - name: install-node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ inputs.node-version }}
+      - name: pnpm install
+        if: inputs.node-package-manager == 'pnpm'
+        uses: pnpm/action-setup@10693b3829bf86eb2572aef5f3571dcf5ca9287d
+        id: pnpm-install
+        with:
+          version: latest
+          run_install: false
+      - run: |
+          ./ghmeta/scripts/make.sh node-prepare
+          ./ghmeta/scripts/make.sh node-test
