@@ -21,6 +21,17 @@ on:
           version.
         required: false
         type: string
+      node-version:
+        description: >
+          Node version (e.g. to build frontends).
+        required: false
+        type: string
+      node-package-manager:
+        description: >
+          Node package manager (npm/yarn/pnpm/etc).
+        required: false
+        type: string
+        default: "npm"
       codecov:
         description: >
           Enables Codecov integration (requires running tests at least once).
@@ -162,6 +173,18 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ needs.go-version.outputs.version }}
+      - name: install-node
+        if: inputs.node-version
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ inputs.node-version }}
+      - name: install pnpm
+        if: inputs.node-package-manager == 'pnpm'
+        uses: pnpm/action-setup@10693b3829bf86eb2572aef5f3571dcf5ca9287d
+        id: pnpm-install
+        with:
+          version: latest
+          run_install: false
       - uses: snyk/actions/setup@7fad562681122205233d1242c3bb39598c5393da
       - name: scan-snyk
         continue-on-error: true

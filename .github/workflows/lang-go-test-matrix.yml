@@ -28,12 +28,6 @@ on:
         required: false
         type: string
         default: "npm"
-      node-package-manager-lock:
-        description: >
-          Node package manager lock file (npm/yarn/pnpm/etc).
-        required: false
-        type: string
-        default: "**/package-lock.json"
       num-minor:
         description: "Number of minor semver versions of Go to use"
         required: false
