@@ -1,0 +1,130 @@
+# USAGE:
+#   jobs:
+#     node-lint:
+#       uses: lrstanley/.github/.github/workflows/lang-node-lint.yml@master
+#       with:
+#         node-version: 1.2.3
+
+name: node-lint
+
+on:
+  workflow_call:
+    secrets:
+      SNYK_TOKEN:
+        description: "Snyk token for vulnerability scanning."
+        required: false
+    inputs:
+      node-version:
+        description: >
+          Node version .
+        required: true
+        type: string
+      node-package-manager:
+        description: >
+          Node package manager (npm/yarn/pnpm/etc).
+        required: false
+        type: choice
+        options:
+          - "npm"
+          - "yarn"
+          - "pnpm"
+        default: "npm"
+      scan:
+        description: >
+          If code vulnerability scanning should be enabled.
+        default: True
+        required: False
+        type: boolean
+
+jobs:
+  make:
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - uses: actions/checkout@v3
+      - name: git-clone-tools-repo
+        uses: actions/checkout@v3
+        with:
+          repository: lrstanley/.github
+          path: ghmeta
+      - name: install-node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ inputs.node-version }}
+      - name: pnpm install
+        if: inputs.node-package-manager == 'pnpm'
+        uses: pnpm/action-setup@10693b3829bf86eb2572aef5f3571dcf5ca9287d
+        id: pnpm-install
+        with:
+          version: latest
+          run_install: false
+      - run: |
+          ./ghmeta/scripts/make.sh node-prepare
+          ./ghmeta/scripts/make.sh node-lint
+  snyk:
+    if: ${{ inputs.scan }}
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
+      security-events: write
+      statuses: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: git-clone-tools-repo
+        uses: actions/checkout@v3
+        with:
+          repository: lrstanley/.github
+          path: ghmeta
+      - name: install-node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ inputs.node-version }}
+      - name: pnpm install
+        if: inputs.node-package-manager == 'pnpm'
+        uses: pnpm/action-setup@10693b3829bf86eb2572aef5f3571dcf5ca9287d
+        id: pnpm-install
+        with:
+          version: latest
+          run_install: true
+      - name: npm install
+        if: inputs.node-package-manager == 'npm'
+        id: npm-install
+        run: |
+          set -x
+          find "$PWD" -maxdepth 4 -type f -name "package.json" -printf '%h\n' | while read -r dir; do
+              cd "$dir" || exit
+              npm install --no-audit --no-fund
+          done
+      - name: yarn install
+        if: inputs.node-package-manager == 'yarn'
+        id: yarn-install
+        run: |
+          set -x
+          find "$PWD" -maxdepth 4 -type f -name "package.json" -printf '%h\n' | while read -r dir; do
+              cd "$dir" || exit
+              yarn install
+          done
+      - uses: snyk/actions/setup@7fad562681122205233d1242c3bb39598c5393da
+      - name: scan-snyk
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: |
+          set -x
+          mkdir -vp /tmp/sarif
+
+          find "$PWD" -maxdepth 4 -type f -name "package.json" -printf '%h\n' | while read -r dir; do
+              cd "$dir" || exit
+              ts=$(date +%s)
+              snyk test \
+                  --prune-repeated-subdependencies \
+                  --severity-threshold=medium \
+                  --sarif-file-output="/tmp/sarif/node-$(date +%s).sarif" \
+                  "$dir"
+          done
+      - name: scan-snyk-upload-sarif
+        if: github.event_name != 'pull_request'
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: /tmp/sarif/

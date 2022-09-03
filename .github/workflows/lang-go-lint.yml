@@ -21,17 +21,6 @@ on:
           version.
         required: false
         type: string
-      node-version:
-        description: >
-          Node version (e.g. to build frontends).
-        required: false
-        type: string
-      node-package-manager:
-        description: >
-          Node package manager (npm/yarn/pnpm/etc).
-        required: false
-        type: string
-        default: "npm"
       codecov:
         description: >
           Enables Codecov integration (requires running tests at least once).
@@ -119,7 +108,7 @@ jobs:
         run: |
           set -ex
 
-          ./ghmeta/scripts/make.sh go-prepare prepare
+          ./ghmeta/scripts/make.sh go-prepare
 
           curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.48.0
 
@@ -152,8 +141,8 @@ jobs:
         with:
           go-version: ${{ needs.go-version.outputs.version }}
       - run: |
-          ./ghmeta/scripts/make.sh go-prepare prepare
-          ./ghmeta/scripts/make.sh go-lint lint
+          ./ghmeta/scripts/make.sh go-prepare
+          ./ghmeta/scripts/make.sh go-lint
   snyk:
     needs: [go-version]
     if: ${{ inputs.scan }}
@@ -173,18 +162,6 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ needs.go-version.outputs.version }}
-      - name: install-node
-        if: inputs.node-version
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ inputs.node-version }}
-      - name: install pnpm
-        if: inputs.node-package-manager == 'pnpm'
-        uses: pnpm/action-setup@10693b3829bf86eb2572aef5f3571dcf5ca9287d
-        id: pnpm-install
-        with:
-          version: latest
-          run_install: true
       - uses: snyk/actions/setup@7fad562681122205233d1242c3bb39598c5393da
       - name: scan-snyk
         continue-on-error: true
@@ -192,14 +169,19 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
           set -x
-          snyk test \
-            --all-projects \
-            --detection-depth=4 \
-            --prune-repeated-subdependencies \
-            --severity-threshold=medium \
-            --sarif-file-output=snyk.sarif
+          mkdir -vp /tmp/sarif
+
+          find "$PWD" -maxdepth 4 -type f -name "go.mod" -printf '%h\n' | while read -r dir; do
+              cd "$dir" || exit
+              ts=$(date +%s)
+              snyk test \
+                  --prune-repeated-subdependencies \
+                  --severity-threshold=medium \
+                  --sarif-file-output="/tmp/sarif/go-$(date +%s).sarif" \
+                  "$dir"
+          done
       - name: scan-snyk-upload-sarif
         if: github.event_name != 'pull_request'
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: snyk.sarif
+          sarif_file: /tmp/sarif/

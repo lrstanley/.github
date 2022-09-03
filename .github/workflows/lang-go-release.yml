@@ -88,8 +88,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ inputs.node-version }}
-          cache: "npm"
-          cache-dependency-path: "**/package-lock.json"
+      - name: pnpm install
+        if: inputs.node-package-manager == 'pnpm'
+        uses: pnpm/action-setup@10693b3829bf86eb2572aef5f3571dcf5ca9287d
+        id: pnpm-install
+        with:
+          version: latest
+          run_install: false
       - run: ./ghmeta/goreleaser/run.sh
         env:
           INPUT_HAS_GHCR: ${{ inputs.has-ghcr }}
