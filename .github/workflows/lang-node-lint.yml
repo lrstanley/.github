@@ -23,11 +23,7 @@ on:
         description: >
           Node package manager (npm/yarn/pnpm/etc).
         required: false
-        type: choice
-        options:
-          - "npm"
-          - "yarn"
-          - "pnpm"
+        type: string
         default: "npm"
       scan:
         description: >
