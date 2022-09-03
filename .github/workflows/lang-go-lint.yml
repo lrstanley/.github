@@ -184,7 +184,7 @@ jobs:
         id: pnpm-install
         with:
           version: latest
-          run_install: false
+          run_install: true
       - uses: snyk/actions/setup@7fad562681122205233d1242c3bb39598c5393da
       - name: scan-snyk
         continue-on-error: true
