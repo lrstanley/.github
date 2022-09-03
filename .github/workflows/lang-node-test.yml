@@ -44,6 +44,15 @@ jobs:
         with:
           version: latest
           run_install: false
-      - run: |
+      - name: node-test
+        id: node-test
+        run: |
           ./ghmeta/scripts/make.sh node-prepare
           ./ghmeta/scripts/make.sh node-test
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: playwright-report
+          path: ${{ steps.node-test.outputs.output }}
+          if-no-files-found: warn
+          retention-days: 5
