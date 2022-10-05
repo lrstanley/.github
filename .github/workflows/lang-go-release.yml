@@ -98,7 +98,7 @@ jobs:
       - run: ./ghmeta/goreleaser/run.sh
         env:
           INPUT_HAS_GHCR: ${{ inputs.has-ghcr }}
-          INPUT_IMAGE_NAME: ${{ github.repository_owner }}/${{ inputs.name || github.event.repository.name }}
+          INPUT_IMAGE_NAME: ${{ github.repository_owner }}/${{ inputs.image-name || github.event.repository.name }}
           INPUT_ARCHIVES: ${{ inputs.archives }}
           INPUT_DRAFT: ${{ inputs.draft }}
           INPUT_PR_ID: ${{ github.event.pull_request.number }}
