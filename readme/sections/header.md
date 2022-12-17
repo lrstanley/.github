@@ -16,7 +16,7 @@
 {%- for workflow in workflows %}
 {%- if "build" in workflow.name || "test" in workflow.name %}
   <a href="{{ repo.html_url }}/actions?query=workflow%3A{{ workflow.name }}+event%3Apush">
-    <img title="GitHub Workflow Status ({{ workflow.name }} @ {{ repo.default_branch }})" src="https://img.shields.io/github/workflow/status/{{ repo.full_name }}/{{ workflow.name }}/{{ repo.default_branch }}?label={{ workflow.name|urlencode }}&style=flat-square&event=push">
+    <img title="GitHub Workflow Status ({{ workflow.name }} @ {{ repo.default_branch }})" src="https://img.shields.io/github/actions/workflow/status/{{ repo.full_name }}/{{ workflow.name }}.yml?branch={{ repo.default_branch }}&label={{ workflow.name|urlencode }}&style=flat-square">
   </a>
 {%- endif %}
 {% endfor -%}
