@@ -5,6 +5,10 @@ import { maxSatisfying, parse as parseSemver } from "https://deno.land/std@0.170
 import type { Config, Source, TagsResponseGithub, TagsResponseDockerHub } from "./types.ts"
 import type { SemVer } from "https://deno.land/std@0.170.0/semver/mod.ts"
 
+/**
+ * getImageTags -- returns a list of tags for a given image, from the provided
+ * source repository.
+ */
 async function getImageTags(source: Source): Promise<string[]> {
   let request: Request
 
@@ -26,9 +30,7 @@ async function getImageTags(source: Source): Promise<string[]> {
   } else if (source.repository === "hub.docker.com") {
     request = new Request(
       `https://hub.docker.com/v2/repositories/${source.owner}/${source.image}/tags?page_size=1000`,
-      {
-        method: "GET",
-      }
+      { method: "GET" }
     )
 
     const resp = await fetch(request)
@@ -43,7 +45,10 @@ async function getImageTags(source: Source): Promise<string[]> {
   }
 }
 
-function getLatestSemver(tags: string[], config: Config): string {
+/**
+ * getLatestSemver -- returns the latest semver version from a list of tags.
+ */
+function getLatestSemver(tags: string[], config: Config): SemVer {
   const versions: SemVer[] = []
 
   for (const tag of tags) {
@@ -60,14 +65,24 @@ function getLatestSemver(tags: string[], config: Config): string {
     throw new Error("failed to find latest version")
   }
 
-  return latest.toString()
+  return latest
 }
 
-export async function process(config: Config) {
+/**
+ * processImage -- returns the latest semver version for a given image.
+ */
+export async function processImage(config: Config): Promise<SemVer> {
   log.info(
-    `checking tags for ${config.source.repository}/${config.source.owner}/${config.source.image} (${config.version_range})`
+    `checking tags for ${config.source.repository}/${config.source.owner}/${config.source.image} (from: ${config.file.path})`
   )
 
   const versions = await getImageTags(config.source)
-  log.info(getLatestSemver(versions, config))
+  const latest = getLatestSemver(versions, config)
+  log.info(
+    `found ${latest.toString()} for ${config.source.repository}/${config.source.owner}/${
+      config.source.image
+    }`
+  )
+
+  return latest
 }
