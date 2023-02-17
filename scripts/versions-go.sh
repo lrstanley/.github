@@ -13,8 +13,8 @@ case "$ACTION" in
 		VERSION=$(
 			curl -sSL "$URI" | jq -r '[.[] | select(.stable == true)][0].version'
 		)
-		echo "::set-output name=version::${VERSION}"
-		echo "::set-output name=versions::[\"${VERSION}\"]"
+		echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+		echo "versions=[\"${VERSION}\"]" >> "$GITHUB_OUTPUT"
 		;;
 	many)
 		VERSIONS=$(
@@ -23,10 +23,10 @@ case "$ACTION" in
 				| awk -F. -v minor="$NUM_MINOR" -v patch="$NUM_PATCH" 'seen[$1, $2]++ < patch && length(seen) <= minor' \
 				| jq -sc '.'
 		)
-		echo "::set-output name=versions::${VERSIONS}"
+		echo "versions=${VERSIONS}" >> "$GITHUB_OUTPUT"
 		;;
 	*)
-		echo "::set-output name=version::${ACTION}"
-		echo "::set-output name=versions::[\"${ACTION}\"]"
+		echo "version=${ACTION}" >> "$GITHUB_OUTPUT"
+		echo "versions=[\"${ACTION}\"]" >> "$GITHUB_OUTPUT"
 		;;
 esac

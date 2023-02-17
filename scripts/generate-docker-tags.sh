@@ -68,5 +68,5 @@ else
 	exit 1
 fi
 
-echo "::set-output name=tags::$(sed -r 's:,+$::g' <<< "$TAGS")"
-echo "::set-output name=version::$VERSION"
+echo "tags=$(sed -r 's:,+$::g' <<< "$TAGS")" >> "$GITHUB_OUTPUT"
+echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
