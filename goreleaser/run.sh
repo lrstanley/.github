@@ -93,10 +93,11 @@ function add_before_hook {
 }
 
 function inject_hooks {
-	if make_has go-prepare; then
-		add_before_hook "make go-prepare"
-	elif make_has prepare; then
+	# prefer the more global scope prepare vs just the go one (which might be different for linting).
+	if make_has prepare; then
 		add_before_hook "make prepare"
+	elif make_has go-prepare; then
+		add_before_hook "make go-prepare"
 	fi
 }
 
