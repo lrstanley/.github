@@ -134,6 +134,6 @@ Below are a few guidelines if you would like to contribute:
 [discussions]: ${repo.url}/discussions
 [issues]: ${repo.url}/issues/new/choose
 [license]: ${repo.url}/blob/${repo.default_branch}/LICENSE
-[pull-requests]: ${repo.url}/issues/new/choose
+[pull-requests]: ${repo.url}/pulls?q=is%3Aopen+is%3Apr
 [security]: ${repo.url}/security/policy
 [support]: ${repo.url}/blob/${repo.default_branch}/.github/SUPPORT.md
