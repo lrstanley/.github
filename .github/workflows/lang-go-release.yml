@@ -80,7 +80,7 @@ jobs:
         if: ${{ !inputs.go-version }}
         run: ./ghmeta/scripts/versions-go.sh ${{ inputs.go-version || 'latest' }}
       - name: install-go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version: "${{ inputs.go-version || steps.goversion.outputs.version }}"
       - name: install-node
