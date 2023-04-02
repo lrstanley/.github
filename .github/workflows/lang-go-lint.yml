@@ -70,7 +70,7 @@ jobs:
           key: ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-codecov-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-
-      - uses: actions/setup-go@v3
+      - uses: actions/setup-go@v4
         with:
           go-version: ${{ needs.go-version.outputs.version }}
       - run: |
@@ -101,7 +101,7 @@ jobs:
           key: ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-golangcilint-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-
-      - uses: actions/setup-go@v3
+      - uses: actions/setup-go@v4
         with:
           go-version: ${{ needs.go-version.outputs.version }}
       - name: parse-results
@@ -134,7 +134,7 @@ jobs:
         with:
           repository: lrstanley/.github
           path: ghmeta
-      - uses: actions/setup-go@v3
+      - uses: actions/setup-go@v4
         with:
           go-version: ${{ needs.go-version.outputs.version }}
       - run: |
@@ -156,7 +156,7 @@ jobs:
         with:
           repository: lrstanley/.github
           path: ghmeta
-      - uses: actions/setup-go@v3
+      - uses: actions/setup-go@v4
         with:
           go-version: ${{ needs.go-version.outputs.version }}
       - uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb

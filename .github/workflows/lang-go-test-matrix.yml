@@ -87,7 +87,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-${{ matrix.go-version }}-
       - name: install-go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with: { go-version: "${{ matrix.go-version }}" }
       - name: install-node
         if: inputs.node-version
