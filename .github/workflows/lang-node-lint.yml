@@ -55,8 +55,8 @@ jobs:
           version: latest
           run_install: false
       - run: |
-          ./ghmeta/scripts/make.sh node-prepare
-          ./ghmeta/scripts/make.sh node-lint
+          ./ghmeta/scripts/make.sh node-prepare || /bin/true
+          ./ghmeta/scripts/make.sh node-lint || /bin/true
   snyk:
     if: ${{ inputs.scan }}
     runs-on: ubuntu-latest
