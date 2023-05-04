@@ -25,3 +25,17 @@ output "cdn_secret_key" {
   value     = aws_iam_access_key.cdn.secret
   sensitive = true
 }
+
+output "backup_bucket" {
+  value = aws_s3_bucket.backup.id
+}
+
+output "backup_access_key" {
+  value     = aws_iam_access_key.backup.id
+  sensitive = true
+}
+
+output "backup_secret_key" {
+  value     = aws_iam_access_key.backup.secret
+  sensitive = true
+}
