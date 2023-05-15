@@ -90,7 +90,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: scan-snyk-docker
-        if: inputs.scan && secrets.SNYK_TOKEN
+        if: inputs.scan
         continue-on-error: false
         uses: snyk/actions/docker@7fad562681122205233d1242c3bb39598c5393da
         env:
@@ -99,7 +99,7 @@ jobs:
           image: tmp
           args: --file=${{ inputs.dockerfile }}
       - name: Upload result to GitHub Code Scanning
-        if: inputs.scan && secrets.SNYK_TOKEN
+        if: inputs.scan
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: snyk.sarif
