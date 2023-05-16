@@ -83,6 +83,7 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: "${{ inputs.go-version || steps.goversion.outputs.version }}"
+          cache: false
       - name: install-node
         if: inputs.node-version
         uses: actions/setup-node@v3

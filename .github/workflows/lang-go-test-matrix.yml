@@ -82,7 +82,9 @@ jobs:
             ${{ runner.os }}-go-${{ matrix.go-version }}-
       - name: install-go
         uses: actions/setup-go@v4
-        with: { go-version: "${{ matrix.go-version }}" }
+        with:
+          go-version: "${{ matrix.go-version }}"
+          cache: false
       - name: install-node
         if: inputs.node-version
         uses: actions/setup-node@v3

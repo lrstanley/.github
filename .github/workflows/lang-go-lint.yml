@@ -73,6 +73,7 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version: ${{ needs.go-version.outputs.version }}
+          cache: false
       - run: |
           ./ghmeta/scripts/install-codecov.sh
           ./ghmeta/scripts/make.sh go-prepare prepare || /bin/true
@@ -104,6 +105,7 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version: ${{ needs.go-version.outputs.version }}
+          cache: false
       - name: parse-results
         run: |
           set -ex
@@ -140,6 +142,7 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version: ${{ needs.go-version.outputs.version }}
+          cache: false
       - run: |
           ./ghmeta/scripts/make.sh go-prepare || /bin/true
           ./ghmeta/scripts/make.sh go-lint || /bin/true
@@ -162,6 +165,7 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version: ${{ needs.go-version.outputs.version }}
+          cache: false
       - uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
         if: github.event_name != 'pull_request' && inputs.scan
       - name: scan-snyk
