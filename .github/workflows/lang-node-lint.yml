@@ -92,7 +92,7 @@ jobs:
               cd "$dir" || exit
               npm install --no-audit --no-fund
           done
-      - uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
+      - uses: snyk/actions/setup@b98d498629f1c368650224d6d212bf7dfa89e4bf
         if: github.event_name != 'pull_request' && inputs.scan
       - name: scan-snyk
         if: github.event_name != 'pull_request' && inputs.scan
