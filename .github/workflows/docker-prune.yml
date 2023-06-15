@@ -25,7 +25,7 @@ jobs:
     permissions:
       packages: write
     steps:
-      - uses: snok/container-retention-policy@f617f1ca161a52bce48417eedd76924e71d0b4d9
+      - uses: snok/container-retention-policy@2ebfab771446f9cde79044dab61eec867ac1d62b
         with:
           account-type: personal
           token: ${{ secrets.token }}
@@ -39,7 +39,7 @@ jobs:
     permissions:
       packages: write
     steps:
-      - uses: snok/container-retention-policy@f617f1ca161a52bce48417eedd76924e71d0b4d9
+      - uses: snok/container-retention-policy@2ebfab771446f9cde79044dab61eec867ac1d62b
         with:
           account-type: personal
           token: ${{ secrets.token }}
@@ -54,7 +54,7 @@ jobs:
     permissions:
       packages: write
     steps:
-      - uses: snok/container-retention-policy@f617f1ca161a52bce48417eedd76924e71d0b4d9
+      - uses: snok/container-retention-policy@2ebfab771446f9cde79044dab61eec867ac1d62b
         with:
           account-type: personal
           token: ${{ secrets.token }}
