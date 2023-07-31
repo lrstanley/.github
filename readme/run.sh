@@ -114,6 +114,7 @@ function generate_metadata {
 }
 
 function generate_toc {
+	# use iconv to convert utf-8 to ascii, and remove any non-ascii characters (like emojis).
 	TOC=$(
 		gh api \
 			-X POST \
@@ -122,7 +123,9 @@ function generate_toc {
 			| sed -rn 's:.*user-content.* href="(#[^"]+)"[^>]+?>\s+?(.*)</h([0-9]+)>.*:\3 \1 \2:p' \
 			| sed -r 's:<[^>]+>.*</[^>]+> +?::g' \
 			| sed -r 's:<[^>]+> +?::g' \
-			| grep -v 'table-of-contents'
+			| grep -v 'table-of-contents' \
+			| iconv -c -f utf-8 -t ascii \
+			| sed -r 's: +: :g'
 	)
 
 	echo -e "## :link: Table of Contents\n"
