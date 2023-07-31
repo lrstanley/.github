@@ -94,7 +94,7 @@ jobs:
         run: echo "uses-pnpm=$(find . -mindepth 1 -maxdepth 6 -type f -name pnpm-lock.yaml | grep -q . && echo true || echo false)" >> "$GITHUB_OUTPUT"
       - name: pnpm install
         if: steps.uses-pnpm.outputs.uses-pnpm == 'true'
-        uses: pnpm/action-setup@c3b53f6a16e57305370b4ae5a540c2077a1d50dd
+        uses: pnpm/action-setup@d882d12c64e032187b2edb46d3a0d003b7a43598
         id: pnpm-install
         with:
           version: latest
