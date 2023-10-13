@@ -24,7 +24,7 @@ jobs:
         if: >-
           github.event_name == 'issues'
           && (github.event.action == 'opened' || github.event.action == 'edited')
-        uses: lrstanley/issue-labeler@ddb9716935b8e1002c7a044771daeedb45cef1b3
+        uses: lrstanley/issue-labeler@887e7b20865a30a5211a182ff121fb2f814506da
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           configuration-path: triage/label-issues.yml
