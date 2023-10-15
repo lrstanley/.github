@@ -24,3 +24,9 @@ variable "filters" {
   description = "repository filters to apply"
   type        = any
 }
+
+variable "exclude_names" {
+  description = "repository names to exclude"
+  type        = list(string)
+  default     = []
+}

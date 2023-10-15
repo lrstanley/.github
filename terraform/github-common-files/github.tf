@@ -8,8 +8,9 @@ module "base" {
     isFork     = false
     isEmpty    = false
     isPrivate  = false
-    # name        = ["liam.sh"]
   }
+
+  exclude_names = [".github"]
 }
 
 resource "github_repository_file" "standard_files" {
