@@ -1,0 +1,38 @@
+name: updater
+
+on:
+  schedule:
+    - cron: "0 13 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  goreleaser:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      previous_version: ${{ steps.version.outputs.previous_version }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: version
+        run: |
+          VERSION=$(
+            curl -s \
+              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              "https://api.github.com/repos/goreleaser/goreleaser/releases/latest" \
+                | jq -r '.tag_name' \
+                | sed 's/^v//'
+          )
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "previous_version=$(sed -rn 's:VERSION_GOREL="([^"]+)":\1:p')" >> "$GITHUB_OUTPUT"
+          sed -ri 's:VERSION_GOREL="[^"]+":VERSION_GOREL="'${VERSION}'":g' goreleaser/run.sh
+  goreleaser-create-pr:
+    needs: [goreleaser]
+    uses: lrstanley/.github/.github/workflows/pr-version-updater.yml@master
+    secrets:
+      token: ${{ secrets.USER_PAT }}
+    with:
+      tool: goreleaser
+      chore: deps
+      version: ${{ needs.goreleaser.outputs.version }}
+      previous_version: ${{ needs.goreleaser.outputs.previous_version }}
+      paths: goreleaser/run.sh
