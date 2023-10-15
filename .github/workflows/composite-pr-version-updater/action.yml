@@ -49,7 +49,7 @@ runs:
     - name: create pr
       uses: peter-evans/create-pull-request@153407881ec5c347639a548ade7d8ad1d6740e38
       with:
-        token: ${{ secrets.token }}
+        token: ${{ inputs.token }}
         add-paths: ${{ inputs.paths }}
         title: >-
           update ${{ inputs.tool }}
