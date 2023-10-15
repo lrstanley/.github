@@ -16,7 +16,7 @@ jobs:
             curl -s \
               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
               "https://api.github.com/repos/goreleaser/goreleaser/releases/latest" \
-                | jq -r 'name' \
+                | jq -r '.name' \
                 | sed 's/^v//'
           )
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
@@ -40,7 +40,7 @@ jobs:
             curl -s \
               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
               "https://api.github.com/repos/wrouesnel/p2cli/releases/latest" \
-                | jq -r 'name' \
+                | jq -r '.name' \
                 | sed 's/^v//'
           )
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
@@ -64,7 +64,7 @@ jobs:
             curl -s \
               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
               "https://api.github.com/repos/caarlos0/svu/releases/latest" \
-                | jq -r 'name' \
+                | jq -r '.name' \
                 | sed 's/^v//'
           )
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
@@ -88,7 +88,7 @@ jobs:
             curl -s \
               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
               "https://api.github.com/repos/golangci/golangci-lint/releases/latest" \
-                | jq -r 'name' \
+                | jq -r '.name' \
                 | sed 's/^v//'
           )
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
