@@ -23,7 +23,7 @@ jobs:
                 | sed 's/^v//'
           )
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "previous_version=$(sed -rn 's:VERSION_GOREL="([^"]+)":\1:p')" >> "$GITHUB_OUTPUT"
+          echo "previous_version=$(sed -rn 's:VERSION_GOREL="([^"]+)":\1:p' goreleaser/run.sh)" >> "$GITHUB_OUTPUT"
           sed -ri 's:VERSION_GOREL="[^"]+":VERSION_GOREL="'${VERSION}'":g' goreleaser/run.sh
       - uses: ./.github/workflows/composite-pr-version-updater
         with:
