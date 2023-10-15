@@ -4,6 +4,8 @@
 # TODO: this could probably be a simple go cli tool, rather than a bash script.
 # or maybe its own action?
 
+P2_VERSION="r13"
+
 set -o pipefail
 export BASE=$(readlink -f "$(dirname "$0")/..")
 
@@ -17,8 +19,7 @@ function setup {
 		return
 	fi
 
-	VERSION="r13"
-	wget -q -O /usr/local/bin/p2 "https://github.com/wrouesnel/p2cli/releases/download/${VERSION}/p2-linux-x86_64"
+	wget -q -O /usr/local/bin/p2 "https://github.com/wrouesnel/p2cli/releases/download/${P2_VERSION}/p2-linux-x86_64"
 	chmod +x /usr/local/bin/p2
 }
 

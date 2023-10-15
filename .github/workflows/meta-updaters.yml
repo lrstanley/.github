@@ -8,9 +8,6 @@ on:
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.version.outputs.version }}
-      previous_version: ${{ steps.version.outputs.previous_version }}
     steps:
       - uses: actions/checkout@v4
       - id: version
@@ -33,3 +30,27 @@ jobs:
           version: ${{ steps.version.outputs.version }}
           previous_version: ${{ steps.version.outputs.previous_version }}
           paths: goreleaser/run.sh
+  p2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: version
+        run: |
+          VERSION=$(
+            curl -s \
+              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              "https://api.github.com/repos/wrouesnel/p2cli/releases/latest" \
+                | jq -r '.tag_name' \
+                | sed 's/^v//'
+          )
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "previous_version=$(sed -rn 's:P2_VERSION="([^"]+)":\1:p' readme/run.sh)" >> "$GITHUB_OUTPUT"
+          sed -ri 's:P2_VERSION="[^"]+":P2_VERSION="'${VERSION}'":g' readme/run.sh
+      - uses: ./.github/workflows/composite-pr-version-updater
+        with:
+          token: ${{ secrets.USER_PAT }}
+          tool: p2
+          chore: deps
+          version: ${{ steps.version.outputs.version }}
+          previous_version: ${{ steps.version.outputs.previous_version }}
+          paths: readme/run.sh
