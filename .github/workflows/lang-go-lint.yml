@@ -111,11 +111,7 @@ jobs:
           set -ex
 
           ./ghmeta/scripts/make.sh go-prepare || /bin/true
-
-          # curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.52.2
-
-          # manually install for now, until https://github.com/golangci/golangci-lint/pull/3835 appears in a release.
-          go install github.com/golangci/golangci-lint/cmd/golangci-lint@f08711794c0b3e4606eed0cadf1cc57c11737c01
+          ./ghmeta/scripts/install-golangci-lint.sh
 
           golangci-lint run --new-from-rev "$GITHUB_SHA" --out-format github-actions,json:results.json --issues-exit-code 0
 
