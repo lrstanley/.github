@@ -43,7 +43,7 @@ locals {
     && !repo.data.isDisabled
     && !repo.data.isLocked
     && !repo.data.isMirror
-    && repo.data.name != ".github"
+    && contains(var.exclude_names, repo.name) == false
     && alltrue([for key, value in var.filters : (
       try(contains(value, repo[key]), false)
       || try(contains(value, repo.data[key]), false)
