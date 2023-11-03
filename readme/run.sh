@@ -4,7 +4,7 @@
 # TODO: this could probably be a simple go cli tool, rather than a bash script.
 # or maybe its own action?
 
-P2_VERSION="r18"
+P2_VERSION="r15"
 
 set -o pipefail
 export BASE=$(readlink -f "$(dirname "$0")/..")

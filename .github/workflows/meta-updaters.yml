@@ -10,95 +10,79 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - id: release
+        uses: ./.github/workflows/composite-get-release-version
+        with: { repo: goreleaser/goreleaser }
       - id: version
         run: |
-          VERSION=$(
-            curl -s \
-              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-              "https://api.github.com/repos/goreleaser/goreleaser/releases/latest" \
-                | jq -r '.name' \
-                | sed 's/^v//'
-          )
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "previous_version=$(sed -rn 's:VERSION_GOREL="([^"]+)":\1:p' goreleaser/run.sh)" >> "$GITHUB_OUTPUT"
-          sed -ri 's:VERSION_GOREL="[^"]+":VERSION_GOREL="'${VERSION}'":g' goreleaser/run.sh
+          sed -ri 's:VERSION_GOREL="[^"]+":VERSION_GOREL="'${{ steps.release.outputs.version }}'":g' goreleaser/run.sh
       - uses: ./.github/workflows/composite-pr-version-updater
         with:
           token: ${{ secrets.USER_PAT }}
           tool: goreleaser
           chore: deps
-          version: ${{ steps.version.outputs.version }}
+          version: ${{ steps.release.outputs.version }}
           previous_version: ${{ steps.version.outputs.previous_version }}
           paths: goreleaser/run.sh
+          repo: ${{ steps.release.outputs.repo }}
   p2:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - id: release
+        uses: ./.github/workflows/composite-get-release-version
+        with: { repo: wrouesnel/p2cli }
       - id: version
         run: |
-          VERSION=$(
-            curl -s \
-              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-              "https://api.github.com/repos/wrouesnel/p2cli/releases/latest" \
-                | jq -r '.name' \
-                | sed 's/^v//'
-          )
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "previous_version=$(sed -rn 's:P2_VERSION="([^"]+)":\1:p' readme/run.sh)" >> "$GITHUB_OUTPUT"
-          sed -ri 's:P2_VERSION="[^"]+":P2_VERSION="'${VERSION}'":g' readme/run.sh
+          sed -ri 's:P2_VERSION="[^"]+":P2_VERSION="'${{ steps.release.outputs.version }}'":g' readme/run.sh
       - uses: ./.github/workflows/composite-pr-version-updater
         with:
           token: ${{ secrets.USER_PAT }}
           tool: p2
           chore: deps
-          version: ${{ steps.version.outputs.version }}
+          version: ${{ steps.release.outputs.version }}
           previous_version: ${{ steps.version.outputs.previous_version }}
           paths: readme/run.sh
+          repo: ${{ steps.release.outputs.repo }}
   svu:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - id: release
+        uses: ./.github/workflows/composite-get-release-version
+        with: { repo: wrouesnel/p2cli }
       - id: version
         run: |
-          VERSION=$(
-            curl -s \
-              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-              "https://api.github.com/repos/caarlos0/svu/releases/latest" \
-                | jq -r '.name' \
-                | sed 's/^v//'
-          )
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "previous_version=$(sed -rn 's:SVU_VERSION="([^"]+)":\1:p' scripts/install-svu.sh)" >> "$GITHUB_OUTPUT"
-          sed -ri 's:SVU_VERSION="[^"]+":SVU_VERSION="'${VERSION}'":g' scripts/install-svu.sh
+          sed -ri 's:SVU_VERSION="[^"]+":SVU_VERSION="'${{ steps.release.outputs.version }}'":g' scripts/install-svu.sh
       - uses: ./.github/workflows/composite-pr-version-updater
         with:
           token: ${{ secrets.USER_PAT }}
           tool: svu
           chore: deps
-          version: ${{ steps.version.outputs.version }}
+          version: ${{ steps.release.outputs.version }}
           previous_version: ${{ steps.version.outputs.previous_version }}
           paths: scripts/install-svu.sh
+          repo: ${{ steps.release.outputs.repo }}
   golangci-lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - id: release
+        uses: ./.github/workflows/composite-get-release-version
+        with: { repo: golangci/golangci-lint }
       - id: version
         run: |
-          VERSION=$(
-            curl -s \
-              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-              "https://api.github.com/repos/golangci/golangci-lint/releases/latest" \
-                | jq -r '.name' \
-                | sed 's/^v//'
-          )
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "previous_version=$(sed -rn 's:GCI_VERSION="([^"]+)":\1:p' scripts/install-golangci-lint.sh)" >> "$GITHUB_OUTPUT"
-          sed -ri 's:GCI_VERSION="[^"]+":GCI_VERSION="'${VERSION}'":g' scripts/install-golangci-lint.sh
+          sed -ri 's:GCI_VERSION="[^"]+":GCI_VERSION="'${{ steps.release.outputs.version }}'":g' scripts/install-golangci-lint.sh
       - uses: ./.github/workflows/composite-pr-version-updater
         with:
           token: ${{ secrets.USER_PAT }}
           tool: golangci-lint
           chore: deps
-          version: ${{ steps.version.outputs.version }}
+          version: ${{ steps.release.outputs.version }}
           previous_version: ${{ steps.version.outputs.previous_version }}
           paths: scripts/install-golangci-lint.sh
+          repo: ${{ steps.release.outputs.repo }}

@@ -1,0 +1,32 @@
+name: "get-release-version"
+description: "Fetch latest release for specific github repo"
+inputs:
+  repo:
+    description: "Repo (e.g. owner/repo-name)"
+    required: true
+    type: string
+outputs:
+  repo:
+    description: "Repo (e.g. owner/repo-name)"
+    value: ${{ inputs.repo }}
+  version:
+    description: "Latest release version"
+    value: ${{ steps.version.outputs.version }}
+  release:
+    description: "Latest release json"
+    value: ${{ steps.version.outputs.release }}
+  release_name:
+    description: "Latest release name"
+    value: ${{ steps.version.outputs.release_name }}
+runs:
+  using: "composite"
+  steps:
+    - id: version
+      run: |
+        RELEASE=$(
+        curl -s \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ inputs.repo }}/releases/latest"
+        )
+        echo "version=$(jq -r '.name' <<< "$RELEASE" | sed 's/^v//')" >> "$GITHUB_OUTPUT"
+        echo "release_name=$(jq -r '.name' <<< "$RELEASE")" >> "$GITHUB_OUTPUT"
