@@ -41,12 +41,10 @@ jobs:
     outputs:
       version: ${{ steps.fetch-versions.outputs.version }}
     steps:
-      - name: git-clone-tools-repo
-        uses: actions/checkout@v4
+      - uses: ./composite/go-versions
+        id: fetch-versions
         with:
-          repository: lrstanley/.github
-      - id: fetch-versions
-        run: ./scripts/versions-go.sh ${{ inputs.go-version || 'latest' }}
+          version: ${{ inputs.go-version || 'latest' }}
 
   codecov:
     needs: [go-version]

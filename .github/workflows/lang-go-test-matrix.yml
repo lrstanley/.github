@@ -46,16 +46,12 @@ jobs:
     outputs:
       versions: ${{ steps.fetch-versions.outputs.versions }}
     steps:
-      - name: git-clone-tools-repo
-        uses: actions/checkout@v4
+      - uses: ./composite/go-versions
+        id: fetch-versions
         with:
-          repository: lrstanley/.github
-          path: ghmeta
-      - id: fetch-versions
-        run: ./ghmeta/scripts/versions-go.sh ${{ inputs.go-version || 'many' }}
-        env:
-          NUM_MINOR: ${{ inputs.num-minor }}
-          NUM_PATCH: ${{ inputs.num-patch }}
+          version: ${{ inputs.go-version || 'many' }}
+          num-minor: ${{ inputs.num-minor }}
+          num-patch: ${{ inputs.num-patch }}
   go-test-matrix:
     runs-on: ubuntu-latest
     permissions:

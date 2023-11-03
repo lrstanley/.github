@@ -1,0 +1,56 @@
+name: go-versions
+description: "Fetch go version information"
+inputs:
+  version:
+    description: >
+      latest to fetch latest, 'many' for multiple versions (see num-minor/num-patch),
+      or specific version for overriding from another user input
+    default: "latest"
+  num-minor:
+    description: "Number of minor versions to fetch"
+    default: "2"
+  num-patch:
+    description: "Number of patch versions to fetch"
+    default: "1"
+outputs:
+  version:
+    description: "Latest version"
+    value: ${{ steps.fetch.outputs.version }}
+  versions:
+    description: "Version map from specified input"
+    value: ${{ steps.fetch.outputs.versions }}
+runs:
+  using: "composite"
+  steps:
+    - if: ${{ inputs.version }}
+      id: fetch
+      shell: bash
+      env:
+        ACTION: ${{ inputs.version }}
+        NUM_MINOR: ${{ inputs.num-minor }}
+        NUM_PATCH: ${{ inputs.num-patch }}
+      run: |
+        URI="https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json"
+
+        case "$ACTION" in
+          latest)
+            VERSION=$(
+              curl -sSL "$URI" | jq -r '[.[] | select(.stable == true)][0].version'
+            )
+            echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+            echo "versions=[\"${VERSION}\"]" >> "$GITHUB_OUTPUT"
+            ;;
+          many)
+            VERSIONS=$(
+              curl -sSL "$URI" \
+                | jq -c '.[].version' \
+                | awk -F. -v minor="$NUM_MINOR" -v patch="$NUM_PATCH" 'seen[$1, $2]++ < patch && length(seen) <= minor' \
+                | jq -sc '.'
+            )
+            echo "versions=${VERSIONS}" >> "$GITHUB_OUTPUT"
+            ;;
+          *)
+            echo "version=${ACTION}" >> "$GITHUB_OUTPUT"
+            echo "versions=[\"${ACTION}\"]" >> "$GITHUB_OUTPUT"
+            ;;
+        esac

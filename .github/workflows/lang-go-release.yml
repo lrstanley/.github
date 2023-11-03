@@ -71,14 +71,15 @@ jobs:
           fetch-depth: 0
       - run: git fetch --force --tags
       - name: git-clone-tools-repo
-        if: ${{ !inputs.go-version }}
         uses: actions/checkout@v4
         with:
           repository: lrstanley/.github
           path: ghmeta
-      - id: goversion
+      - uses: ./composite/go-versions
+        id: goversion
         if: ${{ !inputs.go-version }}
-        run: ./ghmeta/scripts/versions-go.sh ${{ inputs.go-version || 'latest' }}
+        with:
+          version: ${{ inputs.go-version || 'latest' }}
       - name: install-go
         uses: actions/setup-go@v4
         with:

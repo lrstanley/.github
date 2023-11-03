@@ -1,4 +1,4 @@
-name: "get-release-version"
+name: get-release-version
 description: "Fetch latest release for specific github repo"
 inputs:
   token:
@@ -7,7 +7,6 @@ inputs:
   repo:
     description: "Repo (e.g. owner/repo-name)"
     required: true
-    type: string
 outputs:
   repo:
     description: "Repo (e.g. owner/repo-name)"

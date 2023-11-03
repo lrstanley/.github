@@ -24,9 +24,7 @@ jobs:
     outputs:
       version: ${{ steps.goversion.outputs.version }}
     steps:
-      - name: git-clone-tools-repo
-        uses: actions/checkout@v4
+      - uses: ./composite/go-versions
+        id: goversion
         with:
-          repository: lrstanley/.github
-      - id: goversion
-        run: ./scripts/versions-go.sh latest
+          version: latest
