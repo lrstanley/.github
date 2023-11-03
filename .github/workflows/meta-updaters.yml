@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: release
-        uses: ./.github/workflows/composite-get-release-version
+        uses: ./composite/get-release-version
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           repo: goreleaser/goreleaser
@@ -19,7 +19,7 @@ jobs:
         run: |
           echo "previous_version=$(sed -rn 's:VERSION_GOREL="([^"]+)":\1:p' goreleaser/run.sh)" >> "$GITHUB_OUTPUT"
           sed -ri 's:VERSION_GOREL="[^"]+":VERSION_GOREL="'${{ steps.release.outputs.version }}'":g' goreleaser/run.sh
-      - uses: ./.github/workflows/composite-pr-version-updater
+      - uses: ./composite/pr-version-updater
         with:
           token: ${{ secrets.USER_PAT }}
           tool: goreleaser
@@ -33,7 +33,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: release
-        uses: ./.github/workflows/composite-get-release-version
+        uses: ./composite/get-release-version
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           repo: wrouesnel/p2cli
@@ -41,7 +41,7 @@ jobs:
         run: |
           echo "previous_version=$(sed -rn 's:P2_VERSION="([^"]+)":\1:p' readme/run.sh)" >> "$GITHUB_OUTPUT"
           sed -ri 's:P2_VERSION="[^"]+":P2_VERSION="'${{ steps.release.outputs.version }}'":g' readme/run.sh
-      - uses: ./.github/workflows/composite-pr-version-updater
+      - uses: ./composite/pr-version-updater
         with:
           token: ${{ secrets.USER_PAT }}
           tool: p2
@@ -55,7 +55,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: release
-        uses: ./.github/workflows/composite-get-release-version
+        uses: ./composite/get-release-version
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           repo: caarlos0/svu
@@ -63,7 +63,7 @@ jobs:
         run: |
           echo "previous_version=$(sed -rn 's:SVU_VERSION="([^"]+)":\1:p' scripts/install-svu.sh)" >> "$GITHUB_OUTPUT"
           sed -ri 's:SVU_VERSION="[^"]+":SVU_VERSION="'${{ steps.release.outputs.version }}'":g' scripts/install-svu.sh
-      - uses: ./.github/workflows/composite-pr-version-updater
+      - uses: ./composite/pr-version-updater
         with:
           token: ${{ secrets.USER_PAT }}
           tool: svu
@@ -77,7 +77,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: release
-        uses: ./.github/workflows/composite-get-release-version
+        uses: ./composite/get-release-version
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           repo: golangci/golangci-lint
@@ -85,7 +85,7 @@ jobs:
         run: |
           echo "previous_version=$(sed -rn 's:GCI_VERSION="([^"]+)":\1:p' scripts/install-golangci-lint.sh)" >> "$GITHUB_OUTPUT"
           sed -ri 's:GCI_VERSION="[^"]+":GCI_VERSION="'${{ steps.release.outputs.version }}'":g' scripts/install-golangci-lint.sh
-      - uses: ./.github/workflows/composite-pr-version-updater
+      - uses: ./composite/pr-version-updater
         with:
           token: ${{ secrets.USER_PAT }}
           tool: golangci-lint
