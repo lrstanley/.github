@@ -75,7 +75,7 @@ jobs:
         with:
           repository: lrstanley/.github
           path: ghmeta
-      - uses: ./composite/go-versions
+      - uses: lrstanley/.github/composite/go-versions@master
         id: goversion
         if: ${{ !inputs.go-version }}
         with:

@@ -46,7 +46,7 @@ jobs:
     outputs:
       versions: ${{ steps.fetch-versions.outputs.versions }}
     steps:
-      - uses: ./composite/go-versions
+      - uses: lrstanley/.github/composite/go-versions@master
         id: fetch-versions
         with:
           version: ${{ inputs.go-version || 'many' }}
