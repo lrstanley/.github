@@ -31,5 +31,5 @@ runs:
             -H "Authorization: Bearer ${{ inputs.token }}" \
             "https://api.github.com/repos/${{ inputs.repo }}/releases/latest"
         )
-        echo "version=$(jq -r '.name' <<< "$RELEASE" | sed 's/^v//')" >> "$GITHUB_OUTPUT"
+        echo "version=$(jq -r '.tag_name' <<< "$RELEASE" | sed 's/^v//')" >> "$GITHUB_OUTPUT"
         echo "release_name=$(jq -r '.name' <<< "$RELEASE")" >> "$GITHUB_OUTPUT"
