@@ -1,6 +1,9 @@
 name: "get-release-version"
 description: "Fetch latest release for specific github repo"
 inputs:
+  token:
+    description: "User-based personal access token"
+    required: true
   repo:
     description: "Repo (e.g. owner/repo-name)"
     required: true
@@ -25,7 +28,7 @@ runs:
       run: |
         RELEASE=$(
         curl -s \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Authorization: Bearer ${{ inputs.token }}" \
             "https://api.github.com/repos/${{ inputs.repo }}/releases/latest"
         )
         echo "version=$(jq -r '.name' <<< "$RELEASE" | sed 's/^v//')" >> "$GITHUB_OUTPUT"
