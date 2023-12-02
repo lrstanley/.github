@@ -32,7 +32,7 @@ resource "aws_s3_bucket_cors_configuration" "outline" {
   cors_rule {
     allowed_headers = ["*"]
     allowed_methods = ["PUT", "POST"]
-    allowed_origins = ["https://outline.docker.hq.liam.sh"]
+    allowed_origins = ["https://outline.docker.hq.liam.sh", "https://outline.ks.liam.sh"]
     expose_headers  = []
     max_age_seconds = 3000
   }
@@ -40,6 +40,7 @@ resource "aws_s3_bucket_cors_configuration" "outline" {
   cors_rule {
     allowed_methods = ["GET"]
     allowed_origins = ["*"]
+    expose_headers  = []
   }
 }
 
