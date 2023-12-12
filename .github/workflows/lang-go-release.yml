@@ -81,7 +81,7 @@ jobs:
         with:
           version: ${{ inputs.go-version || 'latest' }}
       - name: install-go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version: "${{ inputs.go-version || steps.goversion.outputs.version }}"
           cache: false

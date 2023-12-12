@@ -68,7 +68,7 @@ jobs:
           key: ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-codecov-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: ${{ needs.go-version.outputs.version }}
           cache: false
@@ -100,7 +100,7 @@ jobs:
           key: ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-golangcilint-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: ${{ needs.go-version.outputs.version }}
           cache: false
@@ -133,7 +133,7 @@ jobs:
         with:
           repository: lrstanley/.github
           path: ghmeta
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: ${{ needs.go-version.outputs.version }}
           cache: false
@@ -156,7 +156,7 @@ jobs:
         with:
           repository: lrstanley/.github
           path: ghmeta
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: ${{ needs.go-version.outputs.version }}
           cache: false
