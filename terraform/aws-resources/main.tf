@@ -10,16 +10,16 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "4.27.0"
+      version = "5.39.0"
     }
 
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "3.21.0"
+      version = "4.25.0"
     }
   }
 
-  required_version = ">= 1.0.0"
+  required_version = ">= 1.7.0"
 }
 
 provider "aws" {
@@ -34,7 +34,6 @@ provider "aws" {
     }
   }
 
-  skip_get_ec2_platforms      = true
   skip_metadata_api_check     = true
   skip_region_validation      = true
   skip_credentials_validation = true
