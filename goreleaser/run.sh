@@ -15,7 +15,7 @@
 set -o pipefail
 export BASE="$(readlink -f "$(dirname "$0")/..")"
 
-VERSION_GOREL="1.24.0"
+VERSION_GOREL="1.26.2"
 FLAGS=()
 
 function setup_config {
