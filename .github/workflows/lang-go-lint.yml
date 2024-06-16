@@ -14,6 +14,9 @@ on:
       SNYK_TOKEN:
         description: "Snyk token for vulnerability scanning."
         required: false
+      CODECOV_TOKEN:
+        description: "Codecov token for code coverage."
+        required: false
     inputs:
       go-version:
         description: >
@@ -21,12 +24,6 @@ on:
           version.
         required: false
         type: string
-      codecov:
-        description: >
-          Enables Codecov integration (requires running tests at least once).
-        default: True
-        required: False
-        type: boolean
       scan:
         description: >
           If code vulnerability scanning should be enabled.
@@ -48,8 +45,10 @@ jobs:
 
   codecov:
     needs: [go-version]
-    if: inputs.codecov
+    if: env.CODECOV_TOKEN != ''
     runs-on: ubuntu-latest
+    env:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     permissions:
       checks: write
       contents: read
