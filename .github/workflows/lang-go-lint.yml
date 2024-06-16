@@ -78,11 +78,13 @@ jobs:
           go-version: ${{ needs.go-version.outputs.version }}
           cache: false
       - run: |
-          ./ghmeta/scripts/install-codecov.sh
           ./ghmeta/scripts/make.sh go-prepare prepare || /bin/true
 
           go test -v -coverprofile=coverage.txt -timeout 3m ./...
-          codecov -Z -f coverage.txt -r "${{ github.event.repository.name }}"
+      - uses: codecov/codecov-action@125fc84a9a348dbcf27191600683ec096ec9021c
+        with:
+          files: coverage.txt
+          token: ${{ secrets.CODECOV_TOKEN }}
   golangci-lint:
     needs: [go-version]
     runs-on: ubuntu-latest
