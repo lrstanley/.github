@@ -82,7 +82,7 @@ jobs:
           ./ghmeta/scripts/make.sh go-prepare prepare || /bin/true
 
           go test -v -coverprofile=coverage.txt -timeout 3m ./...
-          codecov -f coverage.txt
+          codecov -Z -f coverage.txt -r "${{ github.event.repository.name }}"
   golangci-lint:
     needs: [go-version]
     runs-on: ubuntu-latest
