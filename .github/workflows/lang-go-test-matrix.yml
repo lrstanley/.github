@@ -104,7 +104,7 @@ jobs:
         run: |
           ./ghmeta/scripts/make.sh go-prepare prepare
           RESULTS="$?"
-          if [ "$?" -ne 127 ];then exit "$RESULTS";fi
+          if [ "$?" -gt 0 ] && [ "$?" -ne 127 ];then exit "$RESULTS";fi
 
           ./ghmeta/scripts/make.sh go-test test
           RESULTS="$?"
