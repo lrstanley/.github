@@ -152,6 +152,8 @@ jobs:
           go-version: ${{ needs.go-version.outputs.version }}
           cache: false
       - run: |
+          set +e
+
           ./ghmeta/scripts/make.sh go-prepare
           RESULTS="$?"
           if [ "$?" -gt 0 ] && [ "$?" -ne 127 ];then exit "$RESULTS";fi

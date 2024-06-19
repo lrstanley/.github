@@ -52,6 +52,8 @@ jobs:
           version: latest
           run_install: false
       - run: |
+          set +e
+
           ./ghmeta/scripts/make.sh node-prepare prepare
           RESULTS="$?"
           if [ "$?" -gt 0 ] && [ "$?" -ne 127 ];then exit "$RESULTS";fi
