@@ -44,8 +44,13 @@ jobs:
       - name: node-test
         id: node-test
         run: |
-          ./ghmeta/scripts/make.sh node-prepare || /bin/true
-          ./ghmeta/scripts/make.sh node-test || /bin/true
+          ./ghmeta/scripts/make.sh node-prepare prepare
+          RESULTS="$?"
+          if [ "$?" -gt 0 ] && [ "$?" -ne 127 ];then exit "$RESULTS";fi
+
+          ./ghmeta/scripts/make.sh node-test test
+          RESULTS="$?"
+          if [ "$RESULTS" -ne 127 ];then exit "$RESULTS";fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:

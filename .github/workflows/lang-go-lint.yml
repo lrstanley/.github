@@ -78,7 +78,9 @@ jobs:
           go-version: ${{ needs.go-version.outputs.version }}
           cache: false
       - run: |
-          ./ghmeta/scripts/make.sh go-prepare prepare || /bin/true
+          ./ghmeta/scripts/make.sh go-prepare prepare
+          RESULTS="$?"
+          if [ "$?" -gt 0 ] && [ "$?" -ne 127 ];then exit "$RESULTS";fi
 
           go test -v -coverprofile=coverage.txt -timeout 3m ./...
       - uses: codecov/codecov-action@125fc84a9a348dbcf27191600683ec096ec9021c
@@ -113,9 +115,14 @@ jobs:
           cache: false
       - name: parse-results
         run: |
-          set -ex
+          set -x
 
-          ./ghmeta/scripts/make.sh go-prepare || /bin/true
+          ./ghmeta/scripts/make.sh go-prepare
+          RESULTS="$?"
+          if [ "$?" -gt 0 ] && [ "$?" -ne 127 ];then exit "$RESULTS";fi
+
+          set -e
+
           ./ghmeta/scripts/install-golangci-lint.sh
 
           golangci-lint run --new-from-rev "$GITHUB_SHA" --out-format github-actions,json:results.json --issues-exit-code 0
@@ -145,8 +152,13 @@ jobs:
           go-version: ${{ needs.go-version.outputs.version }}
           cache: false
       - run: |
-          ./ghmeta/scripts/make.sh go-prepare || /bin/true
-          ./ghmeta/scripts/make.sh go-lint || /bin/true
+          ./ghmeta/scripts/make.sh go-prepare
+          RESULTS="$?"
+          if [ "$?" -gt 0 ] && [ "$?" -ne 127 ];then exit "$RESULTS";fi
+
+          ./ghmeta/scripts/make.sh go-lint
+          RESULTS="$?"
+          if [ "$?" -gt 0 ] && [ "$?" -ne 127 ];then exit "$RESULTS";fi
   snyk:
     needs: [go-version]
     if: ${{ inputs.scan }}
@@ -175,7 +187,9 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
-          ./ghmeta/scripts/make.sh go-prepare || /bin/true
+          ./ghmeta/scripts/make.sh go-prepare prepare
+          RESULTS="$?"
+          if [ "$?" -gt 0 ] && [ "$?" -ne 127 ];then exit "$RESULTS";fi
 
           set -x
           mkdir -vp /tmp/sarif
