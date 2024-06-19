@@ -116,6 +116,7 @@ jobs:
       - name: parse-results
         run: |
           set -x
+          set +e
 
           ./ghmeta/scripts/make.sh go-prepare
           RESULTS="$?"
