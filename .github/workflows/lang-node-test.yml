@@ -51,6 +51,8 @@ jobs:
           ./ghmeta/scripts/make.sh node-test test
           RESULTS="$?"
           if [ "$RESULTS" -ne 127 ];then exit "$RESULTS";fi
+
+          exit 0
       - uses: actions/upload-artifact@v4
         if: always()
         with:

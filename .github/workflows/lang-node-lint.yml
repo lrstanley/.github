@@ -59,6 +59,8 @@ jobs:
           ./ghmeta/scripts/make.sh node-test test
           RESULTS="$?"
           if [ "$RESULTS" -ne 127 ];then exit "$RESULTS";fi
+
+          exit 0
   snyk:
     if: ${{ inputs.scan }}
     runs-on: ubuntu-latest

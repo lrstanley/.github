@@ -159,6 +159,8 @@ jobs:
           ./ghmeta/scripts/make.sh go-lint
           RESULTS="$?"
           if [ "$?" -gt 0 ] && [ "$?" -ne 127 ];then exit "$RESULTS";fi
+
+          exit 0
   snyk:
     needs: [go-version]
     if: ${{ inputs.scan }}
