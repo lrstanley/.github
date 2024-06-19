@@ -12,4 +12,4 @@ for i in "$@"; do
 done
 
 echo "no make targets found matching: ${*}"
-exit 1
+exit 127

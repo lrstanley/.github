@@ -102,5 +102,13 @@ jobs:
       - name: standard-go-test
         if: ${{ !inputs.run }}
         run: |
-          ./ghmeta/scripts/make.sh go-prepage prepare || /bin/true
-          ./ghmeta/scripts/make.sh go-test test || GORACE="exitcode=1 halt_on_error=1" go test -v -race -timeout 3m -count 3 -cpu 1,4 ./...
+          ./ghmeta/scripts/make.sh go-prepare prepare
+          RESULTS="$?"
+          if [ "$?" -ne 127 ];then exit "$RESULTS";fi
+
+          ./ghmeta/scripts/make.sh go-test test
+          RESULTS="$?"
+          if [ "$RESULTS" -ne 127 ];then exit "$RESULTS";fi
+
+          set -e
+          GORACE="exitcode=1 halt_on_error=1" go test -v -race -timeout 3m -count 3 -cpu 1,4 ./...
