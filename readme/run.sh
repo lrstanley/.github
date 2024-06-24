@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/bin/bash -eux
 # shellcheck disable=SC2155
 
 # TODO: this could probably be a simple go cli tool, rather than a bash script.
