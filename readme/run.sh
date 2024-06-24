@@ -19,7 +19,8 @@ function setup {
 		return
 	fi
 
-	wget -q -O /usr/local/bin/p2 "https://github.com/wrouesnel/p2cli/releases/download/${P2_VERSION}/p2-linux-x86_64"
+	wget -qO- https://github.com/wrouesnel/p2cli/releases/download/${P2_VERSION}/p2cli_${P2_VERSION}_linux-amd64.tar.gz \
+		| tar -xz --strip-components=1 -C /usr/local/bin/
 	chmod +x /usr/local/bin/p2
 }
 
