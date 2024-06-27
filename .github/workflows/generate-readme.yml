@@ -24,6 +24,7 @@ jobs:
           path: ghmeta
           repository: lrstanley/.github
       - name: generate
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.token }}
         run: |
