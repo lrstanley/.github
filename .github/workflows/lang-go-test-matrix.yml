@@ -102,6 +102,8 @@ jobs:
       - name: standard-go-test
         if: ${{ !inputs.run }}
         run: |
+          set +e
+
           ./ghmeta/scripts/make.sh go-prepare prepare
           RESULTS="$?"
           if [ "$?" -gt 0 ] && [ "$?" -ne 127 ];then exit "$RESULTS";fi
