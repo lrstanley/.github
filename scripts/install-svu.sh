@@ -8,7 +8,7 @@ if [ -f "/usr/local/bin/svu" ]; then
 	exit 0
 fi
 
-SVU_VERSION="2.0.1"
+SVU_VERSION="2.1.1"
 
 echo "installing svu ${SVU_VERSION}"
 curl -sSL "https://github.com/caarlos0/svu/releases/download/v${SVU_VERSION}/svu_${SVU_VERSION}_linux_amd64.tar.gz" \
