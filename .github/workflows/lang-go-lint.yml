@@ -130,7 +130,7 @@ jobs:
 
           ./ghmeta/scripts/install-golangci-lint.sh
 
-          golangci-lint run --new-from-rev "$GITHUB_SHA" --out-format github-actions,json:results.json --issues-exit-code 0
+          golangci-lint run --new-from-rev "$GITHUB_SHA" --out-format colored-line-number,json:results.json --issues-exit-code 0
 
           ERRORS=$(jq -cr '([.Issues[].Severity | select(. | IN("failure", "error", "fail"))] | length) // 0' results.json)
 
