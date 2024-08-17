@@ -115,6 +115,10 @@ Below are a few guidelines if you would like to contribute:
 %{~ endif }
 %{~ endfor }
 
+%{ if can(config.contributing_additional) ~}
+${~ config.contributing_additional ~}
+%{~ endif }
+
 ## :clipboard: References
 
    * [Open Source: How to Contribute](https://opensource.guide/how-to-contribute/)
@@ -127,10 +131,6 @@ Below are a few guidelines if you would like to contribute:
    * :link: Repository [License][license].
    * [Support][support]
    * [Code of Conduct][coc].
-
-%{ if can(config.contributing_additional) ~}
-${~ config.contributing_additional ~}
-%{~ endif }
 
 <!-- definitions -->
 [coc]: ${repo.url}/blob/${repo.default_branch}/.github/CODE_OF_CONDUCT.md
