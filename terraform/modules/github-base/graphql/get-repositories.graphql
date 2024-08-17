@@ -5,6 +5,7 @@
       first: 100
       isFork: false
       isLocked: false
+      isArchived: false
       ownerAffiliations: OWNER
       orderBy: {field: PUSHED_AT, direction: DESC}
       privacy: PUBLIC

@@ -65,8 +65,9 @@ resource "github_repository_file" "standard_files" {
 
   file = each.value.file.path
   content = templatefile("${path.module}/templates/${each.value.template_name}", {
-    user = module.base.user
-    repo = each.value.repo
+    user   = module.base.user
+    repo   = each.value.repo
+    config = module.base.ci_configs[each.value.repo.name]
   })
 
   lifecycle {

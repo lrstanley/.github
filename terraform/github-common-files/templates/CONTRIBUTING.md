@@ -128,6 +128,10 @@ Below are a few guidelines if you would like to contribute:
    * [Support][support]
    * [Code of Conduct][coc].
 
+%{ if can(config.contributing_additional) ~}
+${~ config.contributing_additional ~}
+%{~ endif }
+
 <!-- definitions -->
 [coc]: ${repo.url}/blob/${repo.default_branch}/.github/CODE_OF_CONDUCT.md
 [dco]: https://developercertificate.org/
