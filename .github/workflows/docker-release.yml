@@ -81,7 +81,7 @@ jobs:
             org.opencontainers.image.authors=${{ github.event.repository.owner.name }} <${{ github.event.repository.owner.email || 'unknown' }}>
             org.opencontainers.image.name=${{ inputs.name || github.event.repository.name }}
       - name: docker-build
-        uses: docker/build-push-action@2cdde995de11925a030ce8070c3d77a52ffcf1c0
+        uses: docker/build-push-action@5cd11c3a4ced054e52742c5fd54dca954e0edd85
         with:
           context: ${{ inputs.context }}
           load: true
