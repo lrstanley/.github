@@ -3,7 +3,7 @@
 
 set -o pipefail
 
-GCI_VERSION="1.62.0"
+GCI_VERSION="1.62.2"
 
 echo "installing golangci-lint ${GCI_VERSION}"
 curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin "v${GCI_VERSION}"
