@@ -15,7 +15,7 @@
 set -o pipefail
 export BASE="$(readlink -f "$(dirname "$0")/..")"
 
-# renovate: datasource=github-tag depName=goreleaser/goreleaser
+# renovate: datasource=github-release depName=goreleaser/goreleaser
 GORELEASER_VERSION="1.26.2"
 FLAGS=()
 
