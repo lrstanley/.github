@@ -92,7 +92,7 @@ jobs:
       - name: scan-snyk-docker
         if: github.event_name != 'pull_request' && inputs.scan
         continue-on-error: true
-        uses: snyk/actions/docker@b98d498629f1c368650224d6d212bf7dfa89e4bf
+        uses: snyk/actions/docker@cdb760004ba9ea4d525f2e043745dfe85bb9077e
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
