@@ -52,7 +52,7 @@ jobs:
           repository: lrstanley/.github
       - name: label-pull-requests
         if: github.event_name == 'pull_request_target'
-        uses: actions/labeler@ac9175f8a1f3625fd0d4fb234536d26811351594
+        uses: actions/labeler@d24f7f3731b2a06433c0bccc364d560c5329c48f
         with:
           configuration-path: triage/label-pull-requests.yml
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
