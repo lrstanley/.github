@@ -51,7 +51,7 @@ runs:
   using: "composite"
   steps:
     - name: create pr
-      uses: peter-evans/create-pull-request@v5
+      uses: peter-evans/create-pull-request@v6
       with:
         token: ${{ inputs.token }}
         add-paths: ${{ inputs.paths }}
