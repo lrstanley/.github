@@ -87,7 +87,7 @@ jobs:
           set -e
 
           go test -v -coverprofile=coverage.txt -timeout 3m ./...
-      - uses: codecov/codecov-action@e28ff129e5465c2c0dcc6f003fc735cb6ae0c673
+      - uses: codecov/codecov-action@v4
         with:
           files: coverage.txt
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -188,7 +188,7 @@ jobs:
         with:
           go-version: ${{ needs.go-version.outputs.version }}
           cache: false
-      - uses: snyk/actions/setup@b98d498629f1c368650224d6d212bf7dfa89e4bf
+      - uses: snyk/actions/setup@0.4.0
         if: github.event_name != 'pull_request' && inputs.scan
       - name: scan-snyk
         if: github.event_name != 'pull_request' && inputs.scan

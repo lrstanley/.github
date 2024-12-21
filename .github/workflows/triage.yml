@@ -24,7 +24,7 @@ jobs:
         if: >-
           github.event_name == 'issues'
           && (github.event.action == 'opened' || github.event.action == 'edited')
-        uses: github/issue-labeler@c1b0f9f52a63158c4adc09425e858e87b32e9685
+        uses: github/issue-labeler@v3.4
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           configuration-path: triage/label-issues.yml
@@ -52,14 +52,14 @@ jobs:
           repository: lrstanley/.github
       - name: label-pull-requests
         if: github.event_name == 'pull_request_target'
-        uses: actions/labeler@ac9175f8a1f3625fd0d4fb234536d26811351594
+        uses: actions/labeler@v5
         with:
           configuration-path: triage/label-pull-requests.yml
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           sync-labels: true
       - name: label-pull-requests-sizes
         if: github.event_name == 'pull_request_target'
-        uses: codelytv/pr-size-labeler@c7a55a022747628b50f3eb5bf863b9e796b8f274
+        uses: codelytv/pr-size-labeler@v1.10.2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           xs_max_size: "30"
