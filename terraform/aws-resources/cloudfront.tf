@@ -1,6 +1,6 @@
 module "cdn" {
   source  = "terraform-aws-modules/cloudfront/aws"
-  version = "2.9.3"
+  version = "3.4.1"
 
   aliases = ["${local.cdn_subdomain}.${local.cdn_domain}"]
 
