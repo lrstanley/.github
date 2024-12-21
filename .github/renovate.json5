@@ -1,6 +1,6 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "schedule": "every 2 weeks on Friday",
+    // "schedule": "every 2 weeks on Friday",
     "extends": [
         "github>lrstanley/kube-infrastructure//flux/manifests/renovate/configs/opt-in/automerge-direct-minor-patch.json5"
     ]
