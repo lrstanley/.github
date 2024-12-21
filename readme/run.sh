@@ -4,6 +4,7 @@
 # TODO: this could probably be a simple go cli tool, rather than a bash script.
 # or maybe its own action?
 
+# renovate: datasource=github-releases depName=wrouesnel/p2cli
 P2_VERSION="r18"
 
 set -o pipefail

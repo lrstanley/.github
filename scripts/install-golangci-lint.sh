@@ -3,6 +3,7 @@
 
 set -o pipefail
 
+# renovate: datasource=github-releases depName=golangci/golangci-lint
 GCI_VERSION="1.62.0"
 
 echo "installing golangci-lint ${GCI_VERSION}"

@@ -8,6 +8,7 @@ if [ -f "/usr/local/bin/svu" ]; then
 	exit 0
 fi
 
+# renovate: datasource=github-releases depName=caarlos0/svu
 SVU_VERSION="2.2.0"
 
 echo "installing svu ${SVU_VERSION}"

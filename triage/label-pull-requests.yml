@@ -1,5 +1,4 @@
 dependencies:
-  - ".github/dependabot.yml"
   - "**/go.mod"
   - "**/go.sum"
   - "**/go.work"
@@ -9,7 +8,6 @@ dependencies:
 workflows:
   - ".github/workflows/*"
   - ".github/*.yml"
-  - "!.github/dependabot.yml"
 documentation:
   - "docs/**/*"
   - "**/*.md"

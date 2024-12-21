@@ -15,7 +15,8 @@
 set -o pipefail
 export BASE="$(readlink -f "$(dirname "$0")/..")"
 
-VERSION_GOREL="1.26.2"
+# renovate: datasource=github-tag depName=goreleaser/goreleaser
+GORELEASER_VERSION="1.26.2"
 FLAGS=()
 
 function setup_config {
@@ -39,9 +40,9 @@ function install_goreleaser {
 		return
 	fi
 
-	echo "installing goreleaser '${VERSION_GOREL}'"
+	echo "installing goreleaser '${GORELEASER_VERSION}'"
 	curl -sSL \
-		"https://github.com/goreleaser/goreleaser/releases/download/v${VERSION_GOREL}/goreleaser_Linux_x86_64.tar.gz" \
+		"https://github.com/goreleaser/goreleaser/releases/download/v${GORELEASER_VERSION}/goreleaser_Linux_x86_64.tar.gz" \
 		| tar -C /usr/local/bin/ -xzvf- goreleaser
 
 	chmod +x /usr/local/bin/goreleaser
