@@ -4,5 +4,18 @@
     "extends": [
         "github>lrstanley/kube-infrastructure//flux/manifests/renovate/configs/opt-in/automerge-pr-minor-patch.json5"
     ],
-    "ignoreTests": true
+    "ignoreTests": true,
+    "packageRules": [
+        {
+            "automerge": true,
+            "automergeType": "branch",
+            "description": [
+                "Auto-merge minor and patch-level updates via direct branch merge"
+            ],
+            "matchUpdateTypes": [
+                "minor",
+                "patch"
+            ]
+        }
+    ]
 }
