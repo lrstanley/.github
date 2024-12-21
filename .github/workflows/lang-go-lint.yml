@@ -87,7 +87,7 @@ jobs:
           set -e
 
           go test -v -coverprofile=coverage.txt -timeout 3m ./...
-      - uses: codecov/codecov-action@e28ff129e5465c2c0dcc6f003fc735cb6ae0c673
+      - uses: codecov/codecov-action@1e68e06f1dbfde0e4cefc87efeba9e4643565303
         with:
           files: coverage.txt
           token: ${{ secrets.CODECOV_TOKEN }}
