@@ -31,14 +31,14 @@ jobs:
     runs-on: ubuntu-latest
     permissions: {}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: git-clone-tools-repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           repository: lrstanley/.github
           path: ghmeta
       - name: install-node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4
         with:
           node-version: ${{ inputs.node-version }}
       - name: check if pnpm is used
@@ -46,7 +46,7 @@ jobs:
         run: echo "uses-pnpm=$(find . -mindepth 1 -maxdepth 6 -type f -name pnpm-lock.yaml | grep -q . && echo true || echo false)" >> "$GITHUB_OUTPUT"
       - name: pnpm install
         if: steps.uses-pnpm.outputs.uses-pnpm == 'true'
-        uses: pnpm/action-setup@v4.0.0
+        uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
         id: pnpm-install
         with:
           version: latest
@@ -72,14 +72,14 @@ jobs:
       security-events: write
       statuses: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: git-clone-tools-repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           repository: lrstanley/.github
           path: ghmeta
       - name: install-node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4
         with:
           node-version: ${{ inputs.node-version }}
       - name: check if pnpm is used
@@ -87,7 +87,7 @@ jobs:
         run: echo "uses-pnpm=$(find . -mindepth 1 -maxdepth 6 -type f -name pnpm-lock.yaml | grep -q . && echo true || echo false)" >> "$GITHUB_OUTPUT"
       - name: pnpm install
         if: steps.uses-pnpm.outputs.uses-pnpm == 'true'
-        uses: pnpm/action-setup@v4.0.0
+        uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
         id: pnpm-install
         with:
           version: latest
@@ -124,6 +124,6 @@ jobs:
       - name: scan-snyk-upload-sarif
         if: github.event_name != 'pull_request' && inputs.scan
         continue-on-error: true
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@48ab28a6f5dbc2a99bf1e0131198dd8f1df78169 # v3
         with:
           sarif_file: /tmp/sarif/
