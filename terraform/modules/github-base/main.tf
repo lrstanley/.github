@@ -2,7 +2,7 @@ terraform {
   required_providers {
     graphql = {
       source  = "sullivtr/graphql"
-      version = "2.5.1"
+      version = "2.5.5"
     }
   }
 }
