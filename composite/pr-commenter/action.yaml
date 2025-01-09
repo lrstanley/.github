@@ -1,0 +1,54 @@
+name: pr-commenter
+description: >-
+  A reusable action to aid in adding, updating, and deleting PR comments. This is better than just adding
+  a basic comment to a PR, in that it reduces clutter by updating an existing comment, and you can also
+  configure it to clean up after itself. An example usecase is an action to make sure a user has filled out
+  the pull request template. If they haven't, add a comment to the PR guiding them. Once they have and the
+  check passes, remove the comment.
+
+  Note that this composite requires at least ONE the following permissions:
+    - issues: write
+    - pull-requests: write
+inputs:
+  id:
+    description: >-
+      A unique identifier for the comment. This is used to distinguish multiple comments. As long as
+      the identifier is the same across multiple runs, the comment will be updated instead of added.
+      Must match "[a-zA-Z0-9_-]{3,30}".
+    required: true
+  always_add_comment:
+    description: >-
+      If true, a comment will always be added, even if one with the same identifier already exists.
+    required: false
+    default: "false"
+  action:
+    description: >-
+      The action to perform. Must be one of "add", "replace", or "delete". These do the following:
+        - "add" will create a new comment if one doesn't exist. It will also update an existing comment
+          with the same identifier unless "always_add_comment" is true.
+        - "replace" will create a new comment if one doesn't exist. If any exist that match the identifier,
+          they will be deleted before the new comment is added.
+        - "delete" will delete an existing comment with the same identifier if one exists.
+    required: true
+  pr:
+    description: >-
+      The PR number to add the comment to. This will default to the PR associated with the event that
+      triggered the workflow.
+    required: false
+  comment:
+    description: >-
+      The comment to add. This can be a multi-line string. Required when "action" is not "delete".
+    required: false
+runs:
+  using: composite
+  steps:
+    - name: invoke
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        ID: ${{ inputs.id }}
+        ALWAYS_ADD_COMMENT: ${{ inputs.always_add_comment }}
+        ACTION: ${{ inputs.action }}
+        PR_ID: ${{ inputs.pr != '' && inputs.pr || github.event.pull_request.number || github.event.number }}
+        COMMENT: ${{ inputs.comment }}
+      run: ${{ github.action_path }}/comment.sh
