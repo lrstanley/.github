@@ -1,4 +1,4 @@
-name: meta-terraform
+name: meta-terraform-webhooks
 
 on:
   workflow_dispatch:
