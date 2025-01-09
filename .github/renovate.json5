@@ -1,11 +1,6 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    // "schedule": "every 2 weeks on Friday",
     "extends": [
-        ":automergeMinor",
-        ":automergeBranch"
-    ],
-    "platformAutomerge": true,
-    "ignoreTests": true,
-    "requiredStatusChecks": null
+        "github>lrstanley/.github//renovate/opt-in/automerge-direct-patch.json5"
+    ]
 }

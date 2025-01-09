@@ -3,14 +3,16 @@
     "packageRules": [
         {
             "automerge": true,
+            "automergeSchedule": "every week on Friday",
             "automergeType": "pr",
-            "ignoreTests": false,
             "description": [
                 "Auto-merge patch-level updates via PR"
             ],
+            "ignoreTests": false,
             "matchUpdateTypes": [
                 "patch"
-            ]
+            ],
+            "platformAutomerge": true
         }
     ]
 }

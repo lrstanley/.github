@@ -3,16 +3,17 @@
     "packageRules": [
         {
             "automerge": true,
+            "automergeSchedule": "every week on Friday",
             "automergeType": "branch",
-            "automergeSchedule": "every 2 weeks",
-            "ignoreTests": true,
-            "requiredStatusChecks": null,
             "description": [
                 "Auto-merge patch-level updates via direct branch merge"
             ],
+            "ignoreTests": true,
             "matchUpdateTypes": [
                 "patch"
-            ]
+            ],
+            "platformAutomerge": true,
+            "requiredStatusChecks": null
         }
     ]
 }
