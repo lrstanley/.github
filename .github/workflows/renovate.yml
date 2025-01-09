@@ -29,6 +29,11 @@ on:
           Version of renovate to use.
         required: false
         type: string
+      cache:
+        description: >-
+          Enable/disable cache.
+        type: boolean
+        default: true
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
@@ -41,6 +46,10 @@ env:
   RENOVATE_DRY_RUN: "${{ inputs.dry-run == true }}"
   RENOVATE_PLATFORM: github
   RENOVATE_PLATFORM_COMMIT: true
+  RENOVATE_REPOSITORY_CACHE: ${{ inputs.cache == true && 'enabled' || 'disabled' }}
+  RENOVATE_REPOSITORY_CACHE_TYPE: local
+  RENOVATE_PRESET_CACHE_PERSISTENCE: ${{ inputs.cache == true && 'true' || 'false' }}
+  RENOVATE_CACHE_DIR: /tmp/renovate/cache/repository
 
 jobs:
   renovate:
@@ -50,11 +59,16 @@ jobs:
       - uses: actions/create-github-app-token@v1
         id: app-token
         with:
-          app-id: "${{ secrets.bot-app-id }}"
+          app-id: "${{ secrets.app-id }}"
           private-key: "${{ secrets.app-private-key }}"
       - uses: actions/checkout@v4
         with:
           repository: lrstanley/.github
+      - uses: actions/cache@v4
+        if: ${{ inputs.cache == true }}
+        with:
+          key: renovate-${{ runner.os }}
+          path: /tmp/renovate/cache
       - uses: renovatebot/github-action@v41.0.8
         with:
           configurationFile: renovate/main.json5
