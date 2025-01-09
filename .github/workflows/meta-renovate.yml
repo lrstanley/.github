@@ -14,4 +14,4 @@ jobs:
     uses: lrstanley/.github/.github/workflows/renovate.yml@master
     secrets:
       app-id: ${{ secrets.BOT_APP_ID }}
-      private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+      app-private-key: ${{ secrets.BOT_PRIVATE_KEY }}
