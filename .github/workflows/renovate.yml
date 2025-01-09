@@ -62,6 +62,7 @@ jobs:
         with:
           key: renovate-${{ runner.os }}
           path: /tmp/renovate/cache
+      - run: sudo chown -R 12021:0 /tmp/renovate/cache
       - uses: renovatebot/github-action@v41.0.8
         with:
           configurationFile: renovate/main.json5
