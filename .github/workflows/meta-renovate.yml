@@ -2,12 +2,10 @@ name: meta-renovate
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches: [master]
+  push:
+    branches: [master]
   schedule:
     - cron: "* 1 * * *"
-
-permissions: {}
 
 jobs:
   renovate:
