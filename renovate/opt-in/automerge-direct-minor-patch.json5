@@ -3,7 +3,7 @@
     "packageRules": [
         {
             "automerge": true,
-            "automergeSchedule": "every week on Friday",
+            "automergeSchedule": "on friday",
             "automergeType": "branch",
             "description": [
                 "Auto-merge minor and patch-level updates via direct branch merge"

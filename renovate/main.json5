@@ -30,7 +30,7 @@
     ],
     "executionTimeout": 15,
     "exposeAllEnv": false,
-    "schedule": "every week on Friday",
+    "schedule": "on friday",
     "extends": [
         "config:recommended",
         "security:openssf-scorecard",
