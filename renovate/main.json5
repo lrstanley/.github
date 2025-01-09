@@ -46,6 +46,7 @@
         ":separateMultipleMajorReleases",
         "docker:enableMajor",
         "group:monorepos",
+        "mergeConfidence:all-badges",
         // "helpers:pinGitHubActionDigests",
         // "helpers:pinGitHubActionDigestsToSemver",
         "customManagers:dockerfileVersions",
@@ -77,6 +78,7 @@
         "dependencies"
     ],
     "onboarding": false,
+    "onboardingConfigFileName": "renovate.json5",
     "platform": "github",
     "prConcurrentLimit": 15,
     "prFooter": "PR generated using [automation](https://github.com/lrstanley/.github/tree/master/renovate).",
