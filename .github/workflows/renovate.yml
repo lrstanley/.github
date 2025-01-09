@@ -24,11 +24,6 @@ on:
         required: false
         type: string
         default: "info"
-      version:
-        description: >-
-          Version of renovate to use.
-        required: false
-        type: string
       cache:
         description: >-
           Enable/disable cache.
@@ -44,8 +39,6 @@ env:
   RENOVATE_AUTODISCOVER: true
   RENOVATE_AUTODISCOVER_FILTER: "${{ github.repository }}"
   RENOVATE_DRY_RUN: "${{ inputs.dry-run == true }}"
-  RENOVATE_PLATFORM: github
-  RENOVATE_PLATFORM_COMMIT: true
   RENOVATE_REPOSITORY_CACHE: ${{ inputs.cache == true && 'enabled' || 'disabled' }}
   RENOVATE_REPOSITORY_CACHE_TYPE: local
   RENOVATE_PRESET_CACHE_PERSISTENCE: ${{ inputs.cache == true && 'true' || 'false' }}
@@ -73,4 +66,4 @@ jobs:
         with:
           configurationFile: renovate/main.json5
           token: "${{ steps.app-token.outputs.token }}"
-          renovate-version: "${{ inputs.version || 'latest' }}"
+          renovate-version: "39"
