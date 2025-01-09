@@ -1,4 +1,0 @@
-{
-    "name": "Auto-prune old ghcr containers",
-    "description": "Auto-prunes containers no longer labeled, or alpha/pr versions."
-}

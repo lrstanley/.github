@@ -1,4 +1,0 @@
-{
-    "name": "Tag Semantic Version",
-    "description": "Action that can be manually triggered, creating new semantic versions depending on provided input."
-}
