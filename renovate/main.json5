@@ -1,0 +1,102 @@
+{
+    // https://docs.renovatebot.com/configuration-options/
+    // TODO: https://github.com/onedr0p/home-ops/blob/main/.github/workflows/renovate.yaml
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "allowPlugins": true,
+    "allowScripts": false,
+    "autodiscover": false,
+    "autodiscoverFilter": [],
+    "detectHostRulesFromEnv": true,
+    "enabledManagers": [
+        "dockerfile",
+        "docker-compose",
+        "flux",
+        "github-actions",
+        "gomod",
+        "helm-requirements",
+        "helm-values",
+        "helmv3",
+        "kubernetes",
+        "kustomize",
+        "kustomize",
+        "pip_requirements",
+        "pip_setup",
+        "pipenv",
+        "pyenv",
+        "npm",
+        "nvm",
+        "terraform",
+        "custom.regex"
+    ],
+    "executionTimeout": 15,
+    "exposeAllEnv": false,
+    "extends": [
+        "config:recommended",
+        "security:openssf-scorecard",
+        "workarounds:doNotUpgradeFromAlpineStableToEdge",
+        ":disableDependencyDashboard",
+        ":combinePatchMinorReleases",
+        ":disableRateLimiting",
+        ":gitSignOff",
+        ":ignoreUnstable",
+        ":preserveSemverRanges",
+        ":renovatePrefix",
+        ":semanticCommits",
+        ":reviewer(lrstanley)",
+        ":separateMultipleMajorReleases",
+        "docker:enableMajor",
+        "group:monorepos",
+        // "helpers:pinGitHubActionDigests",
+        // "helpers:pinGitHubActionDigestsToSemver",
+        "customManagers:dockerfileVersions",
+        "customManagers:githubActionsVersions",
+        "customManagers:helmChartYamlAppVersions",
+        "customManagers:makefileVersions",
+        "github>lrstanley/.github//renovate/group-minor.json5",
+        "github>lrstanley/.github//renovate/labels.json5",
+        "github>lrstanley/.github//renovate/manager-bash.json5",
+        "github>lrstanley/.github//renovate/manager-github.json5",
+        "github>lrstanley/.github//renovate/manager-golang.json5",
+        "github>lrstanley/.github//renovate/manager-helm.json5",
+        "github>lrstanley/.github//renovate/manager-kubernetes.json5",
+        "github>lrstanley/.github//renovate/manager-terraform.json5"
+    ],
+    "flux": {
+        "fileMatch": [
+            ".*/.+\\.ya?ml$"
+        ]
+    },
+    "gitTimeout": 90000,
+    "ignoreTests": false,
+    "kubernetes": {
+        "fileMatch": [
+            ".*/.+\\.ya?ml$"
+        ]
+    },
+    "labels": [
+        "dependencies"
+    ],
+    "onboarding": false,
+    "platform": "github",
+    "prConcurrentLimit": 15,
+    "prFooter": "PR generated using [automation](https://github.com/lrstanley/kube-infrastructure/tree/master/flux/manifests/renovate/configs).",
+    "prHourlyLimit": 0,
+    "printConfig": true,
+    "pruneBranchAfterAutomerge": true,
+    "pruneStaleBranches": true,
+    "requireConfig": "ignored",
+    "respectLatest": true,
+    "reviewersFromCodeOwners": true,
+    "suppressNotifications": [
+        "prEditedNotification",
+        "prIgnoreNotification"
+    ],
+    "timezone": "America/Detroit",
+    "vulnerabilityAlerts": {
+        "assigneesFromCodeOwners": true,
+        "automerge": false,
+        "labels": [
+            "security"
+        ]
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "packageRules": [
+        {
+            "automerge": true,
+            "automergeType": "branch",
+            "automergeSchedule": "every 2 weeks",
+            "ignoreTests": true,
+            "requiredStatusChecks": null,
+            "description": [
+                "Auto-merge minor and patch-level updates via direct branch merge"
+            ],
+            "matchUpdateTypes": [
+                "minor",
+                "patch"
+            ]
+        }
+    ]
+}

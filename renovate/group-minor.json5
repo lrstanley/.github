@@ -1,0 +1,19 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "packageRules": [
+        {
+            "packageRules": [
+                {
+                    "groupName": "all non-major dependencies",
+                    "groupSlug": "all-patch",
+                    "matchPackageNames": [
+                        "*"
+                    ],
+                    "matchUpdateTypes": [
+                        "patch"
+                    ]
+                }
+            ]
+        }
+    ]
+}

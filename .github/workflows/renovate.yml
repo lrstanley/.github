@@ -1,0 +1,62 @@
+name: renovate
+
+on:
+  workflow_call:
+    secrets:
+      app-id:
+        description: >-
+          GitHub App ID.
+        required: true
+      app-private-key:
+        description: >-
+          GitHub App private key.
+        required: true
+    inputs:
+      dry-run:
+        description: >-
+          Run renovate in dry-run mode (no changes will be made).
+        required: false
+        type: boolean
+        default: false
+      log-level:
+        description: >-
+          Log level for renovate (debug, info, warn, error, fatal).
+        required: false
+        type: string
+        default: "info"
+      version:
+        description: >-
+          Version of renovate to use.
+        required: false
+        type: string
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  LOG_LEVEL: "${{ inputs.log-level }}"
+  RENOVATE_AUTODISCOVER: true
+  RENOVATE_AUTODISCOVER_FILTER: "${{ github.repository }}"
+  RENOVATE_DRY_RUN: "${{ inputs.dry-run == true }}"
+  RENOVATE_PLATFORM: github
+  RENOVATE_PLATFORM_COMMIT: true
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: "${{ secrets.bot-app-id }}"
+          private-key: "${{ secrets.app-private-key }}"
+      - uses: actions/checkout@v4
+        with:
+          repository: lrstanley/.github
+      - uses: renovatebot/github-action@v41.0.8
+        with:
+          configurationFile: renovate/main.json5
+          token: "${{ steps.app-token.outputs.token }}"
+          renovate-version: "${{ inputs.version || 'latest' }}"

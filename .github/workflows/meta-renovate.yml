@@ -1,0 +1,17 @@
+name: meta-renovate
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches: [master]
+  schedule:
+    - cron: "* 1 * * *"
+
+permissions: {}
+
+jobs:
+  renovate:
+    uses: lrstanley/.github/.github/workflows/renovate.yml@master
+    secrets:
+      app-id: ${{ secrets.BOT_APP_ID }}
+      private-key: ${{ secrets.BOT_PRIVATE_KEY }}

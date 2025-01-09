@@ -1,0 +1,16 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "packageRules": [
+        {
+            "automerge": true,
+            "automergeType": "pr",
+            "ignoreTests": false,
+            "description": [
+                "Auto-merge patch-level updates via PR"
+            ],
+            "matchUpdateTypes": [
+                "patch"
+            ]
+        }
+    ]
+}
