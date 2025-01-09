@@ -2,37 +2,28 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "packageRules": [
         {
-            "matchDatasources": [
-                "helm"
-            ],
             "matchUpdateTypes": [
                 "major"
             ],
-            "commitMessagePrefix": "feat(helm)!: ",
+            "commitMessagePrefix": "feat({{replace '-.*' '' datasource}})!: ",
             "commitMessageTopic": "{{depName}}",
             "commitMessageExtra": "({{currentVersion}} → {{newVersion}})"
         },
         {
-            "matchDatasources": [
-                "helm"
-            ],
             "matchUpdateTypes": [
                 "minor"
             ],
             "semanticCommitType": "feat",
-            "semanticCommitScope": "helm",
+            "semanticCommitScope": "{{replace '-.*' '' datasource}}",
             "commitMessageTopic": "{{depName}}",
             "commitMessageExtra": "({{currentVersion}} → {{newVersion}})"
         },
         {
-            "matchDatasources": [
-                "helm"
-            ],
             "matchUpdateTypes": [
                 "patch"
             ],
             "semanticCommitType": "fix",
-            "semanticCommitScope": "helm",
+            "semanticCommitScope": "{{replace '-.*' '' datasource}}",
             "commitMessageTopic": "{{depName}}",
             "commitMessageExtra": "({{currentVersion}} → {{newVersion}})"
         }

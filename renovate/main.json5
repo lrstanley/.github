@@ -56,12 +56,11 @@
         "customManagers:makefileVersions",
         "github>lrstanley/.github//renovate/group-minor.json5",
         "github>lrstanley/.github//renovate/labels.json5",
+        "github>lrstanley/.github//renovate/fancy-commits.json5",
         "github>lrstanley/.github//renovate/manager-bash.json5",
         "github>lrstanley/.github//renovate/manager-github.json5",
         "github>lrstanley/.github//renovate/manager-golang.json5",
-        "github>lrstanley/.github//renovate/manager-helm.json5",
-        "github>lrstanley/.github//renovate/manager-kubernetes.json5",
-        "github>lrstanley/.github//renovate/manager-terraform.json5"
+        "github>lrstanley/.github//renovate/manager-kubernetes.json5"
     ],
     "flux": {
         "fileMatch": [
