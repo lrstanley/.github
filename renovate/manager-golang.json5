@@ -1,21 +1,9 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "packageRules": [
-        {
-            "enabled": true,
-            "matchDepTypes": [
-                "indirect"
-            ],
-            "matchManagers": [
-                "gomod"
-            ]
-        }
-    ],
     "gomod": {
         "postUpdateOptions": [
             "gomodTidy",
-            "gomodUpdateImportPaths",
-            "gomodMassage"
+            "gomodUpdateImportPaths"
         ]
     }
 }
