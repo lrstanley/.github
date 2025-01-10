@@ -84,7 +84,7 @@
     "prConcurrentLimit": 15,
     "prFooter": "PR generated using [automation](https://github.com/lrstanley/.github/tree/master/renovate).",
     "prHourlyLimit": 0,
-    "printConfig": true,
+    "printConfig": false,
     "pruneBranchAfterAutomerge": true,
     "pruneStaleBranches": true,
     "requireConfig": "optional",
