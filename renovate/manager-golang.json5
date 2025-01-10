@@ -3,7 +3,8 @@
     "gomod": {
         "postUpdateOptions": [
             "gomodTidy",
-            "gomodUpdateImportPaths"
+            "gomodUpdateImportPaths",
+            "gomodMassage"
         ]
     }
 }
