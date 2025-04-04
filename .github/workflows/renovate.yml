@@ -65,8 +65,7 @@ jobs:
           repository: lrstanley/.github
       - if: ${{ inputs.force-run == true }}
         run: |
-          cp -av renovate/main.json5{,.orig}
-          jq '.schedule = "at any time"' renovate/main.json5.orig > renovate/main.json5
+          sed -ri 's:friday:at any time:g' renovate/main.json5
       - uses: actions/cache@v4
         if: ${{ inputs.cache == true }}
         with:
