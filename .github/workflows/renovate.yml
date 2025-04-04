@@ -65,7 +65,7 @@ jobs:
           repository: lrstanley/.github
       - if: ${{ inputs.force-run == true }}
         run: |
-          sed -ri 's:friday:at any time:g' renovate/main.json5
+          sed -ri 's:on friday:at any time:g' renovate/main.json5
       - uses: actions/cache@v4
         if: ${{ inputs.cache == true }}
         with:
