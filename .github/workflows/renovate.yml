@@ -6,11 +6,11 @@ on:
       app-id:
         description: >-
           GitHub App ID.
-        required: true
+        required: false
       app-private-key:
         description: >-
           GitHub App private key.
-        required: true
+        required: false
     inputs:
       dry-run:
         description: >-
