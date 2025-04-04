@@ -82,6 +82,7 @@
     "onboarding": false,
     "onboardingConfigFileName": "renovate.json5",
     "platform": "github",
+    "platformAutomerge": false,
     "prConcurrentLimit": 15,
     "prFooter": "PR generated using [automation](https://github.com/lrstanley/.github/tree/master/renovate).",
     "prHourlyLimit": 0,
