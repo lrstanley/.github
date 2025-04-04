@@ -8,7 +8,6 @@
             isArchived: false
             ownerAffiliations: OWNER
             orderBy: { field: PUSHED_AT, direction: DESC }
-            privacy: PUBLIC
         ) {
             pageInfo {
                 endCursor
