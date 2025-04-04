@@ -39,9 +39,7 @@ locals {
 
   repositories = [
     for repo in local.repositories_all : repo
-    if !repo.data.isArchived
-    && !repo.data.isDisabled
-    && !repo.data.isLocked
+    if !repo.data.isDisabled
     && !repo.data.isMirror
     && contains(var.exclude_names, repo.name) == false
     && alltrue([for key, value in var.filters : (
