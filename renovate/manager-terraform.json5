@@ -12,7 +12,7 @@
             "matchStrings": [
                 // # renovate: datasource=github-releases depName=fluxcd/flux2
                 // version = "v2.4.0"
-                "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n.+(:\\s|\\s*=\\s*)(?<currentValue>\\S+)",
+                "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n.+(:\\s|\\s*=\\s*)['\"]*(?<currentValue>[^'\"\\s]+)['\"]*"
             ],
             "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}"
         }
