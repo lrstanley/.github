@@ -12,7 +12,7 @@
             "matchUpdateTypes": [
                 "patch"
             ],
-            "platformAutomerge": true,
+            "platformAutomerge": false,
             "requiredStatusChecks": null
         }
     ]
