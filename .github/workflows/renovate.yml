@@ -58,8 +58,8 @@ jobs:
       - uses: actions/create-github-app-token@v1
         id: app-token
         with:
-          app-id: "${{ secrets.app-id }}"
-          private-key: "${{ secrets.app-private-key }}"
+          app-id: "${{ secrets.app-id || secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.app-private-key || secrets.BOT_PRIVATE_KEY }}"
       - uses: actions/checkout@v4
         with:
           repository: lrstanley/.github
