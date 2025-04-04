@@ -61,8 +61,7 @@
         "github>lrstanley/.github//renovate/manager-github.json5",
         "github>lrstanley/.github//renovate/manager-golang.json5",
         "github>lrstanley/.github//renovate/manager-kubernetes.json5",
-        "github>lrstanley/.github//renovate/manager-terraform.json5",
-        "github>lrstanley/.github//renovate/automerge-pr-minor-patch.json5"
+        "github>lrstanley/.github//renovate/manager-terraform.json5"
     ],
     "flux": {
         "fileMatch": [

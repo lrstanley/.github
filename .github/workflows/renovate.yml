@@ -68,13 +68,6 @@ jobs:
         if: ${{ inputs.force-run == true }}
         run: |
           sed -ri 's:on friday:at any time:g' renovate/main.json5
-      - name: check-automerge
-        run: |
-          gh api --jq '.workflows[] | "\(.name) \(.path)"' /repos/${{ github.repository }}/actions/workflows \
-            | grep -qiE "test|lint|release|build|deploy" || {
-              echo "disabling automerge"
-              echo "{}" >> renovate/automerge-pr-minor-patch.json5
-            }
       - uses: actions/cache@v4
         if: ${{ inputs.cache == true }}
         with:
