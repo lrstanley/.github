@@ -5,9 +5,7 @@ module "base" {
 
   filters = {
     isTemplate = false
-    isFork     = false
     # isEmpty    = false
-    # isPrivate  = false
   }
 }
 

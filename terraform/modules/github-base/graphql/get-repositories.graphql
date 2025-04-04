@@ -1,59 +1,59 @@
 {
-  viewer {
-    login
-    repositories(
-      first: 100
-      isFork: false
-      isLocked: false
-      isArchived: false
-      ownerAffiliations: OWNER
-      orderBy: {field: PUSHED_AT, direction: DESC}
-      privacy: PUBLIC
-    ) {
-      pageInfo {
-        endCursor
-        hasNextPage
-      }
-      totalCount
-      nodes {
-        isArchived
-        defaultBranchRef {
-          name
-        }
-        hasIssuesEnabled
-        homepageUrl
-        isDisabled
-        isFork
-        isEmpty
-        isLocked
-        isMirror
-        isPrivate
-        isTemplate
-        isUserConfigurationRepository
-        languages(first: 15, orderBy: {field: SIZE, direction: DESC}) {
-          nodes {
-            name
-          }
+    viewer {
+        login
+        repositories(
+            first: 100
+            isFork: false
+            isLocked: false
+            isArchived: false
+            ownerAffiliations: OWNER
+            orderBy: { field: PUSHED_AT, direction: DESC }
+            privacy: PUBLIC
+        ) {
+            pageInfo {
+                endCursor
+                hasNextPage
+            }
+            totalCount
+            nodes {
+                isArchived
+                defaultBranchRef {
+                    name
+                }
+                hasIssuesEnabled
+                homepageUrl
+                isDisabled
+                isFork
+                isEmpty
+                isLocked
+                isMirror
+                isPrivate
+                isTemplate
+                isUserConfigurationRepository
+                languages(first: 15, orderBy: { field: SIZE, direction: DESC }) {
+                    nodes {
+                        name
+                    }
+                }
+                name
+                nameWithOwner
+                owner {
+                    login
+                }
+                pushedAt
+                url
+                createdAt
+            }
         }
         name
-        nameWithOwner
-        owner {
-          login
-        }
-        pushedAt
-        url
-        createdAt
-      }
+        email
+        avatarUrl
+        websiteUrl
     }
-    name
-    email
-    avatarUrl
-    websiteUrl
-  }
-  rateLimit {
-    limit
-    cost
-    remaining
-    resetAt
-  }
+    rateLimit {
+        limit
+        cost
+        remaining
+        resetAt
+    }
 }
