@@ -2,22 +2,6 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "packageRules": [
         {
-            "description": [
-                "Auto-merge container digests updates for trusted containers"
-            ],
-            "matchDatasources": [
-                "docker"
-            ],
-            "automerge": true,
-            "automergeType": "branch",
-            "matchUpdateTypes": [
-                "digest"
-            ],
-            "matchPackagePatterns": [
-                "ghcr.io/lrstanley/**"
-            ]
-        },
-        {
             "matchDatasources": [
                 "docker"
             ],
