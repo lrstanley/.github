@@ -47,8 +47,8 @@ locals {
     }
 
     # IDE and/or linter configs.
-    ".golangci.yml" = {
-      path      = ".golangci.yml"
+    ".golangci.yaml" = {
+      path      = ".golangci.yaml"
       languages = ["Go"]
       skip_ci   = false
     }
