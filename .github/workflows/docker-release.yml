@@ -23,6 +23,11 @@ on:
         required: false
         type: string
         default: "."
+      build-args:
+        description: "Build args to pass to the docker build."
+        required: false
+        type: string
+        default: ""
       push:
         description: "If images should be pushed (not just built and scanned)."
         required: false
@@ -89,6 +94,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: ${{ inputs.build-args }}
       - name: scan-snyk-docker
         if: github.event_name != 'pull_request' && inputs.scan
         continue-on-error: true
