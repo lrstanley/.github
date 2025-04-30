@@ -1,0 +1,55 @@
+name: invoke-task
+description: >
+  A composite action to invoke a task within a Makefile (and potentially
+  other task-type files in the future).
+inputs:
+  task:
+    description: >
+      The task to run. Can be a comma separated list, if you want to fallback
+      to different task names if the first one isn't defined.
+    required: true
+  fallback:
+    description: >
+      A fallback run block to run if none of the tasks were defined.
+    required: false
+  fail-on-undefined:
+    description: >
+      If true, the action will fail if none of the tasks passed into task were defined. This will only apply if `input.fallback` is not set.
+    required: false
+    default: "true"
+runs:
+  using: "composite"
+  steps:
+    - id: run-task
+      name: run-task
+      shell: bash
+      env:
+        TASKS: ${{ inputs.task }}
+      run: |
+        set -x
+        set +e
+
+        if [ -f "Makefile" ]; then
+          echo "found Makefile"
+
+          for TASK in ${TASKS//,/ }; do
+            if make -n $TASK &> /dev/null; then
+              echo "running task: $TASK"
+              make $TASK || exit 1
+              echo "ran=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          done
+        fi
+
+        echo "ran=false" >> "$GITHUB_OUTPUT"
+    - if: inputs.fallback != ''
+      name: run-fallback
+      shell: bash
+      run: |
+        set -xe
+        ${{ inputs.fallback }}
+    - if: steps.run-task.outputs.ran == 'false' && inputs.fallback == ''
+      name: fail-on-undefined
+      shell: bash
+      run: exit 1

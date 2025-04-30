@@ -77,15 +77,12 @@ jobs:
         with:
           go-version: ${{ needs.go-version.outputs.version }}
           cache: false
+      - uses: lrstanley/.github/composite/invoke-task@master
+        with:
+          task: go-prepare,prepare
+          fail-on-undefined: false
       - run: |
-          set +e
-
-          ./ghmeta/scripts/make.sh go-prepare prepare
-          RESULTS="$?"
-          if [ "$?" -gt 0 ] && [ "$?" -ne 127 ];then exit "$RESULTS";fi
-
           set -e
-
           go test -v -coverprofile=coverage.txt -timeout 3m ./...
       - uses: codecov/codecov-action@v5
         with:
@@ -117,16 +114,13 @@ jobs:
         with:
           go-version: ${{ needs.go-version.outputs.version }}
           cache: false
+      - uses: lrstanley/.github/composite/invoke-task@master
+        with:
+          task: go-prepare
+          fail-on-undefined: false
       - name: parse-results
         run: |
-          set -x
-          set +e
-
-          ./ghmeta/scripts/make.sh go-prepare
-          RESULTS="$?"
-          if [ "$?" -gt 0 ] && [ "$?" -ne 127 ];then exit "$RESULTS";fi
-
-          set -e
+          set -xe
 
           ./ghmeta/scripts/install-golangci-lint.sh
 
@@ -156,18 +150,14 @@ jobs:
         with:
           go-version: ${{ needs.go-version.outputs.version }}
           cache: false
-      - run: |
-          set +e
-
-          ./ghmeta/scripts/make.sh go-prepare
-          RESULTS="$?"
-          if [ "$?" -gt 0 ] && [ "$?" -ne 127 ];then exit "$RESULTS";fi
-
-          ./ghmeta/scripts/make.sh go-lint
-          RESULTS="$?"
-          if [ "$?" -gt 0 ] && [ "$?" -ne 127 ];then exit "$RESULTS";fi
-
-          exit 0
+      - uses: lrstanley/.github/composite/invoke-task@master
+        with:
+          task: go-prepare
+          fail-on-undefined: false
+      - uses: lrstanley/.github/composite/invoke-task@master
+        with:
+          task: go-lint
+          fail-on-undefined: false
   snyk:
     needs: [go-version]
     if: ${{ inputs.scan }}
@@ -190,18 +180,17 @@ jobs:
           cache: false
       - uses: snyk/actions/setup@0.4.0
         if: github.event_name != 'pull_request' && inputs.scan
+      - uses: lrstanley/.github/composite/invoke-task@master
+        if: github.event_name != 'pull_request' && inputs.scan
+        with:
+          task: go-prepare,prepare
+          fail-on-undefined: false
       - name: scan-snyk
         if: github.event_name != 'pull_request' && inputs.scan
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
-          set +e
-
-          ./ghmeta/scripts/make.sh go-prepare prepare
-          RESULTS="$?"
-          if [ "$?" -gt 0 ] && [ "$?" -ne 127 ];then exit "$RESULTS";fi
-
           set -x
           mkdir -vp /tmp/sarif
 
