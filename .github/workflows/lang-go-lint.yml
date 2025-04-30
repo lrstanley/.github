@@ -196,6 +196,8 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
+          set +e
+
           ./ghmeta/scripts/make.sh go-prepare prepare
           RESULTS="$?"
           if [ "$?" -gt 0 ] && [ "$?" -ne 127 ];then exit "$RESULTS";fi

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ ! -f "Makefile" ]; then
-	exit 1
+	exit 127
 fi
 
 for i in "$@"; do
