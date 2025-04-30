@@ -41,7 +41,7 @@ runs:
         fi
 
         echo "ran=false" >> "$GITHUB_OUTPUT"
-    - if: inputs.fallback != ''
+    - if: steps.run-task.outputs.ran == 'false' && inputs.fallback != ''
       name: run-fallback
       shell: bash
       run: |
