@@ -103,7 +103,7 @@ jobs:
         if: ${{ !inputs.run }}
         with:
           task: go-prepare,prepare
-          fail-on-undefined: false
+          allow-undefined: true
       - uses: lrstanley/.github/composite/invoke-task@master
         if: ${{ !inputs.run }}
         with:

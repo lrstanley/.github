@@ -11,12 +11,10 @@ inputs:
   fallback:
     description: >
       A fallback run block to run if none of the tasks were defined.
-    required: false
-  fail-on-undefined:
+  allow-undefined:
     description: >
       If true, the action will fail if none of the tasks passed into task were defined. This will only apply if `input.fallback` is not set.
-    required: false
-    default: "true"
+    default: "false"
 runs:
   using: "composite"
   steps:
@@ -49,7 +47,7 @@ runs:
       run: |
         set -xe
         ${{ inputs.fallback }}
-    - if: steps.run-task.outputs.ran == 'false' && inputs.fallback == ''
-      name: fail-on-undefined
+    - if: steps.run-task.outputs.ran == 'false' && inputs.fallback == '' && inputs.allow-undefined == 'false'
+      name: fail-if-undefined
       shell: bash
       run: exit 1

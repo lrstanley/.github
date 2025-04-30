@@ -80,7 +80,7 @@ jobs:
       - uses: lrstanley/.github/composite/invoke-task@master
         with:
           task: go-prepare,prepare
-          fail-on-undefined: false
+          allow-undefined: true
       - run: |
           set -e
           go test -v -coverprofile=coverage.txt -timeout 3m ./...
@@ -117,7 +117,7 @@ jobs:
       - uses: lrstanley/.github/composite/invoke-task@master
         with:
           task: go-prepare
-          fail-on-undefined: false
+          allow-undefined: true
       - name: parse-results
         run: |
           set -xe
@@ -153,11 +153,11 @@ jobs:
       - uses: lrstanley/.github/composite/invoke-task@master
         with:
           task: go-prepare
-          fail-on-undefined: false
+          allow-undefined: true
       - uses: lrstanley/.github/composite/invoke-task@master
         with:
           task: go-lint
-          fail-on-undefined: false
+          allow-undefined: true
   snyk:
     needs: [go-version]
     if: ${{ inputs.scan }}
@@ -184,7 +184,7 @@ jobs:
         if: github.event_name != 'pull_request' && inputs.scan
         with:
           task: go-prepare,prepare
-          fail-on-undefined: false
+          allow-undefined: true
       - name: scan-snyk
         if: github.event_name != 'pull_request' && inputs.scan
         continue-on-error: true
