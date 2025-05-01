@@ -89,6 +89,8 @@ jobs:
             org.opencontainers.image.name=${{ inputs.name || github.event.repository.name }}
       - name: docker-build
         uses: docker/build-push-action@v6
+        env:
+          DOCKER_BUILD_SUMMARY: false
         with:
           context: ${{ inputs.context }}
           load: true
@@ -98,6 +100,7 @@ jobs:
           cache-to: type=gha,mode=max
           build-args: ${{ inputs.build-args }}
           secrets: ${{ secrets.docker-secrets }}
+          file: ${{ inputs.dockerfile }}
       - name: scan-snyk-docker
         if: github.event_name != 'pull_request' && inputs.scan
         continue-on-error: true
