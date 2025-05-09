@@ -9,7 +9,7 @@ if [ -f "/usr/local/bin/svu" ]; then
 fi
 
 # renovate: datasource=github-releases depName=caarlos0/svu
-SVU_VERSION="2.2.0"
+SVU_VERSION="3.2.3"
 
 echo "installing svu ${SVU_VERSION}"
 curl -sSL "https://github.com/caarlos0/svu/releases/download/v${SVU_VERSION}/svu_${SVU_VERSION}_linux_amd64.tar.gz" \
