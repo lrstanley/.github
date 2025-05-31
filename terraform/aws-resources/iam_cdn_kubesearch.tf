@@ -24,13 +24,13 @@ resource "aws_iam_user_policy" "mcp_kubesearch_s3" {
 }
 
 resource "github_actions_secret" "mcp_kubesearch_access_key" {
-  repository      = "lrstanley/mcp-kubesearch"
+  repository      = "mcp-kubesearch"
   secret_name     = "AWS_ACCESS_KEY_ID"
   plaintext_value = aws_iam_access_key.mcp_kubesearch.id
 }
 
 resource "github_actions_secret" "mcp_kubesearch_secret_key" {
-  repository      = "lrstanley/mcp-kubesearch"
+  repository      = "mcp-kubesearch"
   secret_name     = "AWS_SECRET_ACCESS_KEY"
   plaintext_value = aws_iam_access_key.mcp_kubesearch.secret
 }
