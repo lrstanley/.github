@@ -13,3 +13,9 @@ variable "aws_secret_access_key" {
 variable "cloudflare_api_token" {
   sensitive = true
 }
+
+variable "github-token" {
+  description = "Github personal access token"
+  type        = string
+  sensitive   = true
+}
