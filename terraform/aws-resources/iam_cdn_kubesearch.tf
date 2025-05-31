@@ -34,3 +34,9 @@ resource "github_actions_secret" "mcp_kubesearch_secret_key" {
   secret_name     = "AWS_SECRET_ACCESS_KEY"
   plaintext_value = aws_iam_access_key.mcp_kubesearch.secret
 }
+
+resource "github_actions_variable" "mcp_kubesearch_bucket" {
+  repository    = "mcp-kubesearch"
+  variable_name = "AWS_BUCKET"
+  value         = aws_s3_bucket.cdn.id
+}
