@@ -77,8 +77,8 @@ jobs:
           if [ -d /tmp/renovate ]; then
             sudo chown -R 12021:0 /tmp/renovate
           fi
-      - uses: renovatebot/github-action@v41.0.22
+      - uses: renovatebot/github-action@v43
         with:
           configurationFile: renovate/main.json5
           token: "${{ steps.app-token.outputs.token }}"
-          renovate-version: "39"
+          renovate-version: "43"
