@@ -81,4 +81,4 @@ jobs:
         with:
           configurationFile: renovate/main.json5
           token: "${{ steps.app-token.outputs.token }}"
-          renovate-version: "43"
+          renovate-version: "41"
