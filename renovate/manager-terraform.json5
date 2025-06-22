@@ -6,7 +6,7 @@
             "description": [
                 "Process terraform custom dependencies"
             ],
-            "fileMatch": [
+            "managerFilePatterns": [
                 "(^|/).+\\.tf$"
             ],
             "matchStrings": [

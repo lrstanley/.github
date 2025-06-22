@@ -64,15 +64,15 @@
         "github>lrstanley/.github//renovate/manager-terraform.json5"
     ],
     "flux": {
-        "fileMatch": [
-            ".*/.+\\.ya?ml$"
+        "managerFilePatterns": [
+            "/.*/.+\\.ya?ml$/"
         ]
     },
     "gitTimeout": 90000,
     "ignoreTests": false,
     "kubernetes": {
-        "fileMatch": [
-            ".*/.+\\.ya?ml$"
+        "managerFilePatterns": [
+            "/.*/.+\\.ya?ml$/"
         ]
     },
     "labels": [

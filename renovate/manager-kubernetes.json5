@@ -6,7 +6,7 @@
             "description": [
                 "Process YAML custom dependencies"
             ],
-            "fileMatch": [
+            "managerFilePatterns": [
                 "(^|/)flux/.+\\.env$",
                 "(^|/)flux/.+\\.ya?ml$"
             ],
@@ -30,7 +30,7 @@
             "description": [
                 "Process any imageName keys in YAML files (cloudnative-pg)"
             ],
-            "fileMatch": [
+            "managerFilePatterns": [
                 "(^|/)flux/.+\\.ya?ml$"
             ],
             "matchStrings": [
