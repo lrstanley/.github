@@ -16,7 +16,7 @@ on:
         description: >
           A Github Personal Access Token. Must be one generated outside of
           Actions, as current Actions PAT's don't allow deleting packages.
-        required: true
+        required: false
 
 jobs:
   docker-prune-untagged:
@@ -28,7 +28,7 @@ jobs:
       - uses: snok/container-retention-policy@v3.0.0
         with:
           account-type: personal
-          token: ${{ secrets.token }}
+          token: ${{ secrets.token || secrets.USER_PAT }}
           image-names: ${{ inputs.names || github.event.repository.name }}
           cut-off: ${{ inputs.remove-after || '1 week ago UTC' }}
           timestamp-to-use: updated_at
@@ -42,7 +42,7 @@ jobs:
       - uses: snok/container-retention-policy@v3.0.0
         with:
           account-type: personal
-          token: ${{ secrets.token }}
+          token: ${{ secrets.token || secrets.USER_PAT }}
           image-names: ${{ inputs.names || github.event.repository.name }}
           cut-off: ${{ inputs.remove-after || '1 month ago UTC' }}
           timestamp-to-use: updated_at
@@ -57,7 +57,7 @@ jobs:
       - uses: snok/container-retention-policy@v3.0.0
         with:
           account-type: personal
-          token: ${{ secrets.token }}
+          token: ${{ secrets.token || secrets.USER_PAT }}
           image-names: ${{ inputs.names || github.event.repository.name }}
           cut-off: ${{ inputs.remove-after || '1 month ago UTC' }}
           timestamp-to-use: updated_at
