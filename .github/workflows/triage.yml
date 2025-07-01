@@ -52,7 +52,7 @@ jobs:
           sync-labels: true
       - name: label-pull-requests-sizes
         if: github.event_name == 'pull_request_target'
-        uses: codelytv/pr-size-labeler@v1.10.2
+        uses: codelytv/pr-size-labeler@v1.10.3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           xs_max_size: "30"
