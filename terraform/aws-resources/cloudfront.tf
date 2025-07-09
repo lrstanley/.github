@@ -8,10 +8,10 @@ resource "aws_cloudfront_response_headers_policy" "cdn" {
       items = ["*"]
     }
     access_control_allow_methods {
-      items = ["GET", "HEAD", "OPTIONS"]
+      items = []
     }
     access_control_allow_origins {
-      items = ["*"]
+      items = []
     }
 
     origin_override = true
@@ -19,11 +19,11 @@ resource "aws_cloudfront_response_headers_policy" "cdn" {
   security_headers_config {
     referrer_policy {
       referrer_policy = "strict-origin-when-cross-origin"
-      override        = true
+      override        = false
     }
     xss_protection {
       mode_block = true
-      override   = true
+      override   = false
       protection = true
     }
     content_type_options {
@@ -31,14 +31,14 @@ resource "aws_cloudfront_response_headers_policy" "cdn" {
     }
     strict_transport_security {
       access_control_max_age_sec = 31536000
-      override                   = true
+      override                   = false
     }
     content_security_policy {
       content_security_policy = format(
         "frame-ancestors 'self' %s",
         join(" ", local.allowed_origins)
       )
-      override = true
+      override = false
     }
   }
 }
