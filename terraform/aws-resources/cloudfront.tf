@@ -1,3 +1,44 @@
+resource "aws_cloudfront_response_headers_policy" "cdn" {
+  name    = "cdn-policy"
+  comment = "cdn policy"
+
+  cors_config {
+    access_control_allow_credentials = false
+    access_control_allow_headers {}
+    access_control_allow_methods {}
+    access_control_allow_origins {
+      items = ["*"]
+    }
+
+    origin_override = true
+  }
+  security_headers_config {
+    referrer_policy {
+      referrer_policy = "strict-origin-when-cross-origin"
+      override        = true
+    }
+    xss_protection {
+      mode_block = true
+      override   = true
+      protection = true
+    }
+    content_type_options {
+      override = true
+    }
+    strict_transport_security {
+      access_control_max_age_sec = 31536000
+      override                   = true
+    }
+    content_security_policy {
+      content_security_policy = format(
+        "frame-ancestors 'self' %s",
+        join(" ", local.allowed_origins)
+      )
+      override = true
+    }
+  }
+}
+
 module "cdn" {
   source  = "terraform-aws-modules/cloudfront/aws"
   version = "3.4.1"
@@ -36,7 +77,8 @@ module "cdn" {
     query_string    = true
 
     # https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-response-headers-policies.html
-    response_headers_policy_id = "e61eb60c-9c35-4d20-a928-2b84e02af89c"
+    # "e61eb60c-9c35-4d20-a928-2b84e02af89c"
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.cdn.id
   }
 
   viewer_certificate = {
