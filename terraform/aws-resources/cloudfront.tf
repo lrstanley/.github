@@ -8,10 +8,10 @@ resource "aws_cloudfront_response_headers_policy" "cdn" {
       items = ["*"]
     }
     access_control_allow_methods {
-      items = []
+      items = ["GET", "HEAD", "OPTIONS"]
     }
     access_control_allow_origins {
-      items = []
+      items = ["*"]
     }
 
     origin_override = true
