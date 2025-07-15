@@ -45,7 +45,7 @@ resource "aws_cloudfront_response_headers_policy" "cdn" {
 
 module "cdn" {
   source  = "terraform-aws-modules/cloudfront/aws"
-  version = "3.4.1"
+  version = "5.0.0"
 
   aliases = ["${local.cdn_subdomain}.${local.cdn_domain}"]
 
