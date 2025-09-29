@@ -19,7 +19,7 @@ runs:
         restore-keys: |
           ${{ runner.os }}-go-${{ inputs.version }}-
     - name: install-go
-      uses: actions/setup-go@v5
+      uses: actions/setup-go@v6
       with:
         go-version: "${{ inputs.version }}"
         cache: false
