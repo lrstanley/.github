@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: git-clone-tools-repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: lrstanley/.github
       - run: ./scripts/terraform-run.sh
