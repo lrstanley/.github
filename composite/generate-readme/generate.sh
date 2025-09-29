@@ -65,6 +65,7 @@ function generate_metadata {
         echo "{}" >/tmp/latest-release.json
     else /bin/true; fi
 
+    gh api "/users/${GITHUB_REPOSITORY_OWNER}/packages?package_type=container&visibility=public"
     gh api "/users/${GITHUB_REPOSITORY_OWNER}/packages?package_type=container&visibility=public" 2>/dev/null | GITHUB_TOKEN='' jq '[
 		.[] | select(.repository.full_name == env.GITHUB_REPOSITORY) | {
 			name: .name,
