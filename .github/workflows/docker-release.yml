@@ -52,7 +52,7 @@ jobs:
       security-events: write
       statuses: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: git fetch --force --tags
       - name: get-latest-tag
         id: get-latest-tag

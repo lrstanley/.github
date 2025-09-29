@@ -17,7 +17,7 @@ jobs:
       issues: write
     steps:
       - name: git-clone-tools-repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: lrstanley/.github
       - name: label-issues
@@ -40,7 +40,7 @@ jobs:
       pull-requests: write
     steps:
       - name: git-clone-tools-repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: lrstanley/.github
       - name: label-pull-requests
