@@ -1,0 +1,25 @@
+name: setup-go
+description: >
+  A composite action to setup Go. Required permissions:
+    - contents: read
+inputs:
+  version:
+    description: >
+      The version of Go to install.
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cache/go-build
+          ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ inputs.version }}-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-${{ inputs.version }}-
+    - name: install-go
+      uses: actions/setup-go@v5
+      with:
+        go-version: "${{ inputs.version }}"
+        cache: false

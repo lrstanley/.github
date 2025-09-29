@@ -71,18 +71,9 @@ jobs:
         with:
           repository: lrstanley/.github
           path: ghmeta
-      - uses: actions/cache@v4
+      - uses: lrstanley/.github/composite/setup-go@master
         with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-codecov-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-
-      - uses: actions/setup-go@v5
-        with:
-          go-version: ${{ needs.go-version.outputs.version }}
-          cache: false
+          version: ${{ needs.go-version.outputs.version }}
       - uses: lrstanley/.github/composite/invoke-task@master
         with:
           task: go-prepare,prepare
@@ -110,42 +101,15 @@ jobs:
         with:
           repository: lrstanley/.github
           path: ghmeta
-      - uses: actions/cache@v4
+      - uses: lrstanley/.github/composite/setup-go@master
         with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-            ~/.cache/golangci-lint
-          key: ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-golangcilint-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-${{ needs.go-version.outputs.version }}-
-      - uses: actions/setup-go@v5
-        with:
-          go-version: ${{ needs.go-version.outputs.version }}
-          cache: false
+          version: ${{ needs.go-version.outputs.version }}
       - uses: lrstanley/.github/composite/invoke-task@master
         with:
           task: go-prepare
           allow-undefined: true
           working-directory: ${{ inputs.working-directory }}
-      - name: parse-results
-        env:
-          WORKING_DIRECTORY: ${{ inputs.working-directory }}
-        run: |
-          set -xe
-
-          ./ghmeta/scripts/install-golangci-lint.sh
-
-          golangci-lint run --new-from-rev "$GITHUB_SHA" --output.text.path stdout --output.json.path results.json --issues-exit-code 0 "$WORKING_DIRECTORY"
-
-          ERRORS=$(jq -cr '([.Issues[].Severity | select(. | IN("failure", "error", "fail"))] | length) // 0' results.json)
-
-          if [ "$ERRORS" -gt 0 ];then
-            echo "at least one failure from golangci-lint detected"
-            exit 1
-          else
-            exit 0
-          fi
+      - uses: lrstanley/.github/composite/golangci-lint@master
   make:
     needs: [go-version]
     runs-on: ubuntu-latest
@@ -158,10 +122,9 @@ jobs:
         with:
           repository: lrstanley/.github
           path: ghmeta
-      - uses: actions/setup-go@v5
+      - uses: lrstanley/.github/composite/setup-go@master
         with:
-          go-version: ${{ needs.go-version.outputs.version }}
-          cache: false
+          version: ${{ needs.go-version.outputs.version }}
       - uses: lrstanley/.github/composite/invoke-task@master
         with:
           task: go-prepare
@@ -188,10 +151,9 @@ jobs:
         with:
           repository: lrstanley/.github
           path: ghmeta
-      - uses: actions/setup-go@v5
+      - uses: lrstanley/.github/composite/setup-go@master
         with:
-          go-version: ${{ needs.go-version.outputs.version }}
-          cache: false
+          version: ${{ needs.go-version.outputs.version }}
       - uses: snyk/actions/setup@0.4.0
         if: github.event_name != 'pull_request' && inputs.scan
       - uses: lrstanley/.github/composite/invoke-task@master

@@ -1,0 +1,43 @@
+name: install-golangci-lint
+description: >
+  A composite action to install golangci-lint. Required permissions:
+    - contents: read
+    - pull-requests: read
+inputs:
+  skip-if-no-config:
+    description: >
+      If true, the action will skip if no .golangci.yaml is found.
+    required: false
+    default: "true"
+  version:
+    description: >
+      The version of golangci-lint to install.
+    required: false
+    # renovate: datasource=github-releases depName=golangci/golangci-lint
+    default: "2.5.0"
+  only-new-issues:
+    description: >
+      If true, the action will only run on new issues.
+    required: false
+    default: "true"
+runs:
+  using: "composite"
+  steps:
+    - name: should-run-golangci-lint
+      id: should-run
+      shell: bash
+      run: |
+        FILES=$(find . -maxdepth 6 -type f -name ".golangci.yaml")
+        if [ -n "$FILES" ]; then
+          echo "found .golangci.yaml"
+          echo "should-run=true" >> "$GITHUB_OUTPUT"
+        fi
+    - name: run-golangci-lint
+      if: steps.should-run.outputs.should-run == 'true' || inputs.skip-if-no-config != 'true'
+      uses: golangci/golangci-lint-action@v8
+      with:
+        version: v${{ inputs.version }}
+        working-directory: ${{ inputs.working-directory }}
+        install-mode: binary
+        verify: true
+        only-new-issues: ${{ inputs.only-new-issues }}

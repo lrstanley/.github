@@ -1,0 +1,33 @@
+name: install-taskfile
+description: >
+  A composite action to install Task. Required permissions:
+    - contents: read
+inputs:
+  skip-if-no-taskfile:
+    description: >
+      If true, the action will skip if no Taskfile.yaml is found.
+    required: false
+    default: "true"
+  version:
+    description: >
+      The version of Task to install.
+    required: false
+    # renovate: datasource=github-releases depName=go-task/task
+    default: "3.45.4"
+runs:
+  using: "composite"
+  steps:
+    - name: check-if-needs-task
+      id: needs-install
+      shell: bash
+      run: |
+        FILES=$(find . -maxdepth 6 -type f -name "Taskfile.yaml")
+        if [ -n "$FILES" ]; then
+          echo "found Taskfile.yaml"
+          echo "install=true" >> "$GITHUB_OUTPUT"
+        fi
+    - name: install-task-if-required
+      if: steps.needs-install.outputs.install == 'true' || inputs.skip-if-no-taskfile != 'true'
+      uses: go-task/setup-task@v1
+      with:
+        version: ${{ inputs.version }}

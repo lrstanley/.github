@@ -74,19 +74,9 @@ jobs:
         with:
           repository: lrstanley/.github
           path: ghmeta
-      - uses: actions/cache@v4
+      - uses: lrstanley/.github/composite/setup-go@master
         with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-${{ matrix.go-version }}-
-      - name: install-go
-        uses: actions/setup-go@v5
-        with:
-          go-version: "${{ matrix.go-version }}"
-          cache: false
+          version: ${{ matrix.go-version }}
       - name: install-node
         if: inputs.node-version
         uses: actions/setup-node@v4

@@ -1,7 +1,6 @@
 name: invoke-task
 description: >
-  A composite action to invoke a task within a Makefile (and potentially
-  other task-type files in the future).
+  A composite action to invoke a task within a Makefile and Taskfile.yaml files.
 inputs:
   task:
     description: >
@@ -23,6 +22,7 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - uses: lrstanley/.github/composite/install-taskfile@master
     - id: run-task
       name: run-task
       shell: bash
@@ -32,6 +32,19 @@ runs:
       run: |
         set -x
         set +e
+
+        if [ -f "Taskfile.yaml" ]; then
+          echo "found Taskfile.yaml"
+
+          for TASK in ${TASKS//,/ }; do
+            if task -l | grep -q $TASK; then
+              echo "running task: $TASK"
+              task --exit-code --verbose $TASK || exit 1
+              echo "ran=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          done
+        fi
 
         if [ -f "Makefile" ]; then
           echo "found Makefile"
