@@ -13,7 +13,7 @@ export BASE=$(readlink -f "$(dirname "$0")/..")
 FILEPATH="${1:?usage: $0 <filepath>}"
 export README=$(cat "$FILEPATH")
 
-export GITHUB_EVENT_PATH="${GITHUB_EVENT_PATH:-${BASE}/readme/example-event.json}"
+export GITHUB_EVENT_PATH="${GITHUB_EVENT_PATH:-${BASE}/example-event.json}"
 
 function setup {
     if which p2 >/dev/null 2>&1; then
@@ -51,7 +51,7 @@ function update_field {
 }
 
 function update_field_file {
-    SECTION=$(GITHUB_TOKEN='' jq -r '.env |= env' <<<"$JSON" | p2 --format=json --template "${BASE}/readme/sections/$2")
+    SECTION=$(GITHUB_TOKEN='' jq -r '.env |= env' <<<"$JSON" | p2 --format=json --template "${BASE}/sections/$2")
     update_field "$1" "$SECTION"
 }
 
@@ -65,7 +65,8 @@ function generate_metadata {
         echo "{}" >/tmp/latest-release.json
     else /bin/true; fi
 
-    gh api '/users/'${GITHUB_REPOSITORY_OWNER}'/packages?package_type=container&visibility=public' 2>/dev/null | GITHUB_TOKEN='' jq '[
+    gh api "/users/${GITHUB_REPOSITORY_OWNER}/packages?package_type=container&visibility=public"
+    gh api "/users/${GITHUB_REPOSITORY_OWNER}/packages?package_type=container&visibility=public" 2>/dev/null | GITHUB_TOKEN='' jq '[
 		.[] | select(.repository.full_name == env.GITHUB_REPOSITORY) | {
 			name: .name,
 			repo: .repository.name,

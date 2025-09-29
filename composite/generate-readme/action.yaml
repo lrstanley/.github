@@ -39,7 +39,7 @@ runs:
       shell: bash
       env:
         FILEPATH: ${{ inputs.path }}
-        GH_TOKEN: ${{ steps.app-token.outputs.token || inputs.token }}
+        GITHUB_TOKEN: ${{ steps.app-token.outputs.token || inputs.token }}
       run: |
         ${GITHUB_ACTION_PATH}/generate.sh "$FILEPATH"
         git config user.name "$GITHUB_ACTOR"
