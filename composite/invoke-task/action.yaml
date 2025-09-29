@@ -30,7 +30,9 @@ runs:
       env:
         TASKS: ${{ inputs.task }}
       run: |
-        set -x
+        if [ "$RUNNER_DEBUG" == "true" || "$RUNNER_DEBUG" == "1" ]; then
+          set -x
+        fi
         set +e
 
         if [ -f "Taskfile.yaml" ]; then
