@@ -8,7 +8,7 @@
 P2_VERSION="r18"
 
 set -o pipefail
-export BASE=$(readlink -f "$(dirname "$0")/..")
+export BASE=$(readlink -f "$(dirname "$0")")
 
 FILEPATH="${1:?usage: $0 <filepath>}"
 export README=$(cat "$FILEPATH")
