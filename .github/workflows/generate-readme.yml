@@ -12,12 +12,6 @@ on:
       token:
         description: "User-based personal access token."
         required: false
-      app-id:
-        description: "GitHub App ID."
-        required: false
-      app-private-key:
-        description: "GitHub App private key."
-        required: false
 
 jobs:
   generate:
@@ -27,6 +21,4 @@ jobs:
     steps:
       - uses: lrstanley/.github/composite/generate-readme@master
         with:
-          app-id: ${{ secrets.app-id || secrets.BOT_APP_ID }}
-          app-private-key: ${{ secrets.app-private-key || secrets.BOT_PRIVATE_KEY }}
-          token: ${{ secrets.token || secrets.USER_PAT || secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.token || secrets.USER_PAT }}

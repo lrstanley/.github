@@ -1,20 +1,14 @@
 name: generate-readme
 description: >
-  A composite action to generate a README.md file. Note that you must either provide
-  a user-based personal access token or Github app credentials. Required permissions:
+  A composite action to generate a README.md file. Note that only classic PATs are
+  supported at this time. Required permissions:
     - contents: write
+
+  TODO: https://github.com/cli/cli/issues/9606#issuecomment-2465580556
 inputs:
   token:
     description: >-
       User-based personal access token.
-    required: false
-  app-id:
-    description: >-
-      GitHub App ID.
-    required: false
-  app-private-key:
-    description: >-
-      GitHub App private key.
     required: false
   path:
     description: >-
@@ -24,22 +18,16 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/create-github-app-token@v2
-      id: app-token
-      if: ${{ inputs.app-id != '' && inputs.app-private-key != '' }}
-      with:
-        app-id: "${{ inputs.app-id }}"
-        private-key: "${{ inputs.app-private-key }}"
     - uses: actions/checkout@v5
       with:
         ref: ${{ github.event.repository.default_branch || 'master' }}
-        token: ${{ steps.app-token.outputs.token || inputs.token }}
+        token: ${{ inputs.token }}
     - name: generate
       continue-on-error: true
       shell: bash
       env:
         FILEPATH: ${{ inputs.path }}
-        GITHUB_TOKEN: ${{ steps.app-token.outputs.token || inputs.token }}
+        GITHUB_TOKEN: ${{ inputs.token }}
       run: |
         ${GITHUB_ACTION_PATH}/generate.sh "$FILEPATH"
         git config user.name "$GITHUB_ACTOR"
