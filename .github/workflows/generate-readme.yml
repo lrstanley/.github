@@ -2,6 +2,12 @@ name: generate-readme
 
 on:
   workflow_call:
+    inputs:
+      path:
+        description: "The path to the README.md file."
+        required: false
+        default: "README.md"
+        type: string
     secrets:
       token:
         description: "User-based personal access token."
