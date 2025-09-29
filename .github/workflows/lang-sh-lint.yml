@@ -1,6 +1,14 @@
 name: sh-lint
 
-on: [workflow_call]
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        description: >
+          Working directory to run the test in.
+        required: False
+        type: string
+        default: .
 
 jobs:
   lint:
@@ -15,3 +23,5 @@ jobs:
           SHELLCHECK_OPTS: >-
             -e SC1090
             -e SC1091
+        with:
+          scan-dir: ${{ inputs.working-directory }}

@@ -36,6 +36,12 @@ on:
         default: True
         required: False
         type: boolean
+      working-directory:
+        description: >
+          Working directory to run the linting in.
+        required: False
+        type: string
+        default: .
 
 jobs:
   go-version:
@@ -81,12 +87,15 @@ jobs:
         with:
           task: go-prepare,prepare
           allow-undefined: true
-      - run: |
+          working-directory: ${{ inputs.working-directory }}
+      - name: test-with-coverage
+        working-directory: ${{ inputs.working-directory }}
+        run: |
           set -e
           go test -v -coverprofile=coverage.txt -timeout 3m ./...
       - uses: codecov/codecov-action@v5
         with:
-          files: coverage.txt
+          files: ${{ inputs.working-directory }}/coverage.txt
           token: ${{ secrets.CODECOV_TOKEN }}
   golangci-lint:
     needs: [go-version]
@@ -118,13 +127,16 @@ jobs:
         with:
           task: go-prepare
           allow-undefined: true
+          working-directory: ${{ inputs.working-directory }}
       - name: parse-results
+        env:
+          WORKING_DIRECTORY: ${{ inputs.working-directory }}
         run: |
           set -xe
 
           ./ghmeta/scripts/install-golangci-lint.sh
 
-          golangci-lint run --new-from-rev "$GITHUB_SHA" --output.text.path stdout --output.json.path results.json --issues-exit-code 0
+          golangci-lint run --new-from-rev "$GITHUB_SHA" --output.text.path stdout --output.json.path results.json --issues-exit-code 0 "$WORKING_DIRECTORY"
 
           ERRORS=$(jq -cr '([.Issues[].Severity | select(. | IN("failure", "error", "fail"))] | length) // 0' results.json)
 
@@ -154,10 +166,12 @@ jobs:
         with:
           task: go-prepare
           allow-undefined: true
+          working-directory: ${{ inputs.working-directory }}
       - uses: lrstanley/.github/composite/invoke-task@master
         with:
           task: go-lint
           allow-undefined: true
+          working-directory: ${{ inputs.working-directory }}
   snyk:
     needs: [go-version]
     if: ${{ inputs.scan }}
@@ -185,16 +199,18 @@ jobs:
         with:
           task: go-prepare,prepare
           allow-undefined: true
+          working-directory: ${{ inputs.working-directory }}
       - name: scan-snyk
         if: github.event_name != 'pull_request' && inputs.scan
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          WORKING_DIRECTORY: ${{ inputs.working-directory }}
         run: |
           set -x
           mkdir -vp /tmp/sarif
 
-          find "$PWD" -maxdepth 4 -type f -name "go.mod" -printf '%h\n' | while read -r dir; do
+          find "$WORKING_DIRECTORY" -maxdepth 4 -type f -name "go.mod" -printf '%h\n' | while read -r dir; do
               cd "$dir" || exit
               ts=$(date +%s)
               snyk test \

@@ -38,6 +38,12 @@ on:
           command.
         required: False
         type: string
+      working-directory:
+        description: >
+          Working directory to run the test in.
+        required: False
+        type: string
+        default: .
 
 jobs:
   go-versions:
@@ -98,15 +104,18 @@ jobs:
           run_install: false
       - name: custom-go-test
         if: inputs.run
+        working-directory: ${{ inputs.working-directory }}
         run: ${{ inputs.run }}
       - uses: lrstanley/.github/composite/invoke-task@master
         if: ${{ !inputs.run }}
         with:
           task: go-prepare,prepare
           allow-undefined: true
+          working-directory: ${{ inputs.working-directory }}
       - uses: lrstanley/.github/composite/invoke-task@master
         if: ${{ !inputs.run }}
         with:
           task: go-test,test
+          working-directory: ${{ inputs.working-directory }}
           fallback: |
             GORACE="exitcode=1 halt_on_error=1" go test -v -race -timeout 3m -count 3 -cpu 1,4 ./...

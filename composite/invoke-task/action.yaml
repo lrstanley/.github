@@ -15,12 +15,18 @@ inputs:
     description: >
       If true, the action will fail if none of the tasks passed into task were defined. This will only apply if `input.fallback` is not set.
     default: "false"
+  working-directory:
+    description: >
+      Working directory to run the task in.
+    required: False
+    default: .
 runs:
   using: "composite"
   steps:
     - id: run-task
       name: run-task
       shell: bash
+      working-directory: ${{ inputs.working-directory }}
       env:
         TASKS: ${{ inputs.task }}
       run: |
@@ -44,6 +50,7 @@ runs:
     - if: steps.run-task.outputs.ran == 'false' && inputs.fallback != ''
       name: run-fallback
       shell: bash
+      working-directory: ${{ inputs.working-directory }}
       run: |
         set -xe
         ${{ inputs.fallback }}
