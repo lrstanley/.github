@@ -66,12 +66,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v5
-      - name: git-clone-tools-repo
-        uses: actions/checkout@v5
-        with:
-          repository: lrstanley/.github
-          path: ghmeta
-      - uses: lrstanley/.github/composite/setup-go@master
+      - uses: lrstanley/.github/composite/install-go@master
         with:
           version: ${{ needs.go-version.outputs.version }}
       - uses: lrstanley/.github/composite/invoke-task@master
@@ -96,12 +91,7 @@ jobs:
       pull-requests: read
     steps:
       - uses: actions/checkout@v5
-      - name: git-clone-tools-repo
-        uses: actions/checkout@v5
-        with:
-          repository: lrstanley/.github
-          path: ghmeta
-      - uses: lrstanley/.github/composite/setup-go@master
+      - uses: lrstanley/.github/composite/install-go@master
         with:
           version: ${{ needs.go-version.outputs.version }}
       - uses: lrstanley/.github/composite/invoke-task@master
@@ -117,12 +107,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v5
-      - name: git-clone-tools-repo
-        uses: actions/checkout@v5
-        with:
-          repository: lrstanley/.github
-          path: ghmeta
-      - uses: lrstanley/.github/composite/setup-go@master
+      - uses: lrstanley/.github/composite/install-go@master
         with:
           version: ${{ needs.go-version.outputs.version }}
       - uses: lrstanley/.github/composite/invoke-task@master
@@ -146,12 +131,7 @@ jobs:
       statuses: write
     steps:
       - uses: actions/checkout@v5
-      - name: git-clone-tools-repo
-        uses: actions/checkout@v5
-        with:
-          repository: lrstanley/.github
-          path: ghmeta
-      - uses: lrstanley/.github/composite/setup-go@master
+      - uses: lrstanley/.github/composite/install-go@master
         with:
           version: ${{ needs.go-version.outputs.version }}
       - uses: snyk/actions/setup@0.4.0

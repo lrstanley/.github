@@ -1,0 +1,35 @@
+name: install-node
+description: >
+  A composite action to install Node.js. Required permissions:
+    - contents: read
+inputs:
+  version:
+    description: >
+      The version of Node.js to install. If not specified, the latest LTS version
+      will be installed.
+    required: false
+    default: "lts/*"
+outputs:
+  uses-pnpm:
+    description: >
+      If true, pnpm is used.
+    value: ${{ steps.uses-pnpm.outputs.uses-pnpm }}
+runs:
+  using: "composite"
+  steps:
+    - name: install-node
+      uses: actions/setup-node@v5
+      with:
+        node-version: ${{ inputs.version }}
+    - name: check if pnpm is used
+      id: uses-pnpm
+      shell: bash
+      run: |
+        echo "uses-pnpm=$(find . -mindepth 1 -maxdepth 6 -type f -name pnpm-lock.yaml | grep -q . && echo true || echo false)" >> "$GITHUB_OUTPUT"
+    - name: pnpm install
+      if: steps.uses-pnpm.outputs.uses-pnpm == 'true'
+      uses: pnpm/action-setup@v4.1.0
+      id: pnpm-install
+      with:
+        version: latest
+        run_install: false

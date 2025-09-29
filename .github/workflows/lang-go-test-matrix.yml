@@ -69,12 +69,7 @@ jobs:
         go-version: ${{ fromJSON(needs.go-versions.outputs.versions) }}
     steps:
       - uses: actions/checkout@v5
-      - name: git-clone-tools-repo
-        uses: actions/checkout@v5
-        with:
-          repository: lrstanley/.github
-          path: ghmeta
-      - uses: lrstanley/.github/composite/setup-go@master
+      - uses: lrstanley/.github/composite/install-go@master
         with:
           version: ${{ matrix.go-version }}
       - name: install-node

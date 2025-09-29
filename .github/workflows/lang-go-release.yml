@@ -80,7 +80,7 @@ jobs:
         if: ${{ !inputs.go-version }}
         with:
           version: ${{ inputs.go-version || 'latest' }}
-      - uses: lrstanley/.github/composite/setup-go@master
+      - uses: lrstanley/.github/composite/install-go@master
         with:
           version: ${{ inputs.go-version || steps.goversion.outputs.version }}
       - name: install-node

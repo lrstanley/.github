@@ -16,8 +16,9 @@ on:
     inputs:
       node-version:
         description: >
-          Node version .
-        required: true
+          Node version to use.
+        required: false
+        default: "lts/*"
         type: string
       scan:
         description: >
@@ -32,37 +33,17 @@ jobs:
     permissions: {}
     steps:
       - uses: actions/checkout@v5
-      - name: git-clone-tools-repo
-        uses: actions/checkout@v5
+      - uses: lrstanley/.github/composite/install-node@master
         with:
-          repository: lrstanley/.github
-          path: ghmeta
-      - name: install-node
-        uses: actions/setup-node@v5
+          version: ${{ inputs.node-version }}
+      - uses: lrstanley/.github/composite/invoke-task@master
         with:
-          node-version: ${{ inputs.node-version }}
-      - name: check if pnpm is used
-        id: uses-pnpm
-        run: echo "uses-pnpm=$(find . -mindepth 1 -maxdepth 6 -type f -name pnpm-lock.yaml | grep -q . && echo true || echo false)" >> "$GITHUB_OUTPUT"
-      - name: pnpm install
-        if: steps.uses-pnpm.outputs.uses-pnpm == 'true'
-        uses: pnpm/action-setup@v4.1.0
-        id: pnpm-install
+          task: node-prepare,prepare
+          allow-undefined: true
+      - uses: lrstanley/.github/composite/invoke-task@master
         with:
-          version: latest
-          run_install: false
-      - run: |
-          set +e
-
-          ./ghmeta/scripts/make.sh node-prepare prepare
-          RESULTS="$?"
-          if [ "$?" -gt 0 ] && [ "$?" -ne 127 ];then exit "$RESULTS";fi
-
-          ./ghmeta/scripts/make.sh node-test test
-          RESULTS="$?"
-          if [ "$RESULTS" -ne 127 ];then exit "$RESULTS";fi
-
-          exit 0
+          task: node-test,test
+          allow-undefined: false
   snyk:
     if: ${{ inputs.scan }}
     runs-on: ubuntu-latest
@@ -73,27 +54,12 @@ jobs:
       statuses: write
     steps:
       - uses: actions/checkout@v5
-      - name: git-clone-tools-repo
-        uses: actions/checkout@v5
+      - uses: lrstanley/.github/composite/install-node@master
+        id: install-node
         with:
-          repository: lrstanley/.github
-          path: ghmeta
-      - name: install-node
-        uses: actions/setup-node@v5
-        with:
-          node-version: ${{ inputs.node-version }}
-      - name: check if pnpm is used
-        id: uses-pnpm
-        run: echo "uses-pnpm=$(find . -mindepth 1 -maxdepth 6 -type f -name pnpm-lock.yaml | grep -q . && echo true || echo false)" >> "$GITHUB_OUTPUT"
-      - name: pnpm install
-        if: steps.uses-pnpm.outputs.uses-pnpm == 'true'
-        uses: pnpm/action-setup@v4.1.0
-        id: pnpm-install
-        with:
-          version: latest
-          run_install: true
+          version: ${{ inputs.node-version }}
       - name: npm install
-        if: steps.uses-pnpm.outputs.uses-pnpm != 'true'
+        if: steps.install-node.outputs.uses-pnpm != 'true'
         id: npm-install
         run: |
           set -x
