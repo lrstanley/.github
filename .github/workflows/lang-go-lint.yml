@@ -100,6 +100,8 @@ jobs:
           allow-undefined: true
           working-directory: ${{ inputs.working-directory }}
       - uses: lrstanley/.github/composite/golangci-lint@master
+        with:
+          working-directory: ${{ inputs.working-directory }}
   make:
     needs: [go-version]
     runs-on: ubuntu-latest
