@@ -25,7 +25,7 @@ jobs:
     permissions:
       packages: write
     steps:
-      - uses: snok/container-retention-policy@v3.0.0
+      - uses: snok/container-retention-policy@v3.0.1
         with:
           account-type: personal
           token: ${{ secrets.token || secrets.USER_PAT }}
@@ -39,7 +39,7 @@ jobs:
     permissions:
       packages: write
     steps:
-      - uses: snok/container-retention-policy@v3.0.0
+      - uses: snok/container-retention-policy@v3.0.1
         with:
           account-type: personal
           token: ${{ secrets.token || secrets.USER_PAT }}
@@ -54,7 +54,7 @@ jobs:
     permissions:
       packages: write
     steps:
-      - uses: snok/container-retention-policy@v3.0.0
+      - uses: snok/container-retention-policy@v3.0.1
         with:
           account-type: personal
           token: ${{ secrets.token || secrets.USER_PAT }}
