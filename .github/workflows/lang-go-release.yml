@@ -85,7 +85,7 @@ jobs:
           version: ${{ inputs.go-version || steps.goversion.outputs.version }}
       - name: install-node
         if: inputs.node-version
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ inputs.node-version }}
       - name: check if pnpm is used
