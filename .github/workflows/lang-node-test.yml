@@ -28,7 +28,7 @@ jobs:
           repository: lrstanley/.github
           path: ghmeta
       - name: install-node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ inputs.node-version }}
       - name: check if pnpm is used
