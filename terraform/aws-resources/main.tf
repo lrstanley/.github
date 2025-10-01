@@ -15,7 +15,7 @@ terraform {
 
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "4.52.1"
+      version = "5.10.1"
     }
 
     github = {
