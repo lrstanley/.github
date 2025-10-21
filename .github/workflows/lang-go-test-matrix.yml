@@ -48,6 +48,7 @@ on:
 jobs:
   go-versions:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     permissions: {}
     outputs:
       versions: ${{ steps.fetch-versions.outputs.versions }}
@@ -60,6 +61,7 @@ jobs:
           num-patch: ${{ inputs.num-patch }}
   go-test-matrix:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
     needs: [go-versions]

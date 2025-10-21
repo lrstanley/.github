@@ -45,6 +45,7 @@ on:
 jobs:
   docker-release:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       packages: write
       checks: write

@@ -20,6 +20,7 @@ jobs:
   make:
     runs-on: ubuntu-latest
     permissions: {}
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v5
       - uses: lrstanley/.github/composite/install-node@master

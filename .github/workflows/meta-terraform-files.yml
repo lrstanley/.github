@@ -10,6 +10,7 @@ permissions: {}
 jobs:
   trigger-run:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: git-clone-tools-repo
         uses: actions/checkout@v5

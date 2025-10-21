@@ -21,6 +21,7 @@ on:
 jobs:
   docker-prune-untagged:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     continue-on-error: true
     permissions:
       packages: write
@@ -36,6 +37,7 @@ jobs:
   docker-prune-prs:
     runs-on: ubuntu-latest
     continue-on-error: true
+    timeout-minutes: 5
     permissions:
       packages: write
     steps:
@@ -51,6 +53,7 @@ jobs:
   docker-prune-alpha:
     runs-on: ubuntu-latest
     continue-on-error: true
+    timeout-minutes: 5
     permissions:
       packages: write
     steps:
