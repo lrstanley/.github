@@ -30,7 +30,7 @@ runs:
       env:
         TASKS: ${{ inputs.task }}
       run: |
-        if [ "$RUNNER_DEBUG" == "true" || [ "$RUNNER_DEBUG" == "1" ]; then
+        if [ "$RUNNER_DEBUG" == "true" ] || [ "$RUNNER_DEBUG" == "1" ]; then
           set -x
         fi
         set +e
