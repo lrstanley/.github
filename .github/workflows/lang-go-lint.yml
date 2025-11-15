@@ -141,7 +141,7 @@ jobs:
       - uses: lrstanley/.github/composite/install-go@master
         with:
           version: ${{ needs.go-version.outputs.version }}
-      - uses: snyk/actions/setup@0.4.0
+      - uses: snyk/actions/setup@v0.5.0
         if: github.event_name != 'pull_request' && inputs.scan
       - uses: lrstanley/.github/composite/invoke-task@master
         if: github.event_name != 'pull_request' && inputs.scan
