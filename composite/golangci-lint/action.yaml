@@ -34,7 +34,7 @@ runs:
         fi
     - name: run-golangci-lint
       if: steps.should-run.outputs.should-run == 'true' || inputs.skip-if-no-config != 'true'
-      uses: golangci/golangci-lint-action@v8
+      uses: golangci/golangci-lint-action@v9
       with:
         version: v${{ inputs.version }}
         working-directory: ${{ inputs.working-directory }}
