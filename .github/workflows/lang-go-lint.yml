@@ -171,6 +171,6 @@ jobs:
       - name: scan-snyk-upload-sarif
         if: github.event_name != 'pull_request' && inputs.scan
         continue-on-error: true
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: /tmp/sarif/
