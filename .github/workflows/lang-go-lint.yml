@@ -67,7 +67,7 @@ jobs:
       checks: write
       contents: read
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: lrstanley/.github/composite/install-go@master
         with:
           version: ${{ needs.go-version.outputs.version }}
@@ -93,7 +93,7 @@ jobs:
       contents: read
       pull-requests: read
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: lrstanley/.github/composite/install-go@master
         with:
           version: ${{ needs.go-version.outputs.version }}
@@ -112,7 +112,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: lrstanley/.github/composite/install-go@master
         with:
           version: ${{ needs.go-version.outputs.version }}
@@ -137,7 +137,7 @@ jobs:
       security-events: write
       statuses: write
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: lrstanley/.github/composite/install-go@master
         with:
           version: ${{ needs.go-version.outputs.version }}

@@ -43,14 +43,14 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: ${{ inputs.ref }}
           token: ${{ secrets.token || secrets.USER_PAT }}
           fetch-depth: 0
       - run: git fetch --force --tags
       - name: git-clone-tools-repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: lrstanley/.github
           path: ghmeta
