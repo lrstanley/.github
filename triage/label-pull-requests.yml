@@ -1,19 +1,27 @@
 dependencies:
-  - "**/go.mod"
-  - "**/go.sum"
-  - "**/go.work"
-  - "**/package.json"
-  - "**/package-lock.json"
-  - "**/requirements.txt"
+  - changed-files:
+    - any-glob-to-any-file:
+      - "**/go.mod"
+      - "**/go.sum"
+      - "**/go.work"
+      - "**/package.json"
+      - "**/package-lock.json"
+      - "**/requirements.txt"
 workflows:
-  - ".github/workflows/*"
-  - ".github/*.yml"
+  - changed-files:
+    - any-glob-to-any-file:
+      - ".github/workflows/*"
+      - ".github/*.yml"
 documentation:
-  - "docs/**/*"
-  - "**/*.md"
-  - ".github/ISSUE_TEMPLATE/*"
+  - changed-files:
+    - any-glob-to-any-file:
+      - "docs/**/*"
+      - "**/*.md"
+      - ".github/ISSUE_TEMPLATE/*"
 tests:
-  - "**/*.spec.js"
-  - "**/test.*.js"
-  - "**/*.test.js"
-  - "**/*_test.go"
+  - changed-files:
+    - any-glob-to-any-file:
+      - "**/*.spec.js"
+      - "**/test.*.js"
+      - "**/*.test.js"
+      - "**/*_test.go"
