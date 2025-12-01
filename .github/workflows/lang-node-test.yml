@@ -22,7 +22,7 @@ jobs:
     permissions: {}
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: lrstanley/.github/composite/install-node@master
         with:
           version: ${{ inputs.node-version }}
