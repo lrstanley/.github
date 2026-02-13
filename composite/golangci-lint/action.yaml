@@ -14,7 +14,7 @@ inputs:
       The version of golangci-lint to install.
     required: false
     # renovate: datasource=github-releases depName=golangci/golangci-lint
-    default: "2.5.0"
+    default: "2.9.0"
   only-new-issues:
     description: >
       If true, the action will only run on new issues.
