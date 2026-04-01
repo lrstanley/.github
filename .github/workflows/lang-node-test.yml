@@ -38,6 +38,6 @@ jobs:
         if: always()
         with:
           name: playwright-report
-          path: ${{ steps.node-test.outputs.output }}
+          path: ${{ steps.node-test.outputs.output || 'playwright-report' }}
           if-no-files-found: warn
           retention-days: 5
