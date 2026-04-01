@@ -81,7 +81,7 @@ jobs:
         run: |
           set -e
           go test -v -coverprofile=coverage.txt -timeout 3m ./...
-      - uses: codecov/codecov-action@v5
+      - uses: codecov/codecov-action@v6
         with:
           files: ${{ inputs.working-directory }}/coverage.txt
           token: ${{ secrets.CODECOV_TOKEN }}
