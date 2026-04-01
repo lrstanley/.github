@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: lrstanley/.github/composite/install-node@master
         with:
-          version: ${{ inputs.node-version }}
+          version: ${{ inputs.node-version || 'lts/*' }}
       - uses: lrstanley/.github/composite/invoke-task@master
         with:
           task: node-prepare,prepare

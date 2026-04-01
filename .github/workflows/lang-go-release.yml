@@ -84,35 +84,9 @@ jobs:
       - uses: lrstanley/.github/composite/install-go@master
         with:
           version: ${{ inputs.go-version || steps.goversion.outputs.version }}
-
-      # node
-      - name: install-node
-        if: inputs.node-version
-        uses: actions/setup-node@v6
+      - uses: lrstanley/.github/composite/install-node@master
         with:
-          node-version: ${{ inputs.node-version }}
-
-      # pnpm
-      - name: check if pnpm is used
-        id: uses-pnpm
-        run: echo "uses-pnpm=$(find . -mindepth 1 -maxdepth 6 -type f -name pnpm-lock.yaml | grep -q . && echo true || echo false)" >> "$GITHUB_OUTPUT"
-      - name: pnpm install
-        if: steps.uses-pnpm.outputs.uses-pnpm == 'true'
-        uses: pnpm/action-setup@v4.2.0
-        id: pnpm-install
-        with:
-          version: latest
-          run_install: false
-      # bun
-      - name: check if bun is used
-        id: uses-bun
-        run: echo "uses-bun=$(find . -mindepth 1 -maxdepth 6 -type f -name bun.lock | grep -q . && echo true || echo false)" >> "$GITHUB_OUTPUT"
-      - name: bun install
-        if: steps.uses-bun.outputs.uses-bun == 'true'
-        uses: oven-sh/setup-bun@v2.2.0
-        with:
-          bun-version: ${{ inputs.bun-version || 'latest' }}
-
+          version: ${{ inputs.node-version || 'lts/*' }}
       - run: ./ghmeta/goreleaser/run.sh
         env:
           INPUT_HAS_GHCR: ${{ inputs.has-ghcr }}

@@ -9,27 +9,55 @@ inputs:
       will be installed.
     required: false
     default: "lts/*"
+  skip-if-no-packages:
+    description: >
+      If true, the action will skip if no package.json is found.
+    required: false
+    default: "true"
 outputs:
   uses-pnpm:
     description: >
       If true, pnpm is used.
     value: ${{ steps.uses-pnpm.outputs.uses-pnpm }}
+  uses-bun:
+    description: >
+      If true, bun is used.
+    value: ${{ steps.uses-bun.outputs.uses-bun }}
 runs:
   using: "composite"
   steps:
+    - name: check if packages are used
+      id: uses-packages
+      shell: bash
+      run: echo "uses-packages=$(find . -mindepth 1 -maxdepth 6 -type f -name package.json | grep -q . && echo true || echo false)" >> "$GITHUB_OUTPUT"
     - name: install-node
+      if: steps.uses-packages.outputs.uses-packages == 'true' || inputs.skip-if-no-packages != 'true'
       uses: actions/setup-node@v6
       with:
         node-version: ${{ inputs.version }}
+
+    # pnpm
     - name: check if pnpm is used
       id: uses-pnpm
+      if: steps.uses-packages.outputs.uses-packages == 'true' || inputs.skip-if-no-packages != 'true'
       shell: bash
-      run: |
-        echo "uses-pnpm=$(find . -mindepth 1 -maxdepth 6 -type f -name pnpm-lock.yaml | grep -q . && echo true || echo false)" >> "$GITHUB_OUTPUT"
+      run: echo "uses-pnpm=$(find . -mindepth 1 -maxdepth 6 -type f -name pnpm-lock.yaml | grep -q . && echo true || echo false)" >> "$GITHUB_OUTPUT"
     - name: pnpm install
-      if: steps.uses-pnpm.outputs.uses-pnpm == 'true'
+      if: (steps.uses-packages.outputs.uses-packages == 'true' || inputs.skip-if-no-packages != 'true') && steps.uses-pnpm.outputs.uses-pnpm == 'true'
       uses: pnpm/action-setup@v4.2.0
       id: pnpm-install
       with:
         version: latest
         run_install: false
+
+    # bun
+    - name: check if bun is used
+      id: uses-bun
+      if: steps.uses-packages.outputs.uses-packages == 'true' || inputs.skip-if-no-packages != 'true'
+      shell: bash
+      run: echo "uses-bun=$(find . -mindepth 1 -maxdepth 6 -type f -name bun.lock | grep -q . && echo true || echo false)" >> "$GITHUB_OUTPUT"
+    - name: bun install
+      if: (steps.uses-packages.outputs.uses-packages == 'true' || inputs.skip-if-no-packages != 'true') && steps.uses-bun.outputs.uses-bun == 'true'
+      uses: oven-sh/setup-bun@v2.2.0
+      with:
+        bun-version: latest
