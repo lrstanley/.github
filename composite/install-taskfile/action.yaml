@@ -28,6 +28,6 @@ runs:
         fi
     - name: install-task-if-required
       if: steps.needs-install.outputs.install == 'true' || inputs.skip-if-no-taskfile != 'true'
-      uses: go-task/setup-task@v1
+      uses: go-task/setup-task@v2
       with:
         version: ${{ inputs.version }}
