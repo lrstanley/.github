@@ -38,13 +38,13 @@ changelog:
       regexp: '^.*?(feat|fix|chore)\(deps\)!?:.+$'
       order: 15
     - title: ":warning: Breaking Changes :warning:"
-      regexp: "(?i).*breaking.*"
+      regexp: ".*breaking.*"
       order: 1
     - title: ":sparkles: New Features"
-      regexp: "(?i)(^add|^feat|.*feature.*|.*support .*)"
+      regexp: ".*(add|feat|feature|implement|support).*"
       order: 2
     - title: ":lady_beetle: Bug Fixes"
-      regexp: "(?i)(^fix|.*fixes.*|.*resolv.*|.*issue.*)"
+      regexp: ".*(fix|.*fixes.*|.*resolv.*|.*issue.*)"
       order: 3
     - title: ":broom: Misc"
       order: 10

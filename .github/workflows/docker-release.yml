@@ -112,7 +112,7 @@ jobs:
           context: ${{ inputs.context }}
           platforms: ${{ inputs.platforms }}
           provenance: "mode=max"
-          # load: true
+          sbom: true
           push: ${{ inputs.push }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
