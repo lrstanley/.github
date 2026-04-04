@@ -100,6 +100,10 @@ jobs:
             org.opencontainers.image.licenses=MIT
             org.opencontainers.image.authors=${{ github.event.repository.owner.name }} <${{ github.event.repository.owner.email || 'unknown' }}>
             org.opencontainers.image.name=${{ inputs.name || github.event.repository.name }}
+      - name: get-referable-tag
+        id: reftag
+        run: |
+          echo "tag=$(tail -n1 <<< "${{ steps.meta.outputs.tags }}" | tr -d '[:space:]')" >> "$GITHUB_OUTPUT"
       - name: docker-build
         uses: docker/build-push-action@v7
         env:
@@ -108,7 +112,8 @@ jobs:
           context: ${{ inputs.context }}
           platforms: ${{ inputs.platforms }}
           provenance: "mode=max"
-          load: true
+          # load: true
+          push: ${{ inputs.push }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
@@ -123,8 +128,8 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          image: tmp
-          args: --file=${{ inputs.dockerfile }}
+          image: ${{ steps.reftag.outputs.tag }}
+          args: "--file=${{ inputs.dockerfile }}"
       - name: snyk-scan-upload-sarif
         if: github.event_name != 'pull_request' && inputs.scan
         continue-on-error: true
@@ -132,10 +137,3 @@ jobs:
         with:
           sarif_file: snyk.sarif
           wait-for-processing: true
-      - name: docker-push
-        if: inputs.push
-        uses: docker/build-push-action@v7
-        with:
-          provenance: "mode=max"
-          tags: ${{ steps.meta.outputs.tags }}
-          push: true
