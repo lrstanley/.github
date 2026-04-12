@@ -1,7 +1,7 @@
 {
     // https://docs.renovatebot.com/configuration-options/
     // TODO: https://github.com/onedr0p/home-ops/blob/main/.github/workflows/renovate.yaml
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "$schema": "https://docs.renovatebot.com/renovate-global-schema.json",
     "allowPlugins": true,
     "allowScripts": false,
     "autodiscover": false,
@@ -18,11 +18,9 @@
         "helmv3",
         "kubernetes",
         "kustomize",
-        "kustomize",
-        "pip_requirements",
-        "pip_setup",
-        "pipenv",
-        "pyenv",
+        "pep621",
+        "pep723",
+        "bun",
         "npm",
         "nvm",
         "terraform",
@@ -75,6 +73,22 @@
             "/.*/.+\\.ya?ml$/"
         ]
     },
+    "pep723": {
+        "managerFilePatterns": [
+            "/.*/.+\\.py$/"
+        ]
+    },
+    // https://docs.renovatebot.com/key-concepts/minimum-release-age/
+    "minimumReleaseAge": "3 days",
+    "packageRules": [
+        {
+            "description": "no minimum release age for github.com/lrstanley Go modules",
+            "matchPackageNames": [
+                "github.com/lrstanley/**"
+            ],
+            "minimumReleaseAge": null
+        }
+    ],
     "labels": [
         "dependencies"
     ],
@@ -95,7 +109,7 @@
         "prEditedNotification",
         "prIgnoreNotification"
     ],
-    "timezone": "America/Detroit",
+    "timezone": "America/Denver",
     "vulnerabilityAlerts": {
         "assigneesFromCodeOwners": true,
         "automerge": false,
