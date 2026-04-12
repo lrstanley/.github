@@ -49,6 +49,7 @@ env:
   RENOVATE_REPOSITORY_CACHE_TYPE: local
   RENOVATE_PRESET_CACHE_PERSISTENCE: ${{ inputs.cache == true && 'true' || 'false' }}
   RENOVATE_CACHE_DIR: /tmp/renovate/cache/repository
+  RENOVATE_VERSION: "43.110.16" # renovate: datasource=docker depName=ghcr.io/renovatebot/renovate
 
 jobs:
   renovate:
@@ -60,7 +61,7 @@ jobs:
       - uses: actions/create-github-app-token@v3
         id: app-token
         with:
-          app-id: "${{ secrets.app-id || secrets.BOT_APP_ID }}"
+          client-id: "${{ secrets.app-id || secrets.BOT_APP_ID }}"
           private-key: "${{ secrets.app-private-key || secrets.BOT_PRIVATE_KEY }}"
       - uses: actions/checkout@v6
         with:
@@ -78,8 +79,8 @@ jobs:
           if [ -d /tmp/renovate ]; then
             sudo chown -R 12021:0 /tmp/renovate
           fi
-      - uses: renovatebot/github-action@v46.1.7
+      - uses: renovatebot/github-action@v46.1.8
         with:
           configurationFile: renovate/main.json5
-          token: "${{ steps.app-token.outputs.token }}"
-          renovate-version: "41"
+          token: ${{ steps.app-token.outputs.token }}
+          renovate-version: ${{ env.RENOVATE_VERSION }}
