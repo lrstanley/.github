@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: docker-prune
 
 on:
@@ -8,7 +9,9 @@ on:
         required: false
         type: string
       remove-after:
-        description: Date after which images should be removed.
+        description: >
+          How old package versions must be before deletion (humantime, e.g. 1w, 30d, 5h).
+          Passed to snok/container-retention-policy cut-off.
         required: false
         type: string
     secrets:
@@ -28,12 +31,12 @@ jobs:
     steps:
       - uses: snok/container-retention-policy@v3.0.1
         with:
-          account-type: personal
+          account: user
           token: ${{ secrets.token || secrets.USER_PAT }}
           image-names: ${{ inputs.names || github.event.repository.name }}
-          cut-off: ${{ inputs.remove-after || '1 week ago UTC' }}
+          cut-off: ${{ inputs.remove-after || '1w' }}
           timestamp-to-use: updated_at
-          untagged-only: true
+          tag-selection: untagged
   docker-prune-prs:
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -43,13 +46,13 @@ jobs:
     steps:
       - uses: snok/container-retention-policy@v3.0.1
         with:
-          account-type: personal
+          account: user
           token: ${{ secrets.token || secrets.USER_PAT }}
           image-names: ${{ inputs.names || github.event.repository.name }}
-          cut-off: ${{ inputs.remove-after || '1 month ago UTC' }}
+          cut-off: ${{ inputs.remove-after || '30d' }}
           timestamp-to-use: updated_at
-          filter-include-untagged: false
-          filter-tags: "pr-*"
+          tag-selection: tagged
+          image-tags: "pr-*"
   docker-prune-alpha:
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -59,10 +62,10 @@ jobs:
     steps:
       - uses: snok/container-retention-policy@v3.0.1
         with:
-          account-type: personal
+          account: user
           token: ${{ secrets.token || secrets.USER_PAT }}
           image-names: ${{ inputs.names || github.event.repository.name }}
-          cut-off: ${{ inputs.remove-after || '1 month ago UTC' }}
+          cut-off: ${{ inputs.remove-after || '30d' }}
           timestamp-to-use: updated_at
-          filter-include-untagged: false
-          filter-tags: "*-alpha.*,*-rc.*"
+          tag-selection: tagged
+          image-tags: "*-alpha.* *-rc.*"
