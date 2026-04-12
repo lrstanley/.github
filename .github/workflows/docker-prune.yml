@@ -22,14 +22,15 @@ on:
         required: false
 
 jobs:
-  docker-prune-untagged:
+  docker-prune:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    continue-on-error: true
     permissions:
       packages: write
     steps:
-      - uses: snok/container-retention-policy@v3.0.1
+      - name: prune untagged
+        continue-on-error: true
+        uses: snok/container-retention-policy@v3.0.1
         with:
           account: user
           token: ${{ secrets.token || secrets.USER_PAT }}
@@ -37,14 +38,9 @@ jobs:
           cut-off: ${{ inputs.remove-after || '1w' }}
           timestamp-to-use: updated_at
           tag-selection: untagged
-  docker-prune-prs:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    timeout-minutes: 5
-    permissions:
-      packages: write
-    steps:
-      - uses: snok/container-retention-policy@v3.0.1
+      - name: prune pr-* tags
+        continue-on-error: true
+        uses: snok/container-retention-policy@v3.0.1
         with:
           account: user
           token: ${{ secrets.token || secrets.USER_PAT }}
@@ -53,14 +49,9 @@ jobs:
           timestamp-to-use: updated_at
           tag-selection: tagged
           image-tags: "pr-*"
-  docker-prune-alpha:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    timeout-minutes: 5
-    permissions:
-      packages: write
-    steps:
-      - uses: snok/container-retention-policy@v3.0.1
+      - name: prune alpha/rc tags
+        continue-on-error: true
+        uses: snok/container-retention-policy@v3.0.1
         with:
           account: user
           token: ${{ secrets.token || secrets.USER_PAT }}
