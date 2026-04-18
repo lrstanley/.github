@@ -17,19 +17,19 @@ Help me help you! Spend time framing questions and add links and resources.
 Spending the extra time up front can help save everyone time in the long run.
 Here are some tips:
 
-* Don't fall for the [XY problem][xy].
-* Search to find out if a similar question has been asked or if a similar
+- Don't fall for the [XY problem][xy].
+- Search to find out if a similar question has been asked or if a similar
   issue/bug has been reported.
-* Try to define what you need help with:
-    * Is there something in particular you want to do?
-    * What problem are you encountering and what steps have you taken to try
-        and fix it?
-    * Is there a concept you don't understand?
-* Provide sample code, such as a [CodeSandbox][cs] or a simple snippet, if
+- Try to define what you need help with:
+  - Is there something in particular you want to do?
+  - What problem are you encountering and what steps have you taken to try
+    and fix it?
+  - Is there a concept you don't understand?
+- Provide sample code, such as a [CodeSandbox][cs] or a simple snippet, if
   possible.
-* Screenshots can help, but if there's important text such as code or error
+- Screenshots can help, but if there's important text such as code or error
   messages in them, please also provide those.
-* The more time you put into asking your question, the better I and others
+- The more time you put into asking your question, the better I and others
   can help you.
 
 ## :old_key: Security
@@ -45,11 +45,7 @@ See [`CONTRIBUTING.md`][contributing] on how to contribute.
 [coc]: ${repo.url}/blob/${repo.default_branch}/.github/CODE_OF_CONDUCT.md
 [contributing]: ${repo.url}/blob/${repo.default_branch}/.github/CONTRIBUTING.md
 [discussions]: ${repo.url}/discussions/categories/q-a
-[issues]: ${repo.url}/issues/new/choose
-[license]: ${repo.url}/blob/${repo.default_branch}/LICENSE
-[pull-requests]: ${repo.url}/issues/new/choose
 [security]: ${repo.url}/security/policy
-[support]: ${repo.url}/blob/${repo.default_branch}/.github/SUPPORT.md
 
 [xy]: https://meta.stackexchange.com/questions/66377/what-is-the-xy-problem/66378#66378
 [chat]: ${user.chat_url}
