@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 # USAGE:
 #   jobs:
 #     tag-semver:
@@ -48,12 +49,14 @@ jobs:
           ref: ${{ inputs.ref }}
           token: ${{ secrets.token || secrets.USER_PAT }}
           fetch-depth: 0
+          lfs: true
       - run: git fetch --force --tags
       - name: git-clone-tools-repo
         uses: actions/checkout@v6
         with:
           repository: lrstanley/.github
           path: ghmeta
+          lfs: true
       - run: ./ghmeta/scripts/generate-semver-tag.sh
         env:
           METHOD: ${{ inputs.method }}

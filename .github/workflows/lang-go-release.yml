@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 # USAGE:
 #   jobs:
 #     go-release:
@@ -70,12 +71,14 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          lfs: true
       - run: git fetch --force --tags
       - name: git-clone-tools-repo
         uses: actions/checkout@v6
         with:
           repository: lrstanley/.github
           path: ghmeta
+          lfs: true
       - uses: lrstanley/.github/composite/go-versions@master
         id: goversion
         if: ${{ !inputs.go-version }}

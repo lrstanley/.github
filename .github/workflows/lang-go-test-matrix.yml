@@ -71,6 +71,8 @@ jobs:
         go-version: ${{ fromJSON(needs.go-versions.outputs.versions) }}
     steps:
       - uses: actions/checkout@v6
+        with:
+          lfs: true
       - uses: lrstanley/.github/composite/install-go@master
         with:
           version: ${{ matrix.go-version }}

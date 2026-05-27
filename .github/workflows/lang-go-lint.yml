@@ -68,6 +68,8 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v6
+        with:
+          lfs: true
       - uses: lrstanley/.github/composite/install-go@master
         with:
           version: ${{ needs.go-version.outputs.version }}
@@ -94,6 +96,8 @@ jobs:
       pull-requests: read
     steps:
       - uses: actions/checkout@v6
+        with:
+          lfs: true
       - uses: lrstanley/.github/composite/install-go@master
         with:
           version: ${{ needs.go-version.outputs.version }}
@@ -113,6 +117,8 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v6
+        with:
+          lfs: true
       - uses: lrstanley/.github/composite/install-go@master
         with:
           version: ${{ needs.go-version.outputs.version }}
@@ -138,6 +144,8 @@ jobs:
       statuses: write
     steps:
       - uses: actions/checkout@v6
+        with:
+          lfs: true
       - uses: lrstanley/.github/composite/install-go@master
         with:
           version: ${{ needs.go-version.outputs.version }}

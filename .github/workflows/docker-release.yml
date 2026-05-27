@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: docker-release
 
 on:
@@ -63,6 +64,8 @@ jobs:
       statuses: write
     steps:
       - uses: actions/checkout@v6
+        with:
+          lfs: true
       - run: git fetch --force --tags
       - name: get-latest-tag
         id: get-latest-tag
