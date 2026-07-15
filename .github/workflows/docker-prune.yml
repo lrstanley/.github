@@ -30,7 +30,7 @@ jobs:
     steps:
       - name: prune untagged
         continue-on-error: true
-        uses: snok/container-retention-policy@v3.0.1
+        uses: snok/container-retention-policy@v3.1.0
         with:
           account: user
           token: ${{ secrets.token || secrets.USER_PAT }}
@@ -40,7 +40,7 @@ jobs:
           tag-selection: untagged
       - name: prune pr-* tags
         continue-on-error: true
-        uses: snok/container-retention-policy@v3.0.1
+        uses: snok/container-retention-policy@v3.1.0
         with:
           account: user
           token: ${{ secrets.token || secrets.USER_PAT }}
@@ -51,7 +51,7 @@ jobs:
           image-tags: "pr-*"
       - name: prune alpha/rc tags
         continue-on-error: true
-        uses: snok/container-retention-policy@v3.0.1
+        uses: snok/container-retention-policy@v3.1.0
         with:
           account: user
           token: ${{ secrets.token || secrets.USER_PAT }}
