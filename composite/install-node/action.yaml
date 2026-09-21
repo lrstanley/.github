@@ -32,7 +32,7 @@ runs:
       run: echo "uses-packages=$(find . -mindepth 1 -maxdepth 6 -type f -name package.json | grep -q . && echo true || echo false)" >> "$GITHUB_OUTPUT"
     - name: install-node
       if: steps.uses-packages.outputs.uses-packages == 'true' || inputs.skip-if-no-packages != 'true'
-      uses: actions/setup-node@v6
+      uses: actions/setup-node@v7
       with:
         node-version: ${{ inputs.version }}
 
