@@ -12,23 +12,13 @@ terraform {
       source  = "hashicorp/aws"
       version = "6.23.0"
     }
-
-    cloudflare = {
-      source  = "cloudflare/cloudflare"
-      version = "4.52.7"
-    }
-
-    github = {
-      source  = "integrations/github"
-      version = "~> 6.0"
-    }
   }
 
   required_version = ">= 1.12.0"
 }
 
 provider "aws" {
-  region     = local.region
+  region     = "us-east-1"
   access_key = var.aws_access_key_id
   secret_key = var.aws_secret_access_key
 
@@ -42,12 +32,4 @@ provider "aws" {
   skip_metadata_api_check     = true
   skip_region_validation      = true
   skip_credentials_validation = true
-}
-
-provider "cloudflare" {
-  api_token = var.cloudflare_api_token
-}
-
-provider "github" {
-  token = var.github-token
 }
