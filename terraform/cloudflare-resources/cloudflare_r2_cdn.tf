@@ -1,6 +1,6 @@
 locals {
   cdn_bucket = "lrstanley-cdn"
-  cdn_domain = "cdn-new.liam.sh"
+  cdn_domain = "cdn.liam.sh"
 }
 
 data "cloudflare_zones" "cdn_domain" {
