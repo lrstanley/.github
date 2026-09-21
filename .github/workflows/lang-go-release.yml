@@ -68,13 +68,13 @@ jobs:
       security-events: write
       statuses: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
           lfs: true
       - run: git fetch --force --tags
       - name: git-clone-tools-repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: lrstanley/.github
           path: ghmeta
