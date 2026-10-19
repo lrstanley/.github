@@ -13,7 +13,7 @@ inputs:
       The version of Task to install.
     required: false
     # renovate: datasource=github-releases depName=go-task/task
-    default: "3.45.4"
+    default: "3.54.0"
 runs:
   using: "composite"
   steps:
