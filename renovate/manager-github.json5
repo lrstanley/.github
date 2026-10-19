@@ -5,7 +5,7 @@
             "description": "Composite action input defaults, e.g. `# renovate: datasource=... depName=...` followed by `default: \"1.2.3\"`",
             "customType": "regex",
             "managerFilePatterns": [
-                "(^|/)action\\.ya?ml$"
+                "/(^|/)action\\.ya?ml$/"
             ],
             "matchStrings": [
                 "# renovate: datasource=(?<datasource>[a-z-.]+?) depName=(?<depName>[^\\s]+?)(?: (?:packageName)=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?(?: registryUrl=(?<registryUrl>[^\\s]+?))?\\s+default:\\s*[\"']?(?<currentValue>.+?)[\"']?\\s"
