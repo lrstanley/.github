@@ -16,7 +16,7 @@ set -o pipefail
 export BASE="$(readlink -f "$(dirname "$0")/..")"
 
 # renovate: datasource=github-releases depName=goreleaser/goreleaser
-GORELEASER_VERSION="1.26.2"
+GORELEASER_VERSION="2.18.3"
 FLAGS=()
 
 function setup_config {
@@ -117,7 +117,7 @@ function inject_required {
 		yaml '.release.prerelease = "auto"'
 
 		if grep -qEi "\-(alpha)" <<< "$GITHUB_REF"; then
-			yaml ".changelog.skip = true"
+			yaml ".changelog.disable = true"
 		fi
 	else
 		yaml '.release.disable = true'
@@ -190,8 +190,8 @@ function main {
 	set -x
 	goreleaser release \
 		--config "$CONFIG" \
-		--rm-dist \
-		--skip-validate \
+		--clean \
+		--skip=validate \
 		--timeout "10m" \
 		--parallelism 5 \
 		--release-header-tmpl "$HEADER" \
