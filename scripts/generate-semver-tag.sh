@@ -20,7 +20,7 @@ case "$METHOD" in
 		git tag "${TAG_ARGS[@]}" "$(svu "$METHOD")"
 		;;
 	alpha | rc)
-		CURRENT=$(svu current --tag-mode=all-branches)
+		CURRENT=$(svu current --tag.mode=all)
 		if [ "$?" != 0 ]; then
 			echo "error: svu unable to get current tag"
 			exit 1
@@ -38,7 +38,11 @@ case "$METHOD" in
 			METHOD="current"
 		fi
 
-		git tag "${TAG_ARGS[@]}" "$(svu "$METHOD" --tag-mode=all-branches --no-metadata)-${PR_TYPE}.${REV}+${BUILD}"
+		# svu >= v3 has no flag to strip the prerelease/metadata from "current", so
+		# strip them manually to get the bare MAJOR.MINOR.PATCH base.
+		BASE_VERSION="$(svu "$METHOD" --tag.mode=all | sed -r 's:[-+].*$::')"
+
+		git tag "${TAG_ARGS[@]}" "${BASE_VERSION}-${PR_TYPE}.${REV}+${BUILD}"
 		;;
 	custom)
 		git tag "${TAG_ARGS[@]}" "$CUSTOM"
