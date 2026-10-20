@@ -38,7 +38,7 @@ elif [ "$EVENT_NAME" == "push" ]; then
 	else
 		# assume tag
 
-		LATEST=$(svu current --strip-prefix --no-metadata --tag-mode=all-branches)
+		LATEST=$(svu current --tag.prefix='' --tag.mode=all)
 
 		# check if requested tag is semver compliant (at least somewhat).
 		read -r MAJOR MINOR PATCH SUFFIX <<< "$(sed -r 's:^v?([0-9]+)\.([0-9]+)\.([0-9]+)(.*)$:\1 \2 \3 \4:g' <<< "$GIT_REF_NAME")"
