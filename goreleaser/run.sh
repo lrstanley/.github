@@ -117,7 +117,7 @@ function inject_required {
 		yaml '.release.prerelease = "auto"'
 
 		if grep -qEi "\-(alpha)" <<< "$GITHUB_REF"; then
-			yaml ".changelog.skip = true"
+			yaml ".changelog.disable = true"
 		fi
 	else
 		yaml '.release.disable = true'
@@ -190,8 +190,8 @@ function main {
 	set -x
 	goreleaser release \
 		--config "$CONFIG" \
-		--rm-dist \
-		--skip-validate \
+		--clean \
+		--skip=validate \
 		--timeout "10m" \
 		--parallelism 5 \
 		--release-header-tmpl "$HEADER" \
