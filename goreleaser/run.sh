@@ -178,7 +178,9 @@ function main {
 		export GORELEASER_CURRENT_TAG="$GITHUB_REF_NAME"
 
 		if ! grep -qEi "\-(rc|alpha)" <<< "$GITHUB_REF_NAME"; then
-			PREV=$(git tag --sort=-version:refname | grep -vEi "\-(rc|alpha)" | grep -FiA1 "$GITHUB_REF_NAME" | tail -1)
+			# only plain v* tags, matched whole, so module tags (e.g. cmd/foo/v1.2.3) on the same commit aren't
+			# taken as the previous release.
+			PREV=$(git tag --sort=-version:refname | grep -E "^v[0-9]" | grep -vEi "\-(rc|alpha)" | grep -xFiA1 "$GITHUB_REF_NAME" | tail -1)
 			if [ "$PREV" != "$GITHUB_REF_NAME" ]; then
 				export GORELEASER_PREVIOUS_TAG="$PREV"
 			else
