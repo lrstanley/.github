@@ -54,6 +54,14 @@ on:
         required: false
         type: boolean
         default: true
+      homebrew-tap:
+        description: >
+          If the release publishes to lrstanley/homebrew-tap. On tag runs, this
+          mints a bot app token for that repository as HOMEBREW_TAP_TOKEN, for
+          the repository's goreleaser homebrew_casks config to use.
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   go-release:
@@ -90,6 +98,15 @@ jobs:
       - uses: lrstanley/.github/composite/install-node@master
         with:
           version: ${{ inputs.node-version || 'lts/*' }}
+      - uses: actions/create-github-app-token@v3
+        id: tap-token
+        if: ${{ inputs.homebrew-tap && github.ref_type == 'tag' }}
+        with:
+          client-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: homebrew-tap
+          permission-contents: write
       - run: ./ghmeta/goreleaser/run.sh
         env:
           INPUT_HAS_GHCR: ${{ inputs.has-ghcr }}
@@ -98,6 +115,7 @@ jobs:
           INPUT_DRAFT: ${{ inputs.draft }}
           INPUT_PR_ID: ${{ github.event.pull_request.number }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HOMEBREW_TAP_TOKEN: ${{ steps.tap-token.outputs.token }}
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch || 'master' }}
       - name: upload-snapshot-binaries
         if: ${{ inputs.upload-artifacts && github.ref_type != 'tag' }}
