@@ -29,9 +29,6 @@
   <a href="https://pkg.go.dev/{{ env.GO_MODULE }}">
     <img title="Go Documentation" src="https://pkg.go.dev/badge/{{ env.GO_MODULE }}?style=flat-square">
   </a>
-  <a href="https://goreportcard.com/report/{{ env.GO_MODULE }}">
-    <img title="Go Report Card" src="https://goreportcard.com/badge/{{ env.GO_MODULE }}?style=flat-square">
-  </a>
 {%- endif %}
 </p>
 <p align="center">
