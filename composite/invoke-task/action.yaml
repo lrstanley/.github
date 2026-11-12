@@ -37,9 +37,12 @@ runs:
 
         if [ -f "Taskfile.yaml" ]; then
           echo "found Taskfile.yaml"
+          # the names and aliases of tasks with a desc, one per line. read into a variable, as piping into
+          # "grep -q" lets grep exit before task finishes writing, which pipefail turns into a failed match.
+          TASK_NAMES=$(task --list --silent)
 
           for TASK in ${TASKS//,/ }; do
-            if task -l | grep -q $TASK; then
+            if grep -qxF -- "$TASK" <<<"$TASK_NAMES"; then
               echo "running task: $TASK"
               task --exit-code --verbose $TASK || exit 1
               echo "ran=true" >> "$GITHUB_OUTPUT"
