@@ -16,7 +16,7 @@ set -o pipefail
 export BASE="$(readlink -f "$(dirname "$0")/..")"
 
 # renovate: datasource=github-releases depName=goreleaser/goreleaser
-GORELEASER_VERSION="2.19.0"
+GORELEASER_VERSION="2.20.2"
 FLAGS=()
 
 function setup_config {
