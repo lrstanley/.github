@@ -10,10 +10,6 @@ name: go-lint
 
 on:
   workflow_call:
-    secrets:
-      SNYK_TOKEN:
-        description: "Snyk token for vulnerability scanning."
-        required: false
     inputs:
       go-version:
         description: >
@@ -21,12 +17,6 @@ on:
           version.
         required: false
         type: string
-      scan:
-        description: >
-          If code vulnerability scanning should be enabled.
-        default: True
-        required: False
-        type: boolean
       codecov:
         description: >
           Enables Codecov integration (requires running tests at least once).
@@ -130,53 +120,3 @@ jobs:
           task: go-lint
           allow-undefined: true
           working-directory: ${{ inputs.working-directory }}
-  snyk:
-    needs: [go-version]
-    if: ${{ inputs.scan }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions:
-      checks: write
-      contents: read
-      security-events: write
-      statuses: write
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          lfs: true
-      - uses: lrstanley/.github/composite/install-go@master
-        with:
-          version: ${{ needs.go-version.outputs.version }}
-      - uses: snyk/actions/setup@v1.0.0
-        if: github.event_name != 'pull_request' && inputs.scan
-      - uses: lrstanley/.github/composite/invoke-task@master
-        if: github.event_name != 'pull_request' && inputs.scan
-        with:
-          task: go-prepare,prepare
-          allow-undefined: true
-          working-directory: ${{ inputs.working-directory }}
-      - name: scan-snyk
-        if: github.event_name != 'pull_request' && inputs.scan
-        continue-on-error: true
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-          WORKING_DIRECTORY: ${{ inputs.working-directory }}
-        run: |
-          set -x
-          mkdir -vp /tmp/sarif
-
-          find "$WORKING_DIRECTORY" -maxdepth 4 -type f -name "go.mod" -printf '%h\n' | while read -r dir; do
-              cd "$dir" || exit
-              ts=$(date +%s)
-              snyk test \
-                  --prune-repeated-subdependencies \
-                  --severity-threshold=medium \
-                  --sarif-file-output="/tmp/sarif/go-$(date +%s).sarif" \
-                  "$dir"
-          done
-      - name: scan-snyk-upload-sarif
-        if: github.event_name != 'pull_request' && inputs.scan
-        continue-on-error: true
-        uses: github/codeql-action/upload-sarif@v4
-        with:
-          sarif_file: /tmp/sarif/

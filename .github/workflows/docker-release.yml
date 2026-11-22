@@ -4,9 +4,6 @@ name: docker-release
 on:
   workflow_call:
     secrets:
-      SNYK_TOKEN:
-        description: "Snyk token for vulnerability scanning."
-        required: false
       docker-secrets:
         description: "Docker secrets for buildx."
         required: false
@@ -62,6 +59,9 @@ jobs:
       contents: read
       security-events: write
       statuses: write
+    env:
+      # renovate: datasource=github-releases depName=aquasecurity/trivy
+      TRIVY_VERSION: v0.76.2
     steps:
       - uses: actions/checkout@v7
         with:
@@ -124,19 +124,25 @@ jobs:
           build-args: ${{ inputs.build-args }}
           secrets: ${{ secrets.docker-secrets }}
           file: ${{ inputs.dockerfile }}
-      - name: snyk-scan
-        if: github.event_name != 'pull_request' && inputs.scan
+      # the image is only available to scan once it has been pushed (builds
+      # aren't loaded into the local docker daemon).
+      - name: trivy-scan
+        if: github.event_name != 'pull_request' && inputs.scan && inputs.push
         continue-on-error: true
-        uses: snyk/actions/docker@v1.0.0
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
-          image: ${{ steps.reftag.outputs.tag }}
-          args: "--file=${{ inputs.dockerfile }}"
-      - name: snyk-scan-upload-sarif
-        if: github.event_name != 'pull_request' && inputs.scan
+          image-ref: ${{ steps.reftag.outputs.tag }}
+          version: ${{ env.TRIVY_VERSION }}
+          format: sarif
+          output: trivy.sarif
+          severity: MEDIUM,HIGH,CRITICAL
+          limit-severities-for-sarif: true
+          ignore-unfixed: true
+      - name: trivy-scan-upload-sarif
+        if: github.event_name != 'pull_request' && inputs.scan && inputs.push
         continue-on-error: true
         uses: github/codeql-action/upload-sarif@v4
         with:
-          sarif_file: snyk.sarif
+          sarif_file: trivy.sarif
+          category: trivy-container
           wait-for-processing: true

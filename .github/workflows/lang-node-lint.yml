@@ -10,10 +10,6 @@ name: node-lint
 
 on:
   workflow_call:
-    secrets:
-      SNYK_TOKEN:
-        description: "Snyk token for vulnerability scanning."
-        required: false
     inputs:
       node-version:
         description: >
@@ -21,12 +17,6 @@ on:
         required: false
         default: "lts/*"
         type: string
-      scan:
-        description: >
-          If code vulnerability scanning should be enabled.
-        default: True
-        required: False
-        type: boolean
 
 jobs:
   make:
@@ -48,52 +38,3 @@ jobs:
         with:
           task: node-test,test
           allow-undefined: false
-  snyk:
-    if: ${{ inputs.scan }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions:
-      checks: write
-      contents: read
-      security-events: write
-      statuses: write
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          lfs: true
-      - uses: lrstanley/.github/composite/install-node@master
-        with:
-          version: ${{ inputs.node-version || 'lts/*' }}
-      - name: npm install
-        run: |
-          set -x
-          find "$PWD" -maxdepth 6 -type f -name "package-lock.json" -printf '%h\n' | while read -r dir; do
-              cd "$dir" || exit
-              npm install --no-audit --no-fund
-          done
-      - uses: snyk/actions/setup@v1.0.0
-        if: github.event_name != 'pull_request' && inputs.scan
-      - name: scan-snyk
-        if: github.event_name != 'pull_request' && inputs.scan
-        continue-on-error: true
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: |
-          set -x
-          mkdir -vp /tmp/sarif
-
-          find "$PWD" -maxdepth 4 -type f -name "package.json" -printf '%h\n' | while read -r dir; do
-              cd "$dir" || exit
-              ts=$(date +%s)
-              snyk test \
-                  --prune-repeated-subdependencies \
-                  --severity-threshold=medium \
-                  --sarif-file-output="/tmp/sarif/node-$(date +%s).sarif" \
-                  "$dir"
-          done
-      - name: scan-snyk-upload-sarif
-        if: github.event_name != 'pull_request' && inputs.scan
-        continue-on-error: true
-        uses: github/codeql-action/upload-sarif@v4
-        with:
-          sarif_file: /tmp/sarif/
