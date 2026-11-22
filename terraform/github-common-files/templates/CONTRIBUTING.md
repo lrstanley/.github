@@ -82,16 +82,16 @@ Below are a few guidelines if you would like to contribute:
   the library is needed, simply rewrite it within the library to prevent
   useless imports.
 
-%{ for lang in repo.languages ~}
-%{ if lang == "Go" ~}
+%{ if contains(repo.languages, "Go") ~}
 ### :hamster: Golang
 
 - See [golang/go/wiki/CodeReviewComments](https://github.com/golang/go/wiki/CodeReviewComments)
 - This project uses [golangci-lint](https://golangci-lint.run/) for Go-related
   files. This should be available for any editor that supports `gopls`, however
   you can also run it locally with `golangci-lint run` after installing it.
-%{~ endif }
-%{ if lang == "Shell" ~}
+
+%{ endif ~}
+%{ if contains(repo.languages, "Shell") ~}
 ### :penguin: Bash/Posix-shell
 
 - This project uses [shellcheck](https://github.com/koalaman/shellcheck) for linting
@@ -100,31 +100,30 @@ Below are a few guidelines if you would like to contribute:
 - `shfmt` should be used if possible, to auto-format shell scripts. The flags that
   should generally be used are: `shfmt -s -bn -ci -sr`. This is available in VSCode
   [here](https://marketplace.visualstudio.com/items?itemName=foxundermoon.shell-format).
-%{~ endif }
-%{ if lang == "Dockerfile" ~}
 
+%{ endif ~}
+%{ if contains(repo.languages, "Dockerfile") ~}
 ### :whale: Dockerfile
 
 - Follow container best practices, like [keeping images as small as possible](https://phoenixnap.com/kb/docker-image-size).
 - This project uses [shellcheck](https://github.com/koalaman/shellcheck) for linting
   `Dockerfile`'s. You can also use native docker extensions.
   This is available in VSCode [here](https://marketplace.visualstudio.com/items?itemName=timonwong.shellcheck).
-%{~ endif }
-%{ if lang == "Python" ~}
 
+%{ endif ~}
+%{ if contains(repo.languages, "Python") ~}
 ### :snake: Python
 
 - All functions/methods/files should use type annotations when available, in
   addition to ensuring all functions/methods have proper docstrings.
 - This project uses [black](https://github.com/psf/black) for linting Python libraries
   and scripts. This is an available option in most editors that use a Python language server.
-%{~ endif }
-%{~ endfor }
 
+%{ endif ~}
 %{ if can(config.contributing_additional) ~}
-${~ config.contributing_additional ~}
-%{~ endif }
+${trimspace(config.contributing_additional)}
 
+%{ endif ~}
 ## :clipboard: References
 
 - [Open Source: How to Contribute](https://opensource.guide/how-to-contribute/)
