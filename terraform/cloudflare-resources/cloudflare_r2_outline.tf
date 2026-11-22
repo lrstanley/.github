@@ -17,7 +17,7 @@ resource "cloudflare_r2_bucket_cors" "outline" {
       id = "outline uploads"
       allowed = {
         methods = ["GET", "HEAD", "PUT"]
-        origins = ["https://outline.ks.liam.sh"]
+        origins = ["https://outline.ks.liam.sh", "https://outline.rw.liam.sh"]
         headers = ["cache-control", "content-disposition", "content-type"]
       }
       expose_headers  = ["ETag"]

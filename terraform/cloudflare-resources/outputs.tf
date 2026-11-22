@@ -6,6 +6,10 @@ output "r2_cdn_bucket" {
   value = cloudflare_r2_bucket.cdn.name
 }
 
+output "r2_railway_backups_bucket" {
+  value = cloudflare_r2_bucket.railway_backups.name
+}
+
 output "r2_cdn_domain" {
   value = cloudflare_r2_custom_domain.cdn.domain
 }
