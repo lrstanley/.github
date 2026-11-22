@@ -5,7 +5,7 @@ on:
     secrets:
       app-id:
         description: >-
-          GitHub App ID.
+          GitHub App client ID. Defaults to the lrstanley-x app.
         required: false
       app-private-key:
         description: >-
@@ -62,7 +62,8 @@ jobs:
       - uses: actions/create-github-app-token@v3
         id: app-token
         with:
-          client-id: "${{ secrets.app-id || secrets.BOT_APP_ID }}"
+          # lrstanley-x app client ID. not a secret.
+          client-id: "${{ secrets.app-id || 'Iv1.e0c442911c4685c5' }}"
           private-key: "${{ secrets.app-private-key || secrets.BOT_PRIVATE_KEY }}"
       - uses: actions/checkout@v7
         with:

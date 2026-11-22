@@ -102,7 +102,7 @@ jobs:
         id: tap-token
         if: ${{ inputs.homebrew-tap && github.ref_type == 'tag' }}
         with:
-          client-id: ${{ secrets.BOT_APP_ID }}
+          client-id: Iv1.e0c442911c4685c5 # lrstanley-x app client ID. not a secret.
           private-key: ${{ secrets.BOT_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
           repositories: homebrew-tap
