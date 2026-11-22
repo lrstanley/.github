@@ -150,13 +150,10 @@ function generate {
     README=$(update_field_file "header" "header.md")
     README=$(update_field_file "ghcr" "ghcr.md")
 
-    if [ -f ".github/SUPPORT.md" ]; then
-        README=$(update_field_file "support" "support.md")
-    fi
-
-    if [ -f ".github/CONTRIBUTING.md" ]; then
-        README=$(update_field_file "contributing" "contributing.md")
-    fi
+    # always rendered: when a repository has no SUPPORT.md/CONTRIBUTING.md of
+    # its own, GitHub serves the defaults from the owner's .github repository.
+    README=$(update_field_file "support" "support.md")
+    README=$(update_field_file "contributing" "contributing.md")
 
     if [ -f "LICENSE" ]; then
         export LICENSE=$(cat LICENSE)
