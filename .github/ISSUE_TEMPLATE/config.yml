@@ -1,0 +1,14 @@
+# Default community health file: used by every lrstanley repository without its own copy. Source: https://github.com/lrstanley/.github
+#
+# GitHub uses this whole ISSUE_TEMPLATE folder only for repositories with no
+# files of their own in .github/ISSUE_TEMPLATE/. A repository that needs
+# different settings (e.g. blank issues) must carry a complete copy of the
+# folder, templates included.
+blank_issues_enabled: false
+contact_links:
+  - name: "✋ Additional support information"
+    about: Have a question, or looking for something else? Check here.
+    url: "https://github.com/lrstanley/.github/blob/master/.github/SUPPORT.md"
+  - name: "💬 Discord chat"
+    about: On-topic and off-topic discussions.
+    url: "https://liam.sh/chat"
