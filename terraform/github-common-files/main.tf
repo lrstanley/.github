@@ -28,12 +28,3 @@ variable "github-token" {
   type        = string
   sensitive   = true
 }
-
-// Outputs.
-output "github_repositories" {
-  value = module.base.repositories
-}
-
-output "configs" {
-  value = module.base.ci_configs
-}
