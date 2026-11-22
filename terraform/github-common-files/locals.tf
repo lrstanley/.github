@@ -20,26 +20,6 @@ locals {
       languages = []
       skip_ci   = true
     }
-    "CONTRIBUTING.md" = {
-      path      = ".github/CONTRIBUTING.md"
-      languages = []
-      skip_ci   = true
-    }
-    "CODE_OF_CONDUCT.md" = {
-      path      = ".github/CODE_OF_CONDUCT.md"
-      languages = []
-      skip_ci   = true
-    }
-    "SUPPORT.md" = {
-      path      = ".github/SUPPORT.md"
-      languages = []
-      skip_ci   = true
-    }
-    "SECURITY.md" = {
-      path      = ".github/SECURITY.md"
-      languages = ["*"]
-      skip_ci   = true
-    }
     "LICENSE" = {
       path      = "LICENSE"
       languages = ["*"]
@@ -55,28 +35,6 @@ locals {
     ".editorconfig" = {
       path      = ".editorconfig"
       languages = ["*"]
-      skip_ci   = true
-    }
-
-    # issue templates.
-    "ISSUE_TEMPLATE/bug_report.yml" = {
-      path      = ".github/ISSUE_TEMPLATE/bug_report.yml"
-      languages = []
-      skip_ci   = true
-    }
-    "ISSUE_TEMPLATE/feature_request.yml" = {
-      path      = ".github/ISSUE_TEMPLATE/feature_request.yml"
-      languages = []
-      skip_ci   = true
-    }
-    "ISSUE_TEMPLATE/config.yml" = {
-      path      = ".github/ISSUE_TEMPLATE/config.yml"
-      languages = []
-      skip_ci   = true
-    }
-    "PULL_REQUEST_TEMPLATE.md" = {
-      path      = ".github/PULL_REQUEST_TEMPLATE.md"
-      languages = []
       skip_ci   = true
     }
   }
