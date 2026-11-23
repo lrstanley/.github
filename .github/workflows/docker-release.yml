@@ -9,8 +9,8 @@ on:
         required: false
       railway-token:
         description: >
-          Railway workspace token (RAILWAY_API_TOKEN), for redeploying
-          railway-services after a push.
+          Railway workspace token, for redeploying railway-services after a
+          push. Defaults to the caller's RAILWAY_API_TOKEN with `secrets: inherit`.
         required: false
     inputs:
       name:
@@ -168,13 +168,13 @@ jobs:
       - name: railway-redeploy
         if: steps.railway-check.outputs.deploy == 'true'
         env:
-          RAILWAY_API_TOKEN: ${{ secrets.railway-token }}
+          RAILWAY_API_TOKEN: ${{ secrets.railway-token || secrets.RAILWAY_API_TOKEN }}
           PROJECT: ${{ inputs.railway-project }}
           ENVIRONMENT: ${{ inputs.railway-environment }}
           SERVICES: ${{ inputs.railway-services }}
         run: |
           set -euo pipefail
-          : "${RAILWAY_API_TOKEN:?the railway-token secret is required}" "${PROJECT:?railway-project is required}"
+          : "${RAILWAY_API_TOKEN:?the railway-token secret (or an inherited RAILWAY_API_TOKEN) is required}" "${PROJECT:?railway-project is required}"
           # --project takes an ID. Resolve a name through the API: `railway list`
           # doesn't accept workspace tokens.
           id="$(railway api --compact '{ projects { edges { node { id name } } } }' \
