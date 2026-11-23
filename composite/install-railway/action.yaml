@@ -1,0 +1,34 @@
+name: install-railway
+description: >
+  A composite action to install the Railway CLI from its GitHub release. Required
+  permissions:
+    - contents: read
+inputs:
+  version:
+    description: >
+      The version of the Railway CLI to install.
+    required: false
+    # renovate: datasource=github-releases depName=railwayapp/cli
+    default: "5.75.0"
+runs:
+  using: "composite"
+  steps:
+    - name: install-railway
+      shell: bash
+      env:
+        VERSION: ${{ inputs.version }}
+      run: |
+        set -euo pipefail
+        case "$(uname -m)" in
+          x86_64) arch=x86_64 ;;
+          aarch64 | arm64) arch=aarch64 ;;
+          *) echo "unsupported architecture: $(uname -m)" >&2 && exit 1 ;;
+        esac
+        VERSION="${VERSION#v}"
+        dir="${RUNNER_TEMP}/railway-cli"
+        mkdir -p "$dir"
+        curl -fsSL --retry 3 \
+          "https://github.com/railwayapp/cli/releases/download/v${VERSION}/railway-v${VERSION}-${arch}-unknown-linux-musl.tar.gz" \
+          | tar -xz -C "$dir" railway
+        echo "$dir" >> "$GITHUB_PATH"
+        "$dir/railway" --version

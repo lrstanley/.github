@@ -7,6 +7,11 @@ on:
       docker-secrets:
         description: "Docker secrets for buildx."
         required: false
+      railway-token:
+        description: >
+          Railway workspace token (RAILWAY_API_TOKEN), for redeploying
+          railway-services after a push.
+        required: false
     inputs:
       name:
         description: >
@@ -49,6 +54,28 @@ on:
         required: false
         type: number
         default: 20
+      railway-project:
+        description: "Railway project (name or ID) that runs this image."
+        required: false
+        type: string
+        default: ""
+      railway-services:
+        description: >
+          Comma-separated Railway services to redeploy (railway redeploy
+          --from-source) when railway-tag is pushed. Empty disables it.
+        required: false
+        type: string
+        default: ""
+      railway-tag:
+        description: "The image tag the Railway services run, e.g. master or latest."
+        required: false
+        type: string
+        default: "master"
+      railway-environment:
+        description: "Railway environment to redeploy in."
+        required: false
+        type: string
+        default: "production"
 jobs:
   docker-release:
     runs-on: ubuntu-latest
@@ -124,6 +151,41 @@ jobs:
           build-args: ${{ inputs.build-args }}
           secrets: ${{ secrets.docker-secrets }}
           file: ${{ inputs.dockerfile }}
+      - name: railway-check
+        id: railway-check
+        if: inputs.railway-services != '' && inputs.push && github.event_name != 'pull_request'
+        env:
+          TAGS: ${{ steps.meta.outputs.tags }}
+          TAG: ${{ inputs.railway-tag }}
+        run: |
+          if grep -q -- ":${TAG}\$" <<< "$TAGS"; then
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skipping railway redeploy: this run didn't push :${TAG}"
+          fi
+      - if: steps.railway-check.outputs.deploy == 'true'
+        uses: lrstanley/.github/composite/install-railway@master
+      - name: railway-redeploy
+        if: steps.railway-check.outputs.deploy == 'true'
+        env:
+          RAILWAY_API_TOKEN: ${{ secrets.railway-token }}
+          PROJECT: ${{ inputs.railway-project }}
+          ENVIRONMENT: ${{ inputs.railway-environment }}
+          SERVICES: ${{ inputs.railway-services }}
+        run: |
+          set -euo pipefail
+          : "${RAILWAY_API_TOKEN:?the railway-token secret is required}" "${PROJECT:?railway-project is required}"
+          # --project takes an ID. Resolve a name through the API: `railway list`
+          # doesn't accept workspace tokens.
+          id="$(railway api --compact '{ projects { edges { node { id name } } } }' \
+            | jq -r --arg p "$PROJECT" '.data.projects.edges[].node | select(.name == $p or .id == $p) | .id')"
+          [[ -n "$id" && "$id" != *$'\n'* ]] || { echo "no single Railway project matches $PROJECT" >&2; exit 1; }
+          IFS=',' read -ra services <<< "$SERVICES"
+          for s in "${services[@]}"; do
+            s="$(xargs <<< "$s")"
+            echo "redeploying $s"
+            railway redeploy --project "$id" --environment "$ENVIRONMENT" --service "$s" --from-source --yes
+          done
       # the image is only available to scan once it has been pushed (builds
       # aren't loaded into the local docker daemon).
       - name: trivy-scan
